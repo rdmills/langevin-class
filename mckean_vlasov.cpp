@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     std::cout<<*(aLine.GetyMinyMax()+1)<<std::endl;
     std::cout<<aLine.GetIntegrator()<<std::endl;
 
-    int j=1;
+    int j=2;
 
     // Langevin pl(optsNum);
 
