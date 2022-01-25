@@ -18,23 +18,38 @@
 //      struct opts_phys optsPhys = {{-0.5,0.5}}; 
 struct opts_phys
     {
-        float interval[2];    
+        double interval[2];  
+        double (*pV1)(double);
+        double (*pGradV1) (double); 
+        double kappa1;
+        double (*pV2)(double, double);
+        double (*pGradV2)(double, double);
+        double kappa2;
+
     };
 
 // Child class Line1D for langevin dynamics on an interval.
 class Line1D : public Langevin
 {       
     public: 
-        float yMin;
-        float yMax;
+        double yMin;
+        double yMax;
+
+        opts_phys optsPhys;
 
         Line1D(opts_num opts1, opts_phys opts2);
-        void SetyMinyMax(float interval[2]);
-        float* GetyMinyMax();
+        void SetyMinyMax(double interval[2]);
+        double* GetyMinyMax();
         virtual void InitialiseParticles();
+        
+        virtual void DoLangevin();
+        virtual void GenerateNoiseVector();
+        virtual void PrintNoiseVector();
+
     
     private:
-        float myMinyMax [2];    
+        double myMinyMax [2];
+        double* mNoiseVector;    
 };
 
 #endif

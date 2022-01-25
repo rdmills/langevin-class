@@ -8,14 +8,14 @@ class SpectralLine
     public:
         // properties
         int N;
-        std::vector<float> my_pts;
+        std::vector<double> my_pts;
         
-        float yMin;
-        float yMax;
+        double yMin;
+        double yMax;
         std::string polar;
 
         // methods
-        SpectralLine(int num_pts, float y_min, float y_max);
+        SpectralLine(int num_pts, double y_min, double y_max);
         void ChebyshevPts();
         
 };

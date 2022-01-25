@@ -20,7 +20,7 @@ struct opts_num
         int num_steps;
         std::string integrator;
         int num_particles;
-        float t_max;
+        double t_max;
     };
 
 // Abstract Langevin base class.
@@ -29,12 +29,12 @@ class Langevin
     public:
     // properties
         int numParticles;
-        std::vector<float> initParticles;
-        std::vector< std::vector<float> > particles; 
+        std::vector<double> initParticles;
+        std::vector< std::vector<double> > particles; 
         
-        float tMax;
-        float numSteps;
-        float dt;
+        double tMax;
+        double numSteps;
+        double dt;
 
         opts_num optsNum;
     
@@ -44,7 +44,12 @@ class Langevin
     // methods  
         void SetIntegrator(std::string integrator);
         std::string GetIntegrator() const;
+        
         virtual void InitialiseParticles() = 0; // dynamic binding
+        
+        virtual void DoLangevin() = 0;
+        virtual void GenerateNoiseVector() = 0;
+        virtual void PrintNoiseVector() = 0;
 
     protected:
     // properties

@@ -5,18 +5,18 @@
 class Interval
 {
     public:
-        float pts;    
+        double pts;    
         
-        float y_min;
-        float y_max;
+        double y_min;
+        double y_max;
         std::string polar;
     
-        // float pts;
-        // float diff;
-        // float integral;
+        // double pts;
+        // double diff;
+        // double integral;
         // int ind;
-        // float interp;
-        // float conv;
+        // double interp;
+        // double conv;
         // int N;
         // std::string polar;
 };

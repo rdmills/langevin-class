@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 
-const float PI = 3.14159;
+const double PI = 3.14159;
 
-SpectralLine::SpectralLine(int num_pts, float y_min, float y_max)
+SpectralLine::SpectralLine(int num_pts, double y_min, double y_max)
 {
     yMin = y_min;
     yMax = y_max;
@@ -15,13 +15,13 @@ SpectralLine::SpectralLine(int num_pts, float y_min, float y_max)
 
 void SpectralLine::ChebyshevPts()
 {       
-    std::vector<float> theta;
+    std::vector<double> theta;
     theta.resize(N);
     my_pts.resize(N);
 
     for(int i = 0; i < theta.size(); i++)
     {
-        theta[i] = PI*float(i)/float(N);
+        theta[i] = PI*double(i)/double(N);
     }
 
     for(int i = 0; i < my_pts.size(); i++)

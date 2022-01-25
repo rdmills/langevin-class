@@ -4,12 +4,12 @@
 class Interval
 {
     public:
-        float pts;
-        float diff;
-        float integral;
+        double pts;
+        double diff;
+        double integral;
         int ind;
-        float interp;
-        float conv;
+        double interp;
+        double conv;
         int N;
         std::string polar;
 };

@@ -16,9 +16,11 @@ Langevin::Langevin(opts_num opts1)
     optsNum = opts1;
 
     numSteps       = opts1.num_steps;
+    tMax           = opts1.t_max;
+    dt             = tMax/numSteps;
     this->SetIntegrator(opts1.integrator);
     numParticles   = opts1.num_particles;
-    tMax           = opts1.t_max;
+    
 
     initParticles.resize(numParticles);
     particles.resize(numParticles);

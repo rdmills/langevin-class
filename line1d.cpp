@@ -19,6 +19,8 @@ Line1D::Line1D(opts_num opts1, opts_phys opts2) : Langevin(opts1)
     yMin = opts2.interval[0];
     yMax = opts2.interval[1];
 
+    optsPhys = opts2;
+
     for (int i=0; i<2; i++)
     {
         myMinyMax[i]=opts2.interval[i];
@@ -27,7 +29,7 @@ Line1D::Line1D(opts_num opts1, opts_phys opts2) : Langevin(opts1)
 
 // Setter for yMinyMax.
 // @param interval : array of length 2.
-void Line1D::SetyMinyMax(float interval[2])
+void Line1D::SetyMinyMax(double interval[2])
 {
     for (int i=0; i<2; i++)
     {
@@ -37,7 +39,7 @@ void Line1D::SetyMinyMax(float interval[2])
 
 // Getter for yMinyMax.
 // @return : myMinyMax class member pointer.
-float* Line1D::GetyMinyMax() 
+double* Line1D::GetyMinyMax() 
 {
     return myMinyMax;
 }
@@ -47,15 +49,45 @@ void Line1D::InitialiseParticles()
 {     
     for (int i = 0; i < initParticles.size(); i++)
     {
-        initParticles[i] = yMin + float(i)*(yMax-yMin)/float(numParticles);
+        initParticles[i] = yMin + double(i)*(yMax-yMin)/double(numParticles);
     }    
+
 }
 
-// float Langevin::dW(float dt)
+void Line1D::DoLangevin()
+{
+}
+
+void Line1D::GenerateNoiseVector()
+{
+  double sigma = sqrt(dt);
+  std::default_random_engine generator;
+  std::normal_distribution<double> distribution(0.0,sigma);
+  
+  mNoiseVector = new double [numParticles];
+
+  for (int i=0; i<numParticles; i++)
+  {
+      mNoiseVector[i] = distribution(generator);
+  }
+}
+
+void Line1D::PrintNoiseVector()
+{
+    for (int i=0; i<numParticles; i++)
+    {
+        std::cout<<mNoiseVector[i]<<std::endl;
+    }
+    
+    std::cout<<std::endl;
+
+}
+
+// double Langevin::dW(double dt)
 // {
-//   float sigma = sqrt(dt);
+//   double sigma = sqrt(dt);
 //   std::default_random_engine generator;
 //   std::normal_distribution<double> distribution(0.0,sigma);
-//   float dw = distribution(generator);
+//   double dw = distribution(generator);
 //   return dw;
 // }
