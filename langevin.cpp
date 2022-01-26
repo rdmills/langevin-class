@@ -1,6 +1,6 @@
 /*
     langevin.cpp
-    Langevin abstract class for langevin dynamics on a finite interval.
+    Langevin abstract class for langevin dynamics.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
