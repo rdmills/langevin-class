@@ -52,7 +52,9 @@ class EulerMaruyama : public Solver
         double (*mGradV2)(double y, double yPrime);
 
         double myMinyMax [2];
-        double* mNoiseVector;    
+        double* mNoiseVector;
+
+        int numSteps;    
 };
 
 #endif
