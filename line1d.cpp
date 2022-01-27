@@ -15,7 +15,6 @@
 // Overridden constructor inheriting Langevin base constructor.
 Line1D::Line1D(opts_num opts1, opts_phys opts2) : Langevin(opts1)
 {
-
     yMin = opts2.interval[0];
     yMax = opts2.interval[1];
 
@@ -23,7 +22,7 @@ Line1D::Line1D(opts_num opts1, opts_phys opts2) : Langevin(opts1)
 
     for (int i=0; i<2; i++)
     {
-        myMinyMax[i]=opts2.interval[i];
+        myMinyMax[i] = opts2.interval[i];
     }
 }
 
@@ -51,7 +50,6 @@ void Line1D::InitialiseParticles()
     {
         initParticles[i] = yMin + double(i)*(yMax-yMin)/double(numParticles);
     }    
-
 }
 
 void Line1D::DoLangevin()
@@ -76,10 +74,9 @@ void Line1D::PrintNoiseVector()
 {
     for (int i=0; i<numParticles; i++)
     {
-        std::cout<<mNoiseVector[i]<<std::endl;
+        std::cout << mNoiseVector[i] << std::endl;
     }
-    
-    std::cout<<std::endl;
+    std::cout << std::endl;
 
 }
 

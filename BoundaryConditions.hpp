@@ -4,9 +4,9 @@
 class BoundaryConditions
 {
 public:
-   // The boundary value class is able to
-   // access the coefficients etc. of this equation
-   friend class BvpOde;
+   // The sde value class is able to
+   // access boundary conditions.
+   friend class BvpSde;
 private:
    bool mBcIsPeriodic;
    bool mLhsBcIsNeumann;
@@ -21,4 +21,4 @@ public:
 };
 
 #endif
-//Code from Chapter12.tex line 532 save as BoundaryConditions.hpp
+

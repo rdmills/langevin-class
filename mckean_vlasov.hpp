@@ -8,7 +8,6 @@ struct phys_consts
     double kappa2;
 };
 
-
 class MckeanVlasov
 {
     // The boundary value class is able to
