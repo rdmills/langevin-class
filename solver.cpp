@@ -14,11 +14,21 @@
 Solver::Solver(opts_num opts1)
 {
     optsNum = opts1;
+
+    mNumSteps = opts1.num_steps;
+    mTmax = opts1.t_max;
+    mStepSize = mTmax/mNumSteps;
+    
 }
 
-void Solver::SetStepSize(double dt)
+void Solver::SetNumSteps(int N)
 {
-    mStepSize = dt;
+    mNumSteps = N;
+}
+
+int Solver::GetNumSteps()
+{
+    return mNumSteps;
 }
 
 void Solver::SetTmax(double T)
@@ -26,7 +36,22 @@ void Solver::SetTmax(double T)
     mTmax = T;
 }
 
+double Solver::GetTmax()
+{
+    return mTmax;
+}
+
 void Solver::SetInitialData(double y0)
 {
     mInitialData = y0;
+}
+
+double Solver::GetInitialData()
+{
+    return mInitialData;
+}
+
+double Solver::GetStepSize()
+{
+    return mStepSize;
 }

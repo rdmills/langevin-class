@@ -18,7 +18,6 @@
 struct opts_num
     {
         int num_steps;
-        std::string integrator;
         double t_max;
     };
 
@@ -34,16 +33,20 @@ class Solver
         Solver(opts_num opts1);
     
     // methods  
-        void SetStepSize(double dt);
+        void SetNumSteps(int N);
+        int GetNumSteps();
         void SetTmax(double T);
+        double GetTmax();
         void SetInitialData(double y0);
+        double GetInitialData();
+        double GetStepSize();
+
         virtual double RightHandSide(double y, double t) = 0; 
         virtual double SolveEquation() = 0;
 
-    protected:
+    // protected:
     // properties
-        std::string mIntegratorType;
-    
+        
     private:
         double mStepSize;
         double mTmax;

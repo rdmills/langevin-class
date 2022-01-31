@@ -12,7 +12,7 @@ class MckeanVlasov
 {
     // The boundary value class is able to
     // access the coefficients etc. of this equation
-    friend class Solver;
+    friend class BvpSde;
 private:
     // physical constants: K_BT, kappa_1, kappa_2
     double mbeta_inv;

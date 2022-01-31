@@ -13,20 +13,7 @@
 #include <math.h>
 #include "solver.hpp"
 
-// Optional physics for a 1d line.
-// Example:
-//      struct opts_phys optsPhys = {{-0.5,0.5}}; 
-struct opts_phys
-    {
-        double interval[2];  
-        double (*pV1)(double);
-        double (*pGradV1) (double); 
-        double kappa1;
-        double (*pV2)(double, double);
-        double (*pGradV2)(double, double);
-        double kappa2;
 
-    };
 
 // Child class Line1D for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
