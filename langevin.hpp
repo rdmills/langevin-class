@@ -7,20 +7,37 @@
 #include "solver.hpp"
 #include "BoundaryConditions.hpp"
 
+// struct phys_consts
+// {
+//     double beta_inv;
+//     double gamma;
+//     double mass;
+// };
+
 // Optional physics for a 1d line.
 // Example:
 //      struct opts_phys optsPhys = {{-0.5,0.5}}; 
-struct opts_phys
-    {
-        double interval[2];  
-        double (*pV1)(double);
-        double (*pGradV1) (double); 
-        double kappa1;
-        double (*pV2)(double, double);
-        double (*pGradV2)(double, double);
-        double kappa2;
+// struct opts_phys
+//     {
+//         double interval[2];  
+//         double (*pV1)(double);
+//         double (*pGradV1) (double); 
+//         double kappa1;
+//         double (*pV2)(double, double);
+//         double (*pGradV2)(double, double);
+//         double kappa2;
+//     };
 
-    };
+// Numerical options for time integrator.
+// Example:
+//      struct opts_num optsNum = {12,"Euler–Maruyama", 10, 1.0};
+struct opts_num
+    {
+        int num_steps;
+        std::string integrator;
+        int num_particles;
+        double t_max;
+    };    
 
 class Langevin
 {
@@ -59,9 +76,9 @@ private:
 public:
    // Sole constructor
    Langevin(MckeanVlasov* pSde, 
-          BoundaryConditions* pBcs, 
-          Solver* pSolver,
-          int numParticles);
+            BoundaryConditions* pBcs, 
+            Solver* pSolver,
+            int numParticles);
 
    // As memory is dynamically allocated the destructor
    // is overridden

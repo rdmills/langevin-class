@@ -6,7 +6,7 @@ class BoundaryConditions
 public:
    // The sde value class is able to
    // access boundary conditions.
-   friend class BvpSde;
+   friend class Langevin;
 private:
    bool mBcIsPeriodic;
    bool mLhsBcIsNeumann;

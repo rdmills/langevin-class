@@ -12,13 +12,13 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts1, opts_phys opts2) : Solver(opts1)
-{
-    mV1 = opts2.pV1;
-    mGradV1 = opts2.pGradV1;
-    mV2 = opts2.pV2;
-    mGradV2 = opts2.pGradV2;
-}
+// EulerMaruyama::EulerMaruyama(opts_num opts1, opts_phys opts2) : Solver(opts1)
+// {
+//     mV1 = opts2.pV1;
+//     mGradV1 = opts2.pGradV1;
+//     mV2 = opts2.pV2;
+//     mGradV2 = opts2.pGradV2;
+// }
 
 double EulerMaruyama::RightHandSide(double y, double t)
 {
