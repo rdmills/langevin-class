@@ -27,7 +27,8 @@ class Solver
     public:
     friend class Langevin;
     // properties
-        std::vector< std::vector<double> > particles; 
+        // std::vector< std::vector<double> > particles; 
+        std::vector< double > particles; 
         opts_num optsNum;
     
     // construction

@@ -49,8 +49,8 @@ class EulerMaruyama : public Solver
     private:
         double (*mV1)(double y); 
         double (*mGradV1)(double y);
-        double (*mV2)(double y, double yPrime); 
-        double (*mGradV2)(double y, double yPrime);
+        // double (*mV2)(double y, double yPrime); 
+        // double (*mGradV2)(double y, double yPrime);
 
         double myMinyMax [2];
         double* mNoiseVector;

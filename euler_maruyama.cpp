@@ -23,7 +23,7 @@
 double EulerMaruyama::RightHandSide(double y, double t)
 {
     return -(*mGradV1)(y);
-}
+}   
 
 double EulerMaruyama::SolveEquation()
 {

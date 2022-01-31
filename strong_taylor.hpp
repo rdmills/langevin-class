@@ -5,8 +5,8 @@
     @version 1.0 20/01/2022
 */
 
-#ifndef EULERMARYAMAHEADERDEF
-#define EULERMARYAMAHEADERDEF
+#ifndef STRONGTAYLORHEADERDEF
+#define STRONGTAYLORHEADERDEF
 #include <string>
 #include <vector>
 #include <random>
@@ -16,10 +16,10 @@
 
 
 // Child class Line1D for langevin dynamics on an interval.
-class EulerMaruyama : public Solver
+class StrongTaylor : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts1, opts_phys opts2);
+        StrongTaylor(opts_num opts1);
 
         virtual double RightHandSide(double y, double t); 
         virtual double SolveEquation();
