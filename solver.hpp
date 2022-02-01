@@ -11,10 +11,11 @@
 #include <vector>
 #include <random>
 #include <math.h>
+// #include "langevin.hpp"
 
 // Numerical options for time integrator.
 // Example:
-//      struct opts_num optsNum = {12,"Euler–Maruyama", 10, 1.0};
+//      opts_num optsNum = {12, 1.0};
 struct opts_num
     {
         int num_steps;
@@ -30,9 +31,10 @@ class Solver
         // std::vector< std::vector<double> > particles; 
         std::vector< double > particles; 
         opts_num optsNum;
-    
+
     // construction
-        Solver(opts_num opts1);
+        // Solver(opts_num opts1, double (*righthandside)(double));
+        // ~Solver();
     
     // methods  
         void SetNumSteps(int N);
@@ -45,7 +47,7 @@ class Solver
 
         virtual double RightHandSide(double y, double t) = 0; 
         virtual double SolveEquation() = 0;
-
+        virtual ~Solver() {};
     // protected:
     // properties
         
@@ -54,6 +56,7 @@ class Solver
         double mTmax;
         double mNumSteps;
         double mInitialData;
+        
 
 };
 

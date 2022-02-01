@@ -28,15 +28,15 @@
 //         double kappa2;
 //     };
 
-// Child class Line1D for langevin dynamics on an interval.
+// Child class EulerMaryuama for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts1);
-
+        EulerMaruyama(opts_num opts1, double (*mRightHandSide)(double, double));
+        
         virtual double RightHandSide(double y, double t); 
         virtual double SolveEquation();
-        
+        virtual ~EulerMaruyama() {};
         // void SetyMinyMax(double interval[2]);
         // double* GetyMinyMax();
         // virtual void InitialiseParticles();
@@ -45,6 +45,7 @@ class EulerMaruyama : public Solver
         // virtual void GenerateNoiseVector();
         // virtual void PrintNoiseVector();
 
+        // ~EulerMaruyama();
     
     private:
         double (*mV1)(double y); 
@@ -52,9 +53,8 @@ class EulerMaruyama : public Solver
         // double (*mV2)(double y, double yPrime); 
         // double (*mGradV2)(double y, double yPrime);
 
+        double (*mRhs)(double y, double t);
         double myMinyMax [2];
-        double* mNoiseVector;
-
 };
 
 #endif

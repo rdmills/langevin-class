@@ -1,11 +1,20 @@
 langevin.o : langevin.cpp langevin.hpp
 	g++ -c -O langevin.cpp
 
-line1d.o : line1d.cpp line1d.hpp
-	g++ -c -O line1d.cpp
+mckean_vlasov.o : mckean_vlasov.cpp mckean_vlasov.hpp
+	g++ -c -O mckean_vlasov.cpp
 
-sde_test_suite : sde_test_suite.cpp langevin.hpp line1d.hpp
-	g++ -c -O sde_test_suite.cpp langevin.cpp line1d.cpp
+boundary_conditions.o : boundary_conditions.cpp boundary_conditions.hpp
+	g++ -c -O boundary_conditions.cpp
 
-sde_test_suite : sde_test_suite.o langevin.o line1d.o
-	g++ -O -o sde_test_suite langevin.o line1d.o sde_test_suite.o
+solver.o : solver.cpp solver.hpp
+	g++ -c -O solver.cpp
+
+euler_maruyama.o : euler_maruyama.cpp solver.hpp euler_maruyama.hpp
+	g++ -c -O euler_maruyama.cpp
+
+sde_test_suite.o : sde_test_suite.cpp langevin.hpp mckean_vlasov.hpp boundary_conditions.hpp solver.hpp euler_maruyama.hpp
+	g++ -c -O sde_test_suite.cpp 
+
+sde_test_suite : langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o
+	g++ -O -o sde_test_suite langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o

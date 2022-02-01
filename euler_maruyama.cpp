@@ -12,19 +12,24 @@
 #include <iostream>
 #include <vector>
 
-// EulerMaruyama::EulerMaruyama(opts_num opts1, opts_phys opts2) : Solver(opts1)
+EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
+{
+    optsNum = opts1;
+    mRhs = righthandside;
+    // mNumSteps = opts1.num_steps;
+    // mTmax = opts1.t_max;
+    // mStepSize = mTmax/mNumSteps;
+    // mR
+}
+// ForwardEuler::ForwardEuler(double (*pRhs)(double, double))
 // {
-//     mV1 = opts2.pV1;
-//     mGradV1 = opts2.pGradV1;
-//     mV2 = opts2.pV2;
-//     mGradV2 = opts2.pGradV2;
+//     mRhs = pRhs;
 // }
 
-double EulerMaruyama::RightHandSide(double y, double t)
+double EulerMaruyama::RightHandSide(double y,double t)
 {
-    return -(*mGradV1)(y);
-}   
-
+    return (*mRhs)(y,t);
+}
 double EulerMaruyama::SolveEquation()
 {
     int N = GetNumSteps();

@@ -13,9 +13,7 @@
 #include <math.h>
 #include "solver.hpp"
 
-
-
-// Child class Line1D for langevin dynamics on an interval.
+// Child class StrongTaylor for langevin dynamics on an interval.
 class StrongTaylor : public Solver
 {       
     public: 

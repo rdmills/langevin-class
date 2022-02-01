@@ -6,9 +6,13 @@
 Langevin::Langevin(MckeanVlasov* pSde, 
                    BoundaryConditions* pBcs, 
                    Solver* pSolver, 
-                   int numParticles)
+                   int numParticles,
+                   opts_num opts)
 {
    mpMckeanVlasov = pSde;
+   
+   mpSolver = pSolver;
+
    mpBconds = pBcs;
 
    mNumParticles = numParticles;
@@ -24,6 +28,7 @@ Langevin::~Langevin()
    // Deletes memory allocated in constructor
    delete mpSolVec;
    delete mpRhsVec;
+   // delete mpSolver;
    
 //    // Only delete if Solve has been called
 //    if (mpLinearSystem)

@@ -5,7 +5,8 @@
 #include <vector>
 #include "mckean_vlasov.hpp"
 #include "solver.hpp"
-#include "BoundaryConditions.hpp"
+#include "euler_maruyama.hpp"
+#include "boundary_conditions.hpp"
 
 // struct phys_consts
 // {
@@ -27,17 +28,6 @@
 //         double (*pGradV2)(double, double);
 //         double kappa2;
 //     };
-
-// Numerical options for time integrator.
-// Example:
-//      struct opts_num optsNum = {12,"Euler–Maruyama", 10, 1.0};
-struct opts_num
-    {
-        int num_steps;
-        std::string integrator;
-        int num_particles;
-        double t_max;
-    };    
 
 class Langevin
 {
@@ -78,7 +68,8 @@ public:
    Langevin(MckeanVlasov* pSde, 
             BoundaryConditions* pBcs, 
             Solver* pSolver,
-            int numParticles);
+            int numParticles,
+            opts_num opts);
 
    // As memory is dynamically allocated the destructor
    // is overridden

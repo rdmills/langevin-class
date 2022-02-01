@@ -1,5 +1,5 @@
 #include <cassert>
-#include "BoundaryConditions.hpp"
+#include "boundary_conditions.hpp"
 
 BoundaryConditions::BoundaryConditions()
 {
