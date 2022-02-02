@@ -42,11 +42,9 @@ Langevin::~Langevin()
 
 void Langevin::DoStochastics()
 {
-//    PopulateMatrix();
-//    PopulateVector();
-   ApplyBoundaryConditions();
+   // ApplyBoundaryConditions();
 //    mpLinearSystem = new LinearSystem(*mpLhsMat, *mpRhsVec);
-//    *mpSolVec = mpLinearSystem->Solve();
+   mpSolver->SolveEquation();
    WriteSolutionFile();
 }
 

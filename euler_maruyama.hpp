@@ -17,8 +17,10 @@ class EulerMaruyama : public Solver
         EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));
         
         virtual double RightHandSide(double y, double t); 
-        virtual double SolveEquation();
-        virtual ~EulerMaruyama() {};
+        virtual void SolveEquation();
+        virtual ~EulerMaruyama() 
+        { delete [] p_particleSolution;
+          delete [] p_time;};
     private:
         double (*mV1)(double y); 
         double (*mGradV1)(double y);
@@ -27,6 +29,8 @@ class EulerMaruyama : public Solver
 
         double (*mRhs)(double y, double t);
         double myMinyMax [2];
+        double *p_particleSolution;
+        double *p_time;
 };
 
 #endif

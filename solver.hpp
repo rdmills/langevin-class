@@ -35,7 +35,7 @@ class Solver
         double GetStepSize();
 
         virtual double RightHandSide(double y, double t) = 0; 
-        virtual double SolveEquation() = 0;
+        virtual void SolveEquation() = 0;
         virtual ~Solver() {};
 };
 
