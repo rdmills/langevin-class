@@ -1,6 +1,6 @@
 /*
     solver.cpp
-    Solver abstract class for sampling langevin dynamics.
+    Solver abstract class for integrating langevin dynamics.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
@@ -10,17 +10,6 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-
-// Solver::Solver(opts_num opts1, double (*righthandside)(double))
-// {
-//     optsNum = opts1;
-
-//     mNumSteps = opts1.num_steps;
-//     mTmax = opts1.t_max;
-//     mStepSize = mTmax/mNumSteps;
-//     mR
-    
-// }
 
 void Solver::SetNumSteps(int N)
 {

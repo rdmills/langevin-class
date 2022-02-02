@@ -1,3 +1,10 @@
+/*
+    boundary_conditions.cpp
+    Boundary conditions class.
+    @author Rory Mills-Williams
+    @version 1.0 20/01/2022
+*/
+
 #include <cassert>
 #include "boundary_conditions.hpp"
 

@@ -25,18 +25,20 @@ int main(int argc, char* argv[])
     opts_phys optsPhys = {{-0.5,0.5}, 100, &V1Quad, &GradV1Quad, 1.0};
     opts_num optsNum = {12, 1.0};
     
-    McKeanVlasov mkc_v(V1Quad);
+    McKeanVlasov mkc_v(optsPhys, V1Quad);
     
     BoundaryConditions bc_periodic;
     bc_periodic.SetPeriodicBc();
 
-    Solver* p_solver = new EulerMaruyama(V1Quad);
+    Solver* p_solver = new EulerMaruyama(optsNum, V1Quad);
     
     Langevin pl(&mkc_v, &bc_periodic, p_solver, 101);
     pl.SetFilename("overdamped_langevin.dat");
 
     delete p_solver;
     
+
+
     return 0;
 }
 

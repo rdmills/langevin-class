@@ -1,3 +1,10 @@
+/*
+    mckean_vlasov.hpp
+    Langevin problem definition including definitons of potential(s).
+    @author Rory Mills-Williams
+    @version 1.0 20/01/2022
+*/
+
 #ifndef MCKEANVLASOVHEADERDEF
 #define MCKEANVLASOVHEADERDEF
 
@@ -32,8 +39,8 @@ private:
     double mYmax;
 
 public:
-    McKeanVlasov(double (*righthandSide)(double, double));
+    McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double));
     double EvaluateRHS(double y, double t);
-   
+    opts_phys optsPhys;
 };
 #endif

@@ -1,6 +1,6 @@
 /*
     euler_maryuama.cpp
-    EulerMaruyama class for sampling langevin dynamics.
+    EulerMaruyama class for integrating langevin equation.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
@@ -11,22 +11,12 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-// #include "opts_num.hpp"
-// #include "opts_phys.hpp"
 
-EulerMaruyama::EulerMaruyama(double (*righthandside)(double, double))
+EulerMaruyama::EulerMaruyama(opts_num opts, double (*righthandside)(double, double))
 {
+    optsNum = opts;
     mRhs = righthandside;
-    
-    // mNumSteps = opts1.num_steps;
-    // mTmax = opts1.t_max;
-    // mStepSize = mTmax/mNumSteps;
-    // mR
 }
-// ForwardEuler::ForwardEuler(double (*pRhs)(double, double))
-// {
-//     mRhs = pRhs;
-// }
 
 double EulerMaruyama::RightHandSide(double y,double t)
 {

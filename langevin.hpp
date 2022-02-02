@@ -1,3 +1,10 @@
+/*
+    Langevin.hpp
+    Langevin dynamics class.
+    @author Rory Mills-Williams
+    @version 1.0 20/01/2022
+*/
+
 #ifndef BVPSDEHEADERDEF
 #define BVPSDEHEADERDEF
 
@@ -53,6 +60,9 @@ public:
    // As memory is dynamically allocated the destructor
    // is overridden
    ~Langevin();
+
+   opts_num optsNum;
+   opts_phys optsPhys;
 
    void SetFilename(const std::string& name)
    {

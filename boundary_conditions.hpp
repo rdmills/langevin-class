@@ -1,3 +1,10 @@
+/*
+    boundary_conditions.hpp
+    Boundary conditions class.
+    @author Rory Mills-Williams
+    @version 1.0 20/01/2022
+*/
+
 #ifndef BOUNDARYCONDITIONSHEADERDEF
 #define BOUNDARYCONDITIONSHEADERDEF
 

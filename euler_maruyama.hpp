@@ -1,6 +1,6 @@
 /*
     euler_maruyama.hpp
-    EulerMaruyama class for sampling langevin dynamics on a finite interval.
+    EulerMaruyama class for integrating langevin equation.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
@@ -9,14 +9,12 @@
 #define EULERMARYAMAHEADERDEF
 
 #include "solver.hpp"
-// #include "opts_phys.hpp"
-// #include "opts_num.hpp"
 
 // Child class EulerMaryuama for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(double (*mRightHandSide)(double, double));
+        EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));
         
         virtual double RightHandSide(double y, double t); 
         virtual double SolveEquation();

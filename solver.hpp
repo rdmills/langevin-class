@@ -1,6 +1,6 @@
 /*
     solver.hpp
-    Solver abstract class for langevin dynamics.
+    Solver abstract class for integrating langevin dynamics.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
@@ -12,18 +12,20 @@
 // Abstract Langevin base class.
 class Solver
 {
+    private:
+        double mStepSize;
+        double mTmax;
+        double mNumSteps;
+        double mInitialData;
+
     public:
-    friend class Langevin;
-    // properties
-        // std::vector< std::vector<double> > particles; 
-        // std::vector< double > particles; 
+        friend class Langevin;
+        opts_num optsNum;
         double* particles; 
-        
+                
     // construction
         // Solver(opts_num opts1, double (*righthandside)(double));
         // ~Solver();
-    
-    // methods  
         void SetNumSteps(int N);
         int GetNumSteps();
         void SetTmax(double T);
@@ -35,16 +37,6 @@ class Solver
         virtual double RightHandSide(double y, double t) = 0; 
         virtual double SolveEquation() = 0;
         virtual ~Solver() {};
-    // protected:
-    // properties
-        
-    private:
-        double mStepSize;
-        double mTmax;
-        double mNumSteps;
-        double mInitialData;
-        
-
 };
 
 #endif 

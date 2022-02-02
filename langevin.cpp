@@ -1,3 +1,10 @@
+/*
+    Langevin.cpp
+    Langevin dynamics class.
+    @author Rory Mills-Williams
+    @version 1.0 20/01/2022
+*/
+
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -15,6 +22,9 @@ Langevin::Langevin(McKeanVlasov* pSde,
    mpSolVec       = new std::vector<double>;
    mpRhsVec       = new std::vector<double>;
    mFilename      = "langevin_output.dat";
+
+   optsNum = mpSolver->optsNum;
+   optsPhys = mpMcKeanVlasov->optsPhys;
 }
 
 Langevin::~Langevin()
