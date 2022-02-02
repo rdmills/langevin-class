@@ -2,7 +2,6 @@
 #define MCKEANVLASOVHEADERDEF
 
 #include "opts_phys.hpp"
-#include "opts_num.hpp"
   
 class McKeanVlasov
 {

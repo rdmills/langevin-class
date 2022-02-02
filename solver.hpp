@@ -7,10 +7,7 @@
 
 #ifndef SOLVERHEADERDEF
 #define SOLVERHEADERDEF
-#include <string>
-#include <vector>
-#include <random>
-#include <math.h>
+#include "opts_num.hpp"
 
 // Abstract Langevin base class.
 class Solver

@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include "langevin.hpp"
+#include "opts_num.hpp"
+#include "opts_phys.hpp"
 
 const double PI = 3.14159265359;
 
@@ -20,8 +22,8 @@ double GradV2Gauss(double r, double a){return -0.5/sqrt(PI*a*a)*r/(a*a)*exp(-0.5
 
 int main(int argc, char* argv[])
 {
-    // opts_phys optsPhys = {{-0.5,0.5}, &V1Quad, &GradV1Quad, 1.0};
-    // opts_num optsNum = {12, 1.0};
+    opts_phys optsPhys = {{-0.5,0.5}, 100, &V1Quad, &GradV1Quad, 1.0};
+    opts_num optsNum = {12, 1.0};
     
     McKeanVlasov mkc_v(V1Quad);
     

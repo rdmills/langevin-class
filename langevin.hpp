@@ -1,6 +1,7 @@
 #ifndef BVPSDEHEADERDEF
 #define BVPSDEHEADERDEF
 
+#include <math.h>
 #include <string>
 #include <vector>
 #include "mckean_vlasov.hpp"

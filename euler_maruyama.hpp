@@ -7,10 +7,7 @@
 
 #ifndef EULERMARYAMAHEADERDEF
 #define EULERMARYAMAHEADERDEF
-#include <string>
-#include <vector>
-#include <random>
-#include <math.h>
+
 #include "solver.hpp"
 // #include "opts_phys.hpp"
 // #include "opts_num.hpp"
