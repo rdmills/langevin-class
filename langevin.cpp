@@ -19,8 +19,8 @@ Langevin::Langevin(McKeanVlasov* pSde,
    mpSolver       = pSolver;
    mpBconds       = pBcs;
    mNumParticles  = numParticles;
-   mpSolVec       = new std::vector<double>;
-   mpRhsVec       = new std::vector<double>;
+   mpSolVec       = new double [mpSolver->optsNum.num_steps];
+   mpTimeVec      = new double [mpSolver->optsNum.num_steps];
    mFilename      = "langevin_output.dat";
 
    optsNum = mpSolver->optsNum;
@@ -30,8 +30,8 @@ Langevin::Langevin(McKeanVlasov* pSde,
 Langevin::~Langevin()
 {
    // Deletes memory allocated in constructor
-   delete mpSolVec;
-   delete mpRhsVec;
+   delete [] mpSolVec;
+   delete [] mpTimeVec;
    
 //    // Only delete if Solve has been called
 //    if (mpLinearSystem)
@@ -43,8 +43,12 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-//    mpLinearSystem = new LinearSystem(*mpLhsMat, *mpRhsVec);
    mpSolver->SolveEquation();
+   for (int i = 0; i<optsNum.num_steps; i++)
+   {
+      mpSolVec[i] = mpSolver->particleSolution[i];
+   }
+   
    WriteSolutionFile();
 }
 
@@ -126,15 +130,15 @@ void Langevin::ApplyBoundaryConditions()
 
 void Langevin::WriteSolutionFile()
 {
-//    std::ofstream output_file(mFilename.c_str());
-//    assert(output_file.is_open());
-//    for (int i=0; i<mNumNodes; i++)
-//    {
-//       double x = mpGrid->mNodes[i].coordinate;
-//       output_file << x << "  " << (*mpSolVec)(i+1) << "\n";
-//    }
-//    output_file.flush();
-//    output_file.close();
-//    std::cout<<"Solution written to "<<mFilename<<"\n";
+   std::ofstream output_file(mFilename.c_str());
+   assert(output_file.is_open());
+   for (int i=0; i<mpSolver->optsNum.num_steps; i++)
+   {
+      double t = mpSolver->time[i];
+      output_file << t << "  " << mpSolVec[i+1] << "\n";
+   }
+   output_file.flush();
+   output_file.close();
+   std::cout<<"Solution written to "<<mFilename<<"\n";
 }
 

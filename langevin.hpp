@@ -37,10 +37,12 @@ private:
    Solver* mpSolver;
 
    // Vector for solution to particle trajectories
-   std::vector<double>* mpSolVec;
+   // std::vector<double>* mpSolVec;
+   double* mpSolVec;
+   double* mpTimeVec;
 
    // Right-hand side vector
-   std::vector<double>* mpRhsVec;
+   // std::vector<double>* mpRhsVec;
 
    // Allow user to specify the output file or
    // use a default name

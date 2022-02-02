@@ -23,7 +23,7 @@ double GradV2Gauss(double r, double a){return -0.5/sqrt(PI*a*a)*r/(a*a)*exp(-0.5
 int main(int argc, char* argv[])
 {
     opts_phys optsPhys = {{-0.5,0.5}, 100, &V1Quad, &GradV1Quad, 1.0};
-    opts_num optsNum = {12, 1.0, 0.1};
+    opts_num optsNum = {101, 1.0, 0.1};
     
     McKeanVlasov mkc_v(optsPhys, V1Quad);
     
@@ -34,11 +34,10 @@ int main(int argc, char* argv[])
     
     Langevin pl(&mkc_v, &bc_periodic, p_solver, 101);
     pl.SetFilename("overdamped_langevin.dat");
+    pl.DoStochastics();
 
     delete p_solver;
     
-
-
     return 0;
 }
 

@@ -41,6 +41,11 @@ double Solver::GetInitialData()
     return mInitialData;
 }
 
+void Solver::SetStepSize(double dt)
+{
+    mStepSize = dt;
+}
+
 double Solver::GetStepSize()
 {
     return mStepSize;
