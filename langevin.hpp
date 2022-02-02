@@ -8,27 +8,6 @@
 #include "euler_maruyama.hpp"
 #include "boundary_conditions.hpp"
 
-// struct phys_consts
-// {
-//     double beta_inv;
-//     double gamma;
-//     double mass;
-// };
-
-// Optional physics for a 1d line.
-// Example:
-//      struct opts_phys optsPhys = {{-0.5,0.5}}; 
-// struct opts_phys
-//     {
-//         double interval[2];  
-//         double (*pV1)(double);
-//         double (*pGradV1) (double); 
-//         double kappa1;
-//         double (*pV2)(double, double);
-//         double (*pGradV2)(double, double);
-//         double kappa2;
-//     };
-
 class Langevin
 {
 private:
@@ -41,7 +20,7 @@ private:
    int mNumParticles;
 
    // Pointer to instance of an SDE
-   MckeanVlasov* mpMckeanVlasov;
+   McKeanVlasov* mpMcKeanVlasov;
 
    // Pointer to an instance of boundary conditions
    BoundaryConditions* mpBconds;
@@ -65,11 +44,10 @@ private:
 
 public:
    // Sole constructor
-   Langevin(MckeanVlasov* pSde, 
+   Langevin(McKeanVlasov* pSde, 
             BoundaryConditions* pBcs, 
             Solver* pSolver,
-            int numParticles,
-            opts_num opts);
+            int numParticles);
 
    // As memory is dynamically allocated the destructor
    // is overridden

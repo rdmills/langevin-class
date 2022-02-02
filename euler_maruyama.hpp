@@ -12,41 +12,18 @@
 #include <random>
 #include <math.h>
 #include "solver.hpp"
-#include "langevin.hpp"
-
-// Optional physics for a 1d line.
-// Example:
-//      struct opts_phys optsPhys = {{-0.5,0.5}}; 
-// struct opts_phys
-//     {
-//         double interval[2];  
-//         double (*pV1)(double);
-//         double (*pGradV1) (double); 
-//         double kappa1;
-//         double (*pV2)(double, double);
-//         double (*pGradV2)(double, double);
-//         double kappa2;
-//     };
+// #include "opts_phys.hpp"
+// #include "opts_num.hpp"
 
 // Child class EulerMaryuama for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts1, double (*mRightHandSide)(double, double));
+        EulerMaruyama(double (*mRightHandSide)(double, double));
         
         virtual double RightHandSide(double y, double t); 
         virtual double SolveEquation();
         virtual ~EulerMaruyama() {};
-        // void SetyMinyMax(double interval[2]);
-        // double* GetyMinyMax();
-        // virtual void InitialiseParticles();
-        
-        // virtual void DoLangevin();
-        // virtual void GenerateNoiseVector();
-        // virtual void PrintNoiseVector();
-
-        // ~EulerMaruyama();
-    
     private:
         double (*mV1)(double y); 
         double (*mGradV1)(double y);

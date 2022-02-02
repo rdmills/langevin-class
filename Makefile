@@ -17,4 +17,4 @@ sde_test_suite.o : sde_test_suite.cpp langevin.hpp mckean_vlasov.hpp boundary_co
 	g++ -c -O sde_test_suite.cpp 
 
 sde_test_suite : langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o
-	g++ -O -o sde_test_suite langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o
+	g++ -g -o sde_test_suite langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o

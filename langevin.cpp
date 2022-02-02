@@ -3,24 +3,18 @@
 #include <cassert>
 #include "langevin.hpp"
 
-Langevin::Langevin(MckeanVlasov* pSde, 
+Langevin::Langevin(McKeanVlasov* pSde, 
                    BoundaryConditions* pBcs, 
                    Solver* pSolver, 
-                   int numParticles,
-                   opts_num opts)
+                   int numParticles)
 {
-   mpMckeanVlasov = pSde;
-   
-   mpSolver = pSolver;
-
-   mpBconds = pBcs;
-
-   mNumParticles = numParticles;
-   
-   mpSolVec = new std::vector<double>;
-   mpRhsVec = new std::vector<double>;
-
-   mFilename = "ode_output.dat";
+   mpMcKeanVlasov = pSde;
+   mpSolver       = pSolver;
+   mpBconds       = pBcs;
+   mNumParticles  = numParticles;
+   mpSolVec       = new std::vector<double>;
+   mpRhsVec       = new std::vector<double>;
+   mFilename      = "langevin_output.dat";
 }
 
 Langevin::~Langevin()
@@ -28,7 +22,6 @@ Langevin::~Langevin()
    // Deletes memory allocated in constructor
    delete mpSolVec;
    delete mpRhsVec;
-   // delete mpSolver;
    
 //    // Only delete if Solve has been called
 //    if (mpLinearSystem)

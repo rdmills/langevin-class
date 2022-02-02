@@ -1,38 +1,10 @@
 #ifndef MCKEANVLASOVHEADERDEF
 #define MCKEANVLASOVHEADERDEF
 
-struct phys_consts
-    {
-        double kappa1;
-        // double kappa2;
-    };
-
-// Numerical options for time integrator.
-// Example:
-//      opts_num optsNum = {12,"Euler–Maruyama", 10, 1.0};
-// struct opts_num
-//     {
-//         int num_steps;
-//         std::string integrator;
-//         int num_particles;
-//         double t_max;
-//     };
-
-// Optional physics for a 1d line.
-// Example:
-//      opts_phys optsPhys = {{-0.5,0.5}}; 
-struct opts_phys
-    {
-        double interval[2];  
-        double (*pV1)(double, double);
-        double (*pGradV1) (double, double); 
-        double kappa1;
-        // double (*pV2)(std::vector<double>);
-        // double (*pGradV2)(std::vector<double>);
-        // double kappa2;
-    };    
-
-class MckeanVlasov
+#include "opts_phys.hpp"
+#include "opts_num.hpp"
+  
+class McKeanVlasov
 {
     // The boundary value class is able to
     // access the coefficients etc. of this equation
@@ -61,7 +33,7 @@ private:
     double mYmax;
 
 public:
-    MckeanVlasov(opts_phys phys, double (*righthandSide)(double, double));
+    McKeanVlasov(double (*righthandSide)(double, double));
     double EvaluateRHS(double y, double t);
    
 };

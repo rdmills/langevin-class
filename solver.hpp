@@ -11,16 +11,6 @@
 #include <vector>
 #include <random>
 #include <math.h>
-// #include "langevin.hpp"
-
-// Numerical options for time integrator.
-// Example:
-//      opts_num optsNum = {12, 1.0};
-struct opts_num
-    {
-        int num_steps;
-        double t_max;
-    };
 
 // Abstract Langevin base class.
 class Solver
@@ -29,9 +19,9 @@ class Solver
     friend class Langevin;
     // properties
         // std::vector< std::vector<double> > particles; 
-        std::vector< double > particles; 
-        opts_num optsNum;
-
+        // std::vector< double > particles; 
+        double* particles; 
+        
     // construction
         // Solver(opts_num opts1, double (*righthandside)(double));
         // ~Solver();

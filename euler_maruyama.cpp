@@ -11,11 +11,13 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+// #include "opts_num.hpp"
+// #include "opts_phys.hpp"
 
-EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
+EulerMaruyama::EulerMaruyama(double (*righthandside)(double, double))
 {
-    optsNum = opts1;
     mRhs = righthandside;
+    
     // mNumSteps = opts1.num_steps;
     // mTmax = opts1.t_max;
     // mStepSize = mTmax/mNumSteps;
