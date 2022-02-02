@@ -1,53 +1,19 @@
 /*
     mckean_vlasov.cpp
-    Entry point for running langevin dynamics on a finite interval.
+    Langevin problem definition including definitons of potential(s).
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
 
-#include <iostream>
-#include "langevin.hpp"
-#include "line1d.hpp"
+#include "mckean_vlasov.hpp"
 
-int main(int argc, char* argv[])
+McKeanVlasov::McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double))
 {
-    // Choose numerical and physical options.
-    struct opts_num optsNum   = {12,"Euler–Maruyama", 10, 1.0};
-    struct opts_phys optsPhys = {{-0.5,0.5}};
+    mpRhsFunc = mGradV1External;
+    optsPhys = opts;
+}
 
-    // Make a 1d line.
-    Line1D aLine(optsNum,optsPhys);
-
-    std::cout<<*(aLine.GetyMinyMax()+1)<<std::endl;
-    std::cout<<aLine.GetIntegrator()<<std::endl;
-
-    int j=1;
-
-    // Langevin pl(optsNum);
-
-    // pl.InitialUniformParticles();
-
-    // for (int i = 0; i < pl.particles.size(); i++)
-    // {
-    //     for (int j = 0; j < pl.particles[i].size(); j++)
-    //     {
-    //         pl.particles[i][j] = 1.0;
-    //     }   
-    // }
-
-    // for (int i = 0; i < pl.particles.size(); i++)
-    //     {
-    //         for (int j = 0; j < pl.particles[i].size(); j++)
-    //         {
-    //             std::cout << pl.particles[i][j] << " ";
-    //         }   
-    //         std::cout << std::endl;
-    //     }
-
-
-    // std::cout << pl.dW(0.1);
-    // std::cout << pl.dW(0.1);
-
-
-    return 0;
+double McKeanVlasov::EvaluateRHS(double y, double t)    
+{
+    return -(*mpRhsFunc)(y,t);
 }
