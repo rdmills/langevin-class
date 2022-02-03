@@ -135,7 +135,7 @@ void Langevin::WriteSolutionFile()
    for (int i=0; i<mpSolver->optsNum.num_steps; i++)
    {
       double t = mpSolver->time[i];
-      output_file << t << "  " << mpSolVec[i+1] << "\n";
+      output_file << t << " " << mpSolVec[i] << "\n";
    }
    output_file.flush();
    output_file.close();
