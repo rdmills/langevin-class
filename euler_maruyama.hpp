@@ -14,8 +14,7 @@
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));
-        
+        EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));        
         virtual double RightHandSide(double y, double t); 
         virtual void SolveEquation();
         virtual ~EulerMaruyama() { delete [] particleSolution; delete [] time;};

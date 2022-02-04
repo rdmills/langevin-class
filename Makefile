@@ -7,10 +7,10 @@ mckean_vlasov.o : mckean_vlasov.cpp mckean_vlasov.hpp
 boundary_conditions.o : boundary_conditions.cpp boundary_conditions.hpp
 	g++ -c -O boundary_conditions.cpp
 
-solver.o : solver.cpp solver.hpp
+solver.o : solver.cpp solver.hpp opts_num.hpp
 	g++ -c -O solver.cpp
 
-euler_maruyama.o : euler_maruyama.cpp solver.hpp euler_maruyama.hpp
+euler_maruyama.o : euler_maruyama.cpp solver.hpp euler_maruyama.hpp 
 	g++ -c -O euler_maruyama.cpp
 
 sde_test_suite.o : sde_test_suite.cpp langevin.hpp mckean_vlasov.hpp boundary_conditions.hpp solver.hpp euler_maruyama.hpp

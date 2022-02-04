@@ -12,9 +12,10 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts, double (*righthandside)(double, double))
+EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
 {
-    optsNum = opts;
+    optsNum = opts1;
+    
     mRhs = righthandside;
     
     particleSolution = new double [optsNum.num_steps];
@@ -41,12 +42,14 @@ void EulerMaruyama::SolveEquation()
 
     t_grid[0] = 0.0; 
     y_sol[0] = GetInitialData();
+    std::cout<< "inital data = "<< y_sol[0] << std::endl;
+
     
     for (int i=1; i<N; i++)
     {
         t_grid[i] = t_grid[i-1] + dt;
         y_sol[i] = y_sol[i-1] + dt*RightHandSide(y_sol[i-1],t_grid[i-1]);
-        
+        // std::cout<< "i = "<< i << " t_grid[i] = "<< t_grid[i]<<std::endl;
     }
 
     for (int i=0; i<N; i++)
