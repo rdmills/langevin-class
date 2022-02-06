@@ -77,7 +77,7 @@ void EulerMaruyama::SolveEquation()
     {
         for (int i=1; i<GetNumSteps(); i++)
         {
-            mpSolution[i][j] = mpSolution[i][j] + GetWiener();
+            mpSolution[i][j] = mpSolution[i][j] + 5.0*GetWiener();
         }
     }
 

@@ -27,10 +27,9 @@ Langevin::Langevin(McKeanVlasov* pSde,
       mpParticles[i]  = new double [mpSolver->GetNumParticles()];
    }
    
-   mFilename      = "langevin_output.dat";
-
-   optsNum = mpSolver->optsNum;
-   optsPhys = mpMcKeanVlasov->optsPhys;
+   optsNum   = mpSolver->optsNum;
+   optsPhys  = mpMcKeanVlasov->optsPhys;
+   mFilename = "langevin_output.dat";
 }
 
 Langevin::~Langevin()
@@ -61,7 +60,6 @@ void Langevin::DoStochastics()
          mpParticles[i][j] = mpSolver->mpSolution[i][j];
       }
    }
-    
    WriteSolutionFile();
 }
 
