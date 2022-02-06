@@ -38,6 +38,7 @@ class Solver
         void SetNumParticles(int N);
         int GetNumParticles();
 
+        // virtual double RightHandSide(double y, double t) = 0; 
         virtual double RightHandSide(double y, double t) = 0; 
         virtual void SolveEquation() = 0;
         virtual ~Solver() {};

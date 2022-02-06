@@ -14,18 +14,20 @@ class PostProcessor:
 if __name__ == "__main__":
 
     data = np.genfromtxt('overdamped_langevin.dat',
-                        dtype=None,
+                        dtype=float,
                         delimiter=' ')
-    sol_a = np.exp(-data[:,0])
+    
+    tt = data[-1,:]
+    sol_a = np.exp(-data[-1,:])
 
     ax = plt.axes()
 
-    ax.plot(data[:,0],data[:,1],'b-')
-    ax.plot(data[:,0],sol_a,'r-')
+    ax.plot(tt,data[0,:],'b-')
+    ax.plot(tt,sol_a,'r-')
 
-    rel_error = np.abs(data[:,1]-sol_a)/np.abs(sol_a)
+    rel_error = np.abs(data[0,:]-sol_a)/np.abs(sol_a)
 
-    ax.plot(data[:,0],rel_error,'k-')
+    ax.plot(tt,rel_error,'k-')
 
     plt.show()
 

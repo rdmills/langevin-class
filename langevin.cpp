@@ -54,10 +54,14 @@ void Langevin::DoStochastics()
    // ApplyBoundaryConditions();
    mpSolver->SolveEquation();
    
-   for (int i = 0; i<optsNum.num_steps; i++)
+   for (int j=0; j<mpSolver->GetNumParticles(); j++)
    {
-      mpParticles[i][0] = mpSolver->mpSolution[i][0];
+      for (int i = 0; i<mpSolver->GetNumSteps(); i++)
+      {
+         mpParticles[i][j] = mpSolver->mpSolution[i][j];
+      }
    }
+   
    
    WriteSolutionFile();
 }
@@ -142,12 +146,28 @@ void Langevin::WriteSolutionFile()
 {
    std::ofstream output_file(mFilename.c_str());
    assert(output_file.is_open());
-   for (int i=0; i<mpSolver->optsNum.num_steps; i++)
+
+   // for (int i=0; i<mpSolver->GetNumSteps(); i++)
+   // {
+   //    double t = mpSolver->mpTime[i];
+   //    output_file << t <<" "<< mpParticles[i][0] << "\n";
+   // }
+
+   for (int j=0; j<mpSolver->GetNumParticles(); j++)
+   {
+      for (int i=0; i<mpSolver->GetNumSteps(); i++)
+      {
+        output_file << mpParticles[i][j] << " ";
+      }
+      output_file <<"\n";
+   }
+
+   for (int i=0; i<mpSolver->GetNumSteps(); i++)
    {
       double t = mpSolver->mpTime[i];
-      output_file << t <<" "<< mpParticles[i][0] << "\n";
-    
+      output_file << t <<" ";
    }
+
    output_file.flush();
    output_file.close();
    std::cout<<"Solution written to "<<mFilename<<"\n";
