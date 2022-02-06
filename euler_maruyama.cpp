@@ -16,21 +16,22 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, dou
 {
     optsNum = opts1;
     mRhs = righthandside;
+    
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
+    
     double dt = optsNum.t_max/optsNum.num_steps;
+    
     SetStepSize(dt);
     SetNumParticles(optsNum.num_particles);
-
-    int numParticles = GetNumSteps();
     
     mpTime = new double [GetNumSteps()];
     
     mpSolution = new double* [GetNumSteps()];
     for(int i = 0; i< GetNumSteps(); i++)
     {
-        mpSolution[i] = new double [numParticles];
+        mpSolution[i] = new double [GetNumSteps()];
     }
 }
 

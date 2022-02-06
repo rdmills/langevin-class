@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     Solver* p_solver = new EulerMaruyama(optsNum, GradV1Quad);
     // std::cout<< "initial data p_solver = "<<p_solver->GetInitialData()<< std::endl;
     
-    Langevin pl(&mkc_v, &bc_periodic, p_solver, 101);
+    Langevin pl(&mkc_v, &bc_periodic, p_solver);
     pl.SetFilename("overdamped_langevin.dat");
     pl.DoStochastics();
 

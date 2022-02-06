@@ -56,8 +56,7 @@ public:
    // Sole constructor
    Langevin(McKeanVlasov* pSde, 
             BoundaryConditions* pBcs, 
-            Solver* pSolver,
-            int numParticles);
+            Solver* pSolver);
 
    // As memory is dynamically allocated the destructor
    // is overridden

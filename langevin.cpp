@@ -12,13 +12,12 @@
 
 Langevin::Langevin(McKeanVlasov* pSde, 
                    BoundaryConditions* pBcs, 
-                   Solver* pSolver, 
-                   int numParticles)
+                   Solver* pSolver)
 {
    mpMcKeanVlasov = pSde;
    mpSolver       = pSolver;
    mpBconds       = pBcs;
-   mNumParticles  = numParticles;
+   mNumParticles  = mpSolver->GetNumParticles();
    
    mpTime      = new double [mpSolver->GetNumSteps()];
    mpParticles = new double* [mpSolver->GetNumSteps()];
