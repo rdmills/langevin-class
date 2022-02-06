@@ -8,6 +8,7 @@
 #ifndef SOLVERHEADERDEF
 #define SOLVERHEADERDEF
 #include "opts_num.hpp"
+#include <random>
 
 // Abstract Langevin base class.
 class Solver
@@ -24,9 +25,6 @@ class Solver
         double** mpSolution;
         double* mpTime;
                 
-    // construction
-        // Solver(opts_num opts1, double (*righthandside)(double));
-        // ~Solver();
         void SetNumSteps(int N);
         int GetNumSteps();
         void SetTmax(double T);
@@ -38,8 +36,8 @@ class Solver
         void SetNumParticles(int N);
         int GetNumParticles();
 
-        // virtual double RightHandSide(double y, double t) = 0; 
         virtual double RightHandSide(double y, double t) = 0; 
+        virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;
         virtual ~Solver() {};
 };

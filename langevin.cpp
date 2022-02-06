@@ -61,8 +61,7 @@ void Langevin::DoStochastics()
          mpParticles[i][j] = mpSolver->mpSolution[i][j];
       }
    }
-   
-   
+    
    WriteSolutionFile();
 }
 
@@ -146,12 +145,6 @@ void Langevin::WriteSolutionFile()
 {
    std::ofstream output_file(mFilename.c_str());
    assert(output_file.is_open());
-
-   // for (int i=0; i<mpSolver->GetNumSteps(); i++)
-   // {
-   //    double t = mpSolver->mpTime[i];
-   //    output_file << t <<" "<< mpParticles[i][0] << "\n";
-   // }
 
    for (int j=0; j<mpSolver->GetNumParticles(); j++)
    {

@@ -15,8 +15,8 @@ class EulerMaruyama : public Solver
 {       
     public: 
         EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));        
-        // virtual double RightHandSide(double y, double t); 
         virtual double RightHandSide(double y, double t); 
+        virtual double GetWiener();
         virtual void SolveEquation();
         virtual ~EulerMaruyama() 
         { 
@@ -33,8 +33,9 @@ class EulerMaruyama : public Solver
         // double (*mGradV2)(double y, double yPrime);
 
         double (*mRhs)(double y, double t);
-        double myMinyMax [2];
-        
+        double myMinyMax [2];   
+        std::default_random_engine mGenerator;
+        std::normal_distribution<double> mDistribution;
 };
 
 #endif
