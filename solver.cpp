@@ -50,3 +50,13 @@ double Solver::GetStepSize()
 {
     return mStepSize;
 }
+
+void Solver::SetNumParticles(int N)
+{
+    mNumParticles = N;
+}
+
+int Solver::GetNumParticles()
+{
+    return mNumParticles;
+}

@@ -17,12 +17,12 @@ class Solver
         double mTmax;
         double mNumSteps;
         double mInitialData;
-
+        double mNumParticles;
     public:
         friend class Langevin;
         opts_num optsNum;
-        double *particleSolution;
-        double *time;
+        double** mpSolution;
+        double* mpTime;
                 
     // construction
         // Solver(opts_num opts1, double (*righthandside)(double));
@@ -35,6 +35,8 @@ class Solver
         double GetInitialData();
         void SetStepSize(double dt);
         double GetStepSize();
+        void SetNumParticles(int N);
+        int GetNumParticles();
 
         virtual double RightHandSide(double y, double t) = 0; 
         virtual void SolveEquation() = 0;

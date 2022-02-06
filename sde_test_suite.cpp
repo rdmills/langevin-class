@@ -23,14 +23,15 @@ double GradV2Gauss(double r, double a){return -0.5/sqrt(PI*a*a)*r/(a*a)*exp(-0.5
 int main(int argc, char* argv[])
 {
     opts_phys optsPhys = {{-0.5,0.5}, 100, &V1Quad, &GradV1Quad, 1.0};
-    opts_num optsNum = {201, 2.0, 1.0};
+    opts_num optsNum = {10, 201, 2.0, 1.0};
     
     McKeanVlasov mkc_v(optsPhys, GradV1Quad);
     
     BoundaryConditions bc_periodic;
     bc_periodic.SetPeriodicBc();
-
+    
     Solver* p_solver = new EulerMaruyama(optsNum, GradV1Quad);
+    // std::cout<< "initial data p_solver = "<<p_solver->GetInitialData()<< std::endl;
     
     Langevin pl(&mkc_v, &bc_periodic, p_solver, 101);
     pl.SetFilename("overdamped_langevin.dat");

@@ -17,7 +17,14 @@ class EulerMaruyama : public Solver
         EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));        
         virtual double RightHandSide(double y, double t); 
         virtual void SolveEquation();
-        virtual ~EulerMaruyama() { delete [] particleSolution; delete [] time;};
+        virtual ~EulerMaruyama() 
+        { 
+            delete [] mpTime;
+            for (int i = 0; i<GetNumSteps(); i++)
+            {
+                delete [] mpSolution[i]; 
+            }
+        };
     private:
         double (*mV1)(double y); 
         double (*mGradV1)(double y);

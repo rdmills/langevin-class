@@ -15,17 +15,23 @@
 EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
 {
     optsNum = opts1;
-    
     mRhs = righthandside;
-    
-    particleSolution = new double [optsNum.num_steps];
-    time             = new double [optsNum.num_steps];
-    
-    this->SetInitialData(optsNum.initial_data);
-    this->SetNumSteps(optsNum.num_steps);
-    this->SetTmax(optsNum.t_max);
+    SetInitialData(optsNum.initial_data);
+    SetNumSteps(optsNum.num_steps);
+    SetTmax(optsNum.t_max);
     double dt = optsNum.t_max/optsNum.num_steps;
-    this->SetStepSize(dt);
+    SetStepSize(dt);
+    SetNumParticles(optsNum.num_particles);
+
+    int numParticles = GetNumSteps();
+    
+    mpTime = new double [GetNumSteps()];
+    
+    mpSolution = new double* [GetNumSteps()];
+    for(int i = 0; i< GetNumSteps(); i++)
+    {
+        mpSolution[i] = new double [numParticles];
+    }
 }
 
 double EulerMaruyama::RightHandSide(double y,double t)
@@ -35,27 +41,24 @@ double EulerMaruyama::RightHandSide(double y,double t)
 void EulerMaruyama::SolveEquation()
 {
     int N = GetNumSteps();
-    
+
     double dt = GetStepSize();
 
     double y_sol[N], t_grid[N];
 
     t_grid[0] = 0.0; 
     y_sol[0] = GetInitialData();
-    std::cout<< "inital data = "<< y_sol[0] << std::endl;
 
-    
     for (int i=1; i<N; i++)
     {
         t_grid[i] = t_grid[i-1] + dt;
         y_sol[i] = y_sol[i-1] + dt*RightHandSide(y_sol[i-1],t_grid[i-1]);
-        // std::cout<< "i = "<< i << " t_grid[i] = "<< t_grid[i]<<std::endl;
     }
 
     for (int i=0; i<N; i++)
     {
-        particleSolution[i] = y_sol[i];
-        time[i] = t_grid[i];
+        mpSolution[i][0] = y_sol[i];
+        mpTime[i] = t_grid[i];
     }
     
 }
