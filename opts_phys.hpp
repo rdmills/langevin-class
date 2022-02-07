@@ -11,9 +11,9 @@ struct opts_phys
         double (*pV1)(double, double);
         double (*pGradV1) (double, double); 
         double kappa1;
-        // double (*pV2)(std::vector<double>);
-        // double (*pGradV2)(std::vector<double>);
-        // double kappa2;
+        double (*pV2)(double, double);
+        double (*pGradV2)(double, double);
+        double kappa2;
     };    
 
 #endif

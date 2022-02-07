@@ -15,7 +15,8 @@
 EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
 {
     optsNum = opts1;
-    mRhs = righthandside;
+    // mRhs = righthandside;
+    mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
@@ -39,9 +40,40 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, dou
     mDistribution = distribution;
 }
 
+int EulerMaruyama::DiracDelta(int i, int j)
+{
+    if (i==j)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+// double EulerMaruyama::TwoBody(double* pParticles)
+// {
+//     double v2 = 0.0;
+    
+//     for (int i=0; i<GetNumParticles(); i++)
+//     {
+//         for (int j=0; j<GetNumParticles(); j++)
+//             {
+//                 if (i!=j)
+//                 {
+//                     double r = abs(pParticles[i]-pParticles[j]);
+//                     v2 += 
+//                 }
+//             }
+
+//     }
+// }
+
 double EulerMaruyama::RightHandSide(double y, double t)
 {
-    return -(*mRhs)(y,t);
+    // return -(*mRhs)(y,t);
+    return -(*mGradV1)(y,t);
 }
 
 double EulerMaruyama::GetWiener()
@@ -77,7 +109,7 @@ void EulerMaruyama::SolveEquation()
     {
         for (int i=1; i<GetNumSteps(); i++)
         {
-            mpSolution[i][j] = mpSolution[i][j] + 5.0*GetWiener();
+            mpSolution[i][j] = mpSolution[i][j] + GetWiener();
         }
     }
 

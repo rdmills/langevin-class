@@ -7,9 +7,9 @@
 
 #include "mckean_vlasov.hpp"
 
-McKeanVlasov::McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double))
+McKeanVlasov::McKeanVlasov(opts_phys opts, double (*righthandside)(double, double))
 {
-    mpRhsFunc = mGradV1External;
+    mpRhsFunc = righthandside;
     optsPhys = opts;
 }
 
