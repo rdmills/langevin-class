@@ -46,7 +46,9 @@ private:
 
    // Allow user to specify the output file or
    // use a default name
-   std::string mFilename;
+   std::string mOutputData;
+   std::string mNumList;
+   std::string mPhysList;
 
    // // Methods for setting up linear system and solving it
    // void PopulateVector();
@@ -65,9 +67,10 @@ public:
    opts_num optsNum;
    opts_phys optsPhys;
 
-   void SetFilename(const std::string& name)
+   void SetFilename(const std::string& dataName, const std::string& numName)
    {
-      mFilename = name;
+      mOutputData = dataName;
+      mNumList = numName;
    }
    void DoStochastics();
    void WriteSolutionFile();

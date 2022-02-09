@@ -29,7 +29,7 @@ Langevin::Langevin(McKeanVlasov* pSde,
    
    optsNum   = mpSolver->optsNum;
    optsPhys  = mpMcKeanVlasov->optsPhys;
-   mFilename = "langevin_output.dat";
+   // mOutputData = "langevin_output.dat";
 }
 
 Langevin::~Langevin()
@@ -141,26 +141,45 @@ void Langevin::ApplyBoundaryConditions()
 
 void Langevin::WriteSolutionFile()
 {
-   std::ofstream output_file(mFilename.c_str());
-   assert(output_file.is_open());
+
+   std::ofstream num_file(mNumList.c_str());
+   assert(num_file.is_open());
+
+   num_file << mpSolver->GetNumParticles() << " ";
+   num_file << mpSolver->GetNumSteps() << " ";
+   num_file << mpSolver->GetTmax() << " ";
+
+   num_file.flush();
+   num_file.close();
+   std::cout<<"Numerical parameters written to "<<mNumList<<"\n";
+
+   // std::ofstream output_file(mNumList.c_str());
+   // assert(output_file.is_open());
+
+   // output_file.flush();
+   // output_file.close();
+   // std::cout<<"Numerical parameters written to "<<mNumList<<"\n";
+
+   std::ofstream data_file(mOutputData.c_str());
+   assert(data_file.is_open());
 
    for (int j=0; j<mpSolver->GetNumParticles(); j++)
    {
       for (int i=0; i<mpSolver->GetNumSteps(); i++)
       {
-        output_file << mpParticles[i][j] << " ";
+        data_file << mpParticles[i][j] << " ";
       }
-      output_file <<"\n";
+      data_file <<"\n";
    }
 
    for (int i=0; i<mpSolver->GetNumSteps(); i++)
    {
       double t = mpSolver->mpTime[i];
-      output_file << t <<" ";
+      data_file << t <<" ";
    }
 
-   output_file.flush();
-   output_file.close();
-   std::cout<<"Solution written to "<<mFilename<<"\n";
+   data_file.flush();
+   data_file.close();
+   std::cout<<"Solution data written to "<<mOutputData<<"\n";
 }
 

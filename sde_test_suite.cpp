@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     
     Langevin pl(&mkc_v, &bc_periodic, p_solver);
     
-    pl.SetFilename("overdamped_langevin.dat");
+    pl.SetFilename("mckean_vlasov_data.dat", "mckean_vlasov_num.dat");
     pl.DoStochastics();
 
     delete p_solver;

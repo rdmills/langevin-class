@@ -119,7 +119,7 @@ class PostProcessor:
 
     def dynamic_dist(self):    
 
-        HIST_BINS = np.linspace(-1, 1, 100)     
+        HIST_BINS = np.linspace(-1.3, 1.3, 100)     
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], HIST_BINS, lw=1,
@@ -128,8 +128,6 @@ class PostProcessor:
         def prepare_animation(bar_container):
             
             def animate(frame_number):
-                # print('Frame number  = {}'.format(frame_number))
-                # simulate new data coming in
                 n, _ = np.histogram(self.data[:,frame_number], HIST_BINS)
                 for count, rect in zip(n, bar_container.patches):
                     rect.set_height(count)
@@ -142,14 +140,11 @@ class PostProcessor:
 
         plt.show()
 
-
 if __name__ == "__main__":
 
-    data = np.genfromtxt('overdamped_langevin.dat',
+    data = np.genfromtxt('mckean_vlasov_data.dat',
                          dtype=float,
                          delimiter=' ')
     
     mckean_vlasov = PostProcessor(data,None)
-    # print("Number of particles = {}".format(mckean_vlasov.num_particles))
-    # mckean_vlasov.equilibrium_dist()
     mckean_vlasov.dynamic_dist()
