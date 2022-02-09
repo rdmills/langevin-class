@@ -21,9 +21,20 @@ double McKeanVlasov::EvaluateRHS(double y, double t)
     return -(*mpRhsFunc)(y,t);
 }
 
+void McKeanVlasov::SetNumParticles(int numParticles)
+{
+    mNumParticles = numParticles;   
+}
+
 int McKeanVlasov::GetNumParticles()
 {
     return mNumParticles;
+}
+
+void McKeanVlasov::SetYminYmax(double interval[2])
+{
+    myMinyMax[0] = interval[0];
+    myMinyMax[1] = interval[1];
 }
 
 double* McKeanVlasov::GetYminYmax()

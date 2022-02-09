@@ -31,10 +31,13 @@ private:
     double myMinyMax [2];   
 
 public:
+    opts_phys optsPhys; 
     McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double));
     double EvaluateRHS(double y, double t);
+    void SetYminYmax(double interval [2]);
     double* GetYminYmax(); 
+    void SetNumParticles(int numParticles);
     int GetNumParticles(); 
-    opts_phys optsPhys;
+    
 };
 #endif
