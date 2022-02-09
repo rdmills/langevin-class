@@ -25,22 +25,16 @@ private:
     // Coefficients on RHS of SDE
     double (*mV1External)(double y, double t);
     double (*mGradV1External)(double y, double t);
-    // double (*mV2TwoBody)(std::vector<double> yParticles);
-    // double (*mGradV2TwoBody)(std::vector<double> yParticles);
-
-    // double (*mV2Conv)(double y);
-    // double (*mGradV2Conv)(double y);
     
-    // Function on RHS of SDE
     double (*mpRhsFunc)(double y, double t);
-
-    // Interval for domain
-    double mYmin;
-    double mYmax;
+    int mNumParticles;
+    double myMinyMax [2];   
 
 public:
     McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double));
     double EvaluateRHS(double y, double t);
+    double* GetYminYmax(); 
+    int GetNumParticles(); 
     opts_phys optsPhys;
 };
 #endif

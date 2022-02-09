@@ -123,7 +123,7 @@ class PostProcessor:
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], HIST_BINS, lw=1,
-                              ec="yellow", fc="green", alpha=0.5)
+                              ec="white", fc="magenta", alpha=0.5)
 
         def prepare_animation(bar_container):
             

@@ -141,25 +141,7 @@ void Langevin::ApplyBoundaryConditions()
 
 void Langevin::WriteSolutionFile()
 {
-
-   std::ofstream num_file(mNumList.c_str());
-   assert(num_file.is_open());
-
-   num_file << mpSolver->GetNumParticles() << " ";
-   num_file << mpSolver->GetNumSteps() << " ";
-   num_file << mpSolver->GetTmax() << " ";
-
-   num_file.flush();
-   num_file.close();
-   std::cout<<"Numerical parameters written to "<<mNumList<<"\n";
-
-   // std::ofstream output_file(mNumList.c_str());
-   // assert(output_file.is_open());
-
-   // output_file.flush();
-   // output_file.close();
-   // std::cout<<"Numerical parameters written to "<<mNumList<<"\n";
-
+   // Solution data written here
    std::ofstream data_file(mOutputData.c_str());
    assert(data_file.is_open());
 
@@ -181,5 +163,29 @@ void Langevin::WriteSolutionFile()
    data_file.flush();
    data_file.close();
    std::cout<<"Solution data written to "<<mOutputData<<"\n";
+
+   // Numerical options written here
+   std::ofstream num_file(mNumList.c_str());
+   assert(num_file.is_open());
+
+   num_file << mpSolver->GetTmax() << " ";
+   num_file << mpSolver->GetNumSteps() << " ";
+   num_file << mpSolver->GetStepSize() << " ";
+
+   num_file.flush();
+   num_file.close();
+   std::cout<<"Numerical parameters written to "<<mNumList<<"\n";
+
+   // Physical options written here
+   std::ofstream phys_file(mPhysList.c_str());
+   assert(phys_file.is_open());
+
+   phys_file << mpMcKeanVlasov->GetYminYmax()[0]<< " ";
+   phys_file << mpMcKeanVlasov->GetYminYmax()[1]<< " ";
+   phys_file << mpMcKeanVlasov->GetNumParticles()<< " ";
+   
+   phys_file.flush();
+   phys_file.close();
+   std::cout<<"Physical parameters written to "<<mPhysList<<"\n";
 }
 

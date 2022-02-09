@@ -67,10 +67,13 @@ public:
    opts_num optsNum;
    opts_phys optsPhys;
 
-   void SetFilename(const std::string& dataName, const std::string& numName)
+   void SetFilename(const std::string& dataName, 
+                    const std::string& numName,
+                    const std::string& physName)
    {
       mOutputData = dataName;
-      mNumList = numName;
+      mNumList    = numName;
+      mPhysList   = physName;
    }
    void DoStochastics();
    void WriteSolutionFile();
