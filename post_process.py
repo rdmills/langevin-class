@@ -7,6 +7,85 @@ from matplotlib.animation import FuncAnimation
 import mpl_toolkits.axes_grid1
 import matplotlib.widgets
 
+class PostProcessor:
+
+    def __init__(self, data_file_name, opts_plot):
+        
+        self.opts_plot = opts_plot
+        self.data_file_name = data_file_name
+        self.data        = None
+        self.Time        = None
+        self.state_data  = None
+        self.read_data()
+
+        self.T_max         = None
+        self.num_steps     = None
+        self.step_size     = None
+        self.y_min_y_max   = None
+        self.num_particles = None
+        self.get_phys_num_opts()
+
+        print("T_max = {}".format(self.T_max))
+        print("num_steps = {}".format(self.num_steps))
+        print("step_size = {}".format(self.step_size))
+        print("y_min_y_max = {}".format(self.y_min_y_max))
+        print("num_particles = {}".format(self.num_particles))
+
+        self.num_frames = self.step_size
+
+    def read_data(self):    
+        data = np.genfromtxt(self.data_file_name + '_data.dat',
+                                 dtype=float,
+                                 delimiter=' ')
+        self.data = data[:-1,:]
+        self.time = data[-1,:]
+        self.state_data = self.data.T
+
+
+    def get_phys_num_opts(self):    
+        num_list = np.genfromtxt(self.data_file_name + '_num.dat',
+                                 dtype=float,
+                                 delimiter=' ')
+        print("num_list = {}".format(num_list))     
+        self.T_max     = num_list[0]                                    
+        self.num_steps = num_list[1]                                    
+        self.step_size = num_list[2]                                    
+
+        phys_list = np.genfromtxt(self.data_file_name + '_phys.dat',
+                                 dtype=float,
+                                 delimiter=' ')
+        print("phys_list = {}".format(phys_list))
+        self.y_min_y_max   = phys_list[0:2]                                 
+        self.num_particles = phys_list[2]                                 
+
+    def equilibrium_dist(self):
+        hist_eq = self.data[:,-1]
+        _ = plt.hist(hist_eq, bins='auto', edgecolor='white')
+        plt.show()
+
+    def dynamic_dist(self):    
+
+        HIST_BINS = np.linspace(-1.3, 1.3, 100)     
+
+        fig, ax = plt.subplots()
+        _, _, bars = ax.hist(self.data[:,0], HIST_BINS, lw=1,
+                              ec="white", fc="magenta", alpha=0.5)
+
+        def prepare_animation(bar_container):
+            
+            def animate(frame_number):
+                n, _ = np.histogram(self.data[:,frame_number], HIST_BINS)
+                for count, rect in zip(n, bar_container.patches):
+                    rect.set_height(count)
+                return bar_container.patches
+            return animate
+
+        ax.set_ylim(top=100) 
+
+        ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)
+
+        plt.show()
+
 class Player(FuncAnimation):
     
     def __init__(self, fig, func, frames=None, init_func=None, fargs=None,
@@ -96,55 +175,7 @@ class Player(FuncAnimation):
     def update(self,i):
         self.slider.set_val(i)
 
-class PostProcessor:
-
-    def __init__(self, data, opts_plot):
-        self.opts = opts_plot
-        self.data = data[:-1,:]
-        self.time = data[-1,:]
-        self.state_data = self.data.T
-        self.opts_plot = opts_plot
-        self.num_particles = np.size(self.data[:,0])
-        self.num_frames = np.size(self.time)
-
-    def plot(self):
-        ax = plt.axes()
-        ax.plot(self.time,self.data[0,:],'k-')
-        plt.show()
-
-    def equilibrium_dist(self):
-        hist_eq = self.data[:,-1]
-        _ = plt.hist(hist_eq, bins='auto', edgecolor='white')
-        plt.show()
-
-    def dynamic_dist(self):    
-
-        HIST_BINS = np.linspace(-1.3, 1.3, 100)     
-
-        fig, ax = plt.subplots()
-        _, _, bars = ax.hist(self.data[:,0], HIST_BINS, lw=1,
-                              ec="white", fc="magenta", alpha=0.5)
-
-        def prepare_animation(bar_container):
-            
-            def animate(frame_number):
-                n, _ = np.histogram(self.data[:,frame_number], HIST_BINS)
-                for count, rect in zip(n, bar_container.patches):
-                    rect.set_height(count)
-                return bar_container.patches
-            return animate
-
-        ax.set_ylim(top=100) 
-
-        ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)
-
-        plt.show()
-
 if __name__ == "__main__":
-
-    data = np.genfromtxt('mckean_vlasov_data.dat',
-                         dtype=float,
-                         delimiter=' ')
     
-    mckean_vlasov = PostProcessor(data,None)
+    mckean_vlasov = PostProcessor('mckean_vlasov',None)
     mckean_vlasov.dynamic_dist()
