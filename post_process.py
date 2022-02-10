@@ -20,6 +20,7 @@ class PostProcessor:
         self.T_max         = None
         self.num_steps     = None
         self.step_size     = None
+        self.initial_data  = None
         self.y_min_y_max   = None
         self.num_particles = None
         self.get_phys_num_opts()
@@ -27,42 +28,55 @@ class PostProcessor:
         self.num_frames = self.num_steps
 
     def read_data(self):    
+        print("Reading " + self.data_file_name + " data...")
         data = np.genfromtxt(self.data_file_name + '_data.dat',
                                  dtype=float,
                                  delimiter=' ')
         self.data = data[:-1,:]
         self.time = data[-1,:]
         self.state_data = self.data.T
-
+        print("...done.")
 
     def get_phys_num_opts(self):    
         num_list = np.genfromtxt(self.data_file_name + '_num.dat',
                                  dtype=float,
                                  delimiter=' ')
+        
         print("num_list = {}".format(num_list))     
         self.T_max     = num_list[0]                                    
         self.num_steps = num_list[1]                                    
         self.step_size = num_list[2]                                    
+        self.initial_data = num_list[3]                                    
 
         phys_list = np.genfromtxt(self.data_file_name + '_phys.dat',
                                  dtype=float,
                                  delimiter=' ')
-        print("phys_list = {}".format(phys_list))
+        print("phys_list = {} \n".format(phys_list))
         self.y_min_y_max   = phys_list[0:2]                                 
         self.num_particles = phys_list[2]                                 
 
     def equilibrium_dist(self):
         hist_eq = self.data[:,-1]
-        _ = plt.hist(hist_eq, bins='auto', edgecolor='white')
+        _ = plt.hist(hist_eq, 
+                     bins=self.opts_plot["bin_rule"],
+                     edgecolor=self.opts_plot["edge_colour"],
+                     facecolor=self.opts_plot["face_colour"])
+        
+        print("Plotting equilibrium density...")
         plt.show()
 
     def dynamic_dist(self):    
 
-        HIST_BINS = np.linspace(-1.3, 1.3, 100)     
+        h = 0.2    
+        HIST_BINS = np.linspace(-self.initial_data-h, self.initial_data+h, 100)     
 
         fig, ax = plt.subplots()
-        _, _, bars = ax.hist(self.data[:,0], HIST_BINS, lw=1,
-                              ec="white", fc="magenta", alpha=0.5)
+        _, _, bars = ax.hist(self.data[:,0], 
+                             HIST_BINS, 
+                             lw=1,
+                             edgecolor=self.opts_plot["edge_colour"], 
+                             facecolor=self.opts_plot["face_colour"], 
+                             alpha=self.opts_plot["alpha"])
 
         def prepare_animation(bar_container):
             
@@ -74,7 +88,8 @@ class PostProcessor:
             return animate
 
         ax.set_ylim(top=100) 
-        print("Number of frames  = {}".format(self.num_frames))
+        
+        print("Plotting dynamics...")
         ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)
 
         plt.show()
@@ -170,5 +185,12 @@ class Player(FuncAnimation):
 
 if __name__ == "__main__":
     
-    mckean_vlasov = PostProcessor('mckean_vlasov',None)
+    opts_plot = {"num_bins" : 100,
+                 "alpha" : 0.5,
+                 "bin_rule" : "auto",
+                 "edge_colour" : "white", 
+                 "face_colour" : "magenta"}
+    
+    mckean_vlasov = PostProcessor('mckean_vlasov',opts_plot)
     mckean_vlasov.dynamic_dist()
+    # mckean_vlasov.equilibrium_dist()
