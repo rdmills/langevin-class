@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
     bc_periodic.SetPeriodicBc();
     
     Solver* p_solver = new EulerMaruyama(optsNum, GradV1Quad);
+    // Solver* p_solver = new EulerMaruyama(optsNum, GradV1Quad, &bc_periodic);
     
     Langevin pl(&mkc_v, &bc_periodic, p_solver);
     

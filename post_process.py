@@ -24,7 +24,7 @@ class PostProcessor:
         self.num_particles = None
         self.get_phys_num_opts()
 
-        self.num_frames = self.step_size
+        self.num_frames = self.num_steps
 
     def read_data(self):    
         data = np.genfromtxt(self.data_file_name + '_data.dat',
@@ -74,7 +74,7 @@ class PostProcessor:
             return animate
 
         ax.set_ylim(top=100) 
-
+        print("Number of frames  = {}".format(self.num_frames))
         ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)
 
         plt.show()

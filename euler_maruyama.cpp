@@ -12,7 +12,11 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts1, double (*righthandside)(double, double))
+// EulerMaruyama::EulerMaruyama(opts_num opts1, 
+//                              double (*righthandside)(double, double),
+//                              BoundaryConditions* pBcs)
+EulerMaruyama::EulerMaruyama(opts_num opts1, 
+                             double (*righthandside)(double, double))
 {
     optsNum = opts1;
     // mRhs = righthandside;

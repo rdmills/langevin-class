@@ -14,8 +14,12 @@
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts, double (*mRightHandSide)(double, double));        
-        // double TwoBody(double* pParticles);
+        // EulerMaruyama(opts_num opts, 
+        //               double (*mRightHandSide)(double, double), 
+        //               BoundaryConditions* pBcs);        
+        EulerMaruyama(opts_num opts, 
+                double (*mRightHandSide)(double, double));        
+        
         int DiracDelta(int i, int j);
         virtual double RightHandSide(double y, double t); 
         virtual double GetWiener();
@@ -35,7 +39,6 @@ class EulerMaruyama : public Solver
         // double (*mGradV2)(double y, double yPrime);
 
         double (*mRhs)(double y, double t);
-        double myMinyMax [2];   
         std::default_random_engine mGenerator;
         std::normal_distribution<double> mDistribution;
 };

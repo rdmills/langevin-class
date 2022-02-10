@@ -9,6 +9,7 @@
 #define SOLVERHEADERDEF
 #include "opts_num.hpp"
 #include <random>
+#include "boundary_conditions.hpp"
 
 // Abstract Langevin base class.
 class Solver
@@ -19,6 +20,9 @@ class Solver
         double mNumSteps;
         double mInitialData;
         double mNumParticles;
+        // Pointer to an instance of boundary conditions
+        // BoundaryConditions* mpBconds;
+
     public:
         friend class Langevin;
         opts_num optsNum;
