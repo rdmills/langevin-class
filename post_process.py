@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import mpl_toolkits.axes_grid1
@@ -24,12 +23,6 @@ class PostProcessor:
         self.y_min_y_max   = None
         self.num_particles = None
         self.get_phys_num_opts()
-
-        print("T_max = {}".format(self.T_max))
-        print("num_steps = {}".format(self.num_steps))
-        print("step_size = {}".format(self.step_size))
-        print("y_min_y_max = {}".format(self.y_min_y_max))
-        print("num_particles = {}".format(self.num_particles))
 
         self.num_frames = self.step_size
 
