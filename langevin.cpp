@@ -10,6 +10,7 @@
 #include <cassert>
 #include "langevin.hpp"
 #include <cmath>
+#include <ctime>
 
 Langevin::Langevin(McKeanVlasov* pSde, 
                    BoundaryConditions* pBcs, 
@@ -52,7 +53,13 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
+   time_t tstart, tend; 
+   std::cout<<"Sampling dynamics..."<<std::endl;
+   tstart = time(0);
    mpSolver->SolveEquation();
+   tend = time(0); 
+   std::cout<<"...done."<<std::endl;
+   std::cout<<"Computation time : "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
    
    for (int j=0; j<mpSolver->GetNumParticles(); j++)
    {
@@ -61,37 +68,40 @@ void Langevin::DoStochastics()
          mpParticles[i][j] = mpSolver->mpSolution[i][j];
       }
    }
+   
+   std::cout<<"Writing data to file "<<mOutputData<<"..."<<std::endl;
    WriteSolutionFile();
+   std::cout<<"...done\n."<<std::endl;
 }
 
-// void BvpOde::PopulateMatrix()
-// {
-//    for (int i=1; i<mNumNodes-1; i++)
-//    {
-//       // xm, x and xp are  x(i-1), x(i) and x(i+1) 
-//       double xm = mpGrid->mNodes[i-1].coordinate;
-//       double x = mpGrid->mNodes[i].coordinate;
-//       double xp = mpGrid->mNodes[i+1].coordinate;
-//       double alpha = 2.0/(xp-xm)/(x-xm);
-//       double beta = -2.0/(xp-x)/(x-xm);
-//       double gamma = 2.0/(xp-xm)/(xp-x);
-//       (*mpLhsMat)(i+1,i) = (mpOde->mCoeffOfUxx)*alpha - 
-//                       (mpOde->mCoeffOfUx)/(xp-xm);
-//       (*mpLhsMat)(i+1,i+1) = (mpOde->mCoeffOfUxx)*beta + 
-//                         mpOde->mCoeffOfU;
-//       (*mpLhsMat)(i+1,i+2) = (mpOde->mCoeffOfUxx)*gamma + 
-//                         (mpOde->mCoeffOfUx)/(xp-xm);
-//    }
-// }
+void Langevin::SetCoefficients()
+{
+   // for (int i=1; i<mNumNodes-1; i++)
+   // {
+   //    // xm, x and xp are  x(i-1), x(i) and x(i+1) 
+   //    double xm = mpGrid->mNodes[i-1].coordinate;
+   //    double x = mpGrid->mNodes[i].coordinate;
+   //    double xp = mpGrid->mNodes[i+1].coordinate;
+   //    double alpha = 2.0/(xp-xm)/(x-xm);
+   //    double beta = -2.0/(xp-x)/(x-xm);
+   //    double gamma = 2.0/(xp-xm)/(xp-x);
+   //    (*mpLhsMat)(i+1,i) = (mpOde->mCoeffOfUxx)*alpha - 
+   //                    (mpOde->mCoeffOfUx)/(xp-xm);
+   //    (*mpLhsMat)(i+1,i+1) = (mpOde->mCoeffOfUxx)*beta + 
+   //                      mpOde->mCoeffOfU;
+   //    (*mpLhsMat)(i+1,i+2) = (mpOde->mCoeffOfUxx)*gamma + 
+   //                      (mpOde->mCoeffOfUx)/(xp-xm);
+   // }
+}
 
-// void BvpOde::PopulateVector()
-// {
-//    for (int i=1; i<mNumNodes-1; i++)
-//    {
-//       double x = mpGrid->mNodes[i].coordinate;
-//       (*mpRhsVec)(i+1) = mpOde->mpRhsFunc(x);
-//    }
-// }
+void Langevin::SetConstants()
+{
+   // for (int i=1; i<mNumNodes-1; i++)
+   // {
+   //    double x = mpGrid->mNodes[i].coordinate;
+   //    (*mpRhsVec)(i+1) = mpOde->mpRhsFunc(x);
+   // }
+}
 
 void Langevin::ApplyBoundaryConditions()
 {

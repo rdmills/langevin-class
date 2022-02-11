@@ -68,7 +68,9 @@ class PostProcessor:
     def dynamic_dist(self):    
 
         h = 0.2    
-        HIST_BINS = np.linspace(-self.initial_data-h, self.initial_data+h, 100)     
+        a = 5.0
+        # HIST_BINS = np.linspace(-self.initial_data-h, self.initial_data+h, 100)     
+        HIST_BINS = np.linspace(-a-h, a+h, 100)     
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], 
@@ -191,6 +193,11 @@ if __name__ == "__main__":
                  "edge_colour" : "white", 
                  "face_colour" : "magenta"}
     
-    mckean_vlasov = PostProcessor('mckean_vlasov',opts_plot)
+    # mckean_vlasov = PostProcessor('mckean_vlasov', opts_plot)
+    # mckean_vlasov.dynamic_dist()
+    # # mckean_vlasov.equilibrium_dist()
+
+    mckean_vlasov = PostProcessor('quart', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
+

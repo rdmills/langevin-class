@@ -16,23 +16,23 @@
 //                              double (*righthandside)(double, double),
 //                              BoundaryConditions* pBcs)
 EulerMaruyama::EulerMaruyama(opts_num opts1, 
+                             opts_phys opts2,
                              double (*righthandside)(double, double))
 {
     optsNum = opts1;
-    // mRhs = righthandside;
+    mOptsPhys = opts2;
     mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
-    
+
+    SetBetaInv();
     double dt = optsNum.t_max/optsNum.num_steps;
-    
     SetStepSize(dt);
     SetNumParticles(optsNum.num_particles);
     
     mpTime = new double [GetNumSteps()];
-    
     mpSolution = new double* [GetNumSteps()];
     for(int i = 0; i< GetNumSteps(); i++)
     {
@@ -42,6 +42,26 @@ EulerMaruyama::EulerMaruyama(opts_num opts1,
     double sigma = sqrt(dt);
     std::normal_distribution<double> distribution (0.0, sigma);
     mDistribution = distribution;
+}
+
+void EulerMaruyama::SetBetaInv()
+{
+    mBetaInv = 1/mOptsPhys.beta;
+}
+
+double EulerMaruyama::GetBetaInv()
+{
+    return mBetaInv;
+}
+
+void EulerMaruyama::SetKappa1()
+{
+    
+}
+
+double EulerMaruyama::GetKappa1()
+{
+    return mBetaInv;
 }
 
 int EulerMaruyama::DiracDelta(int i, int j)
@@ -113,7 +133,7 @@ void EulerMaruyama::SolveEquation()
     {
         for (int i=1; i<GetNumSteps(); i++)
         {
-            mpSolution[i][j] = mpSolution[i][j] + GetWiener();
+            mpSolution[i][j] = mpSolution[i][j] + sqrt(2.0*GetBetaInv())*GetWiener();
         }
     }
 

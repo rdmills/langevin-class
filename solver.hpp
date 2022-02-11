@@ -8,6 +8,7 @@
 #ifndef SOLVERHEADERDEF
 #define SOLVERHEADERDEF
 #include "opts_num.hpp"
+#include "opts_phys.hpp"
 #include <random>
 #include "boundary_conditions.hpp"
 
@@ -21,7 +22,7 @@ class Solver
         double mInitialData;
         double mNumParticles;
         // Pointer to an instance of boundary conditions
-        // BoundaryConditions* mpBconds;
+        BoundaryConditions* mpBconds;
 
     public:
         friend class Langevin;

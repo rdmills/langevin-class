@@ -14,6 +14,7 @@ struct opts_phys
         double (*pV2)(double, double);
         double (*pGradV2)(double, double);
         double kappa2;
+        double beta;
     };    
 
 #endif

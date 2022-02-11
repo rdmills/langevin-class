@@ -41,17 +41,15 @@ private:
    double** mpParticles;
    double* mpTime;
 
-   // Right-hand side vector
-   // std::vector<double>* mpRhsVec;
-
    // Allow user to specify the output file or
    // use a default name
    std::string mOutputData;
    std::string mNumList;
    std::string mPhysList;
 
-   // // Methods for setting up linear system and solving it
-   // void PopulateVector();
+   // // Methods for setting up langevin system and solving it
+   void SetCoefficients();
+   void SetConstants();
    void ApplyBoundaryConditions();
 
 public:
