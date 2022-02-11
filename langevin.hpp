@@ -54,9 +54,9 @@ private:
 
 public:
    // Sole constructor
-   Langevin(McKeanVlasov* pSde, 
-            BoundaryConditions* pBcs, 
-            Solver* pSolver);
+   Langevin(opts_num* opts1,
+            McKeanVlasov* pSde, 
+            BoundaryConditions* pBcs);
 
    // As memory is dynamically allocated the destructor
    // is overridden

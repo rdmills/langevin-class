@@ -7,9 +7,12 @@
 
 #include "mckean_vlasov.hpp"
 
-McKeanVlasov::McKeanVlasov(opts_phys opts, double (*righthandside)(double, double))
+McKeanVlasov::McKeanVlasov(opts_phys opts, 
+                           double (*pV1)(double, double),
+                           double (*pV2)(double))
 {
-    mpRhsFunc = righthandside;
+    mGradV1External = pV1;
+    mGradV2TwoBody = pV2;
     optsPhys = opts;
     myMinyMax[0] = opts.interval[0];
     myMinyMax[1] = opts.interval[1];
@@ -18,7 +21,7 @@ McKeanVlasov::McKeanVlasov(opts_phys opts, double (*righthandside)(double, doubl
 
 double McKeanVlasov::EvaluateRHS(double y, double t)    
 {
-    return -(*mpRhsFunc)(y,t);
+    return -(*mGradV1External)(y,t);
 }
 
 void McKeanVlasov::SetNumParticles(int numParticles)

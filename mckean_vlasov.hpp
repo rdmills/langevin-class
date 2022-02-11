@@ -25,6 +25,8 @@ private:
     // Coefficients on RHS of SDE
     double (*mV1External)(double y, double t);
     double (*mGradV1External)(double y, double t);
+    double (*mV2TwoBody)(double y);
+    double (*mGradV2TwoBody)(double y);
     
     double (*mpRhsFunc)(double y, double t);
     int mNumParticles;
@@ -32,7 +34,9 @@ private:
 
 public:
     opts_phys optsPhys; 
-    McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double));
+    McKeanVlasov(opts_phys opts, 
+                 double (*pV1)(double, double), 
+                 double (*pV2)(double));
     double EvaluateRHS(double y, double t);
     void SetYminYmax(double interval [2]);
     double* GetYminYmax(); 

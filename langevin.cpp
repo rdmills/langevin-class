@@ -12,26 +12,23 @@
 #include <cmath>
 #include <ctime>
 
-Langevin::Langevin(McKeanVlasov* pSde, 
-                   BoundaryConditions* pBcs, 
-                   Solver* pSolver)
+Langevin::Langevin(opts_num* pOpts,
+                   McKeanVlasov* pSde, 
+                   BoundaryConditions* pBcs)
 {
+   optsNum        = *pOpts;
    mpMcKeanVlasov = pSde;
-   mpSolver       = pSolver;
    mpBconds       = pBcs;
-   mNumParticles  = mpSolver->GetNumParticles();
+   mNumParticles  = mpMcKeanVlasov->GetNumParticles();
+
+   mpTime      = new double [optsNum.num_steps];
+   mpParticles = new double* [optsNum.num_steps];
    
-   mpTime      = new double [mpSolver->GetNumSteps()];
-   mpParticles = new double* [mpSolver->GetNumSteps()];
-   
-   for (int i=0; i<mpSolver->GetNumSteps(); i++)
+   for (int i=0; i<optsNum.num_steps; i++)
    {
-      mpParticles[i]  = new double [mpSolver->GetNumParticles()];
+      mpParticles[i]  = new double [mpMcKeanVlasov->GetNumParticles()];
    }
-   
-   optsNum   = mpSolver->optsNum;
    optsPhys  = mpMcKeanVlasov->optsPhys;
-   // mOutputData = "langevin_output.dat";
 }
 
 Langevin::~Langevin()
@@ -43,16 +40,18 @@ Langevin::~Langevin()
       delete[]  mpParticles[i];
    }
    
-//    // Only delete if Solve has been called
-//    if (mpLinearSystem)
-//    {
-//       delete mpLinearSystem;
-//    }
+   // Only delete if DoStochastics() has been called
+   if (mpSolver)
+   {
+      delete mpSolver;
+   }
 }
 
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
+   mpSolver = new EulerMaruyama(optsNum, optsPhys, mpMcKeanVlasov->mGradV1External);
+
    time_t tstart, tend; 
    std::cout<<"Sampling dynamics..."<<std::endl;
    tstart = time(0);
