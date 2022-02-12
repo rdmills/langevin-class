@@ -45,8 +45,7 @@ class PostProcessor:
         print("num_list = {}".format(num_list))     
         self.T_max     = num_list[0]                                    
         self.num_steps = num_list[1]                                    
-        self.step_size = num_list[2]                                    
-        self.initial_data = num_list[3]                                    
+        self.step_size = num_list[2]                                                                   
 
         phys_list = np.genfromtxt(self.data_file_name + '_phys.dat',
                                  dtype=float,
@@ -192,10 +191,6 @@ if __name__ == "__main__":
                  "bin_rule" : "auto",
                  "edge_colour" : "white", 
                  "face_colour" : "magenta"}
-    
-    # mckean_vlasov = PostProcessor('mckean_vlasov', opts_plot)
-    # mckean_vlasov.dynamic_dist()
-    # # mckean_vlasov.equilibrium_dist()
 
     mckean_vlasov = PostProcessor('quart', opts_plot)
     mckean_vlasov.dynamic_dist()

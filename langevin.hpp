@@ -73,6 +73,7 @@ public:
       mNumList    = numName;
       mPhysList   = physName;
    }
+   
    void DoStochastics();
    void WriteSolutionFile();
 };

@@ -128,7 +128,6 @@ void Langevin::WriteSolutionFile()
    num_file << mpSolver->GetTmax() << " ";
    num_file << mpSolver->GetNumSteps() << " ";
    num_file << mpSolver->GetStepSize() << " ";   
-   num_file << mpSolver->GetInitialData() << " ";
 
    num_file.flush();
    num_file.close();
