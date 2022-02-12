@@ -19,7 +19,7 @@ class Solver
         double mStepSize;
         double mTmax;
         double mNumSteps;
-        double mInitialData;
+        double* mInitialData;
         double mNumParticles;
 
         double mBetaInv;
@@ -39,8 +39,8 @@ class Solver
         int GetNumSteps();
         void SetTmax(double T);
         double GetTmax();
-        void SetInitialData(double y0);
-        double GetInitialData();
+        void SetInitialData(double* y0);
+        double* GetInitialData();
         void SetStepSize(double dt);
         double GetStepSize();
         void SetNumParticles(int N);

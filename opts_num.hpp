@@ -9,6 +9,6 @@ struct opts_num
         // int num_particles;
         int num_steps;
         double t_max;
-        double initial_data;
+        double* initial_data;
     };
 #endif

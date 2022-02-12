@@ -91,7 +91,7 @@ void EulerMaruyama::SolveEquation()
     
     for (int j=0; j<GetNumParticles(); j++)
     {
-        mpSolution[0][j] = GetInitialData();
+        mpSolution[0][j] = GetInitialData()[j];
     }
 
     for (int j=0; j<GetNumParticles(); j++)

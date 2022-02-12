@@ -31,12 +31,12 @@ double Solver::GetTmax()
     return mTmax;
 }
 
-void Solver::SetInitialData(double y0)
+void Solver::SetInitialData(double* y0)
 {
     mInitialData = y0;
 }
 
-double Solver::GetInitialData()
+double* Solver::GetInitialData()
 {
     return mInitialData;
 }
