@@ -30,15 +30,15 @@ int main(int argc, char* argv[])
     int numParticles = 1000;
     int numSteps = 2000;                         
 
-    opts_phys optsPhys = {{-0.5,0.5}, 
-                    numParticles,
-                    1.0, 
-                    1.0,
-                    0.1};                          
+    opts_phys optsPhys = {.interval = {-0.5,0.5}, 
+                          .num_particles = numParticles,
+                          .kappa1 = 2.0, 
+                          .kappa2 = 1.0,
+                          .beta = 0.1};                          
 
-    opts_num optsNum = {numSteps, 
-                        20.0,
-                        -0.1};     
+    opts_num optsNum = {.num_steps = numSteps, 
+                        .t_max = 20.0,
+                        .initial_data = 0.1};     
     
     McKeanVlasov mkc_v(optsPhys, GradV1Quart, GradV2Gauss);
     
