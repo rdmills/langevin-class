@@ -18,13 +18,14 @@ class EulerMaruyama : public Solver
         //               double (*mRightHandSide)(double, double), 
         //               BoundaryConditions* pBcs);        
         EulerMaruyama(opts_num opts1, 
-                      opts_phys opts2,
-                      double (*mRightHandSide)(double, double));        
+                      opts_phys opts2);
+                    //   double (*mRightHandSide)(double, double));        
         
         void SetBetaInv();
         double GetBetaInv();
         void SetKappa1();
         double GetKappa1();
+
         int DiracDelta(int i, int j);
         
         virtual double RightHandSide(double y, double t); 
@@ -44,8 +45,8 @@ class EulerMaruyama : public Solver
         double mKappa1;
         double mKappa2;
 
-        double (*mV1)(double y, double t); 
-        double (*mGradV1)(double y, double t);
+        // double (*mV1)(double y, double t); 
+        // double (*mGradV1)(double y, double t);
         // double (*mV2)(double y, double yPrime); 
         // double (*mGradV2)(double y, double yPrime);
 

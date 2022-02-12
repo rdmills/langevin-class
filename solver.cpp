@@ -60,3 +60,8 @@ int Solver::GetNumParticles()
 {
     return mNumParticles;
 }
+
+void Solver::SetGradV1(double (*pGradV1)(double, double))
+{
+    mGradV1 = pGradV1;
+}

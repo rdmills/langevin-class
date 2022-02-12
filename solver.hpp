@@ -41,6 +41,10 @@ class Solver
         void SetNumParticles(int N);
         int GetNumParticles();
 
+        double (*mV1)(double y, double t); 
+        double (*mGradV1)(double y, double t);
+        void SetGradV1(double (*pGradV1)(double, double));
+
         virtual double RightHandSide(double y, double t) = 0; 
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;

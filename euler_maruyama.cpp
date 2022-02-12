@@ -16,12 +16,12 @@
 //                              double (*righthandside)(double, double),
 //                              BoundaryConditions* pBcs)
 EulerMaruyama::EulerMaruyama(opts_num opts1, 
-                             opts_phys opts2,
-                             double (*righthandside)(double, double))
+                             opts_phys opts2)
+                            //  double (*righthandside)(double, double))
 {
     optsNum = opts1;
     mOptsPhys = opts2;
-    mGradV1 = righthandside;
+    // mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
@@ -134,6 +134,7 @@ void EulerMaruyama::SolveEquation()
         for (int i=1; i<GetNumSteps(); i++)
         {
             mpSolution[i][j] = mpSolution[i][j] + sqrt(2.0*GetBetaInv())*GetWiener();
+            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;
         }
     }
 

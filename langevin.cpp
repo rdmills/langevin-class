@@ -35,7 +35,7 @@ Langevin::~Langevin()
 {
    // Deletes memory allocated in constructor
    delete [] mpTime;
-   for (int i=0; i<mpSolver->GetNumSteps(); i++)
+   for (int i=0; i<optsNum.num_steps; i++)
    {
       delete[]  mpParticles[i];
    }
@@ -50,7 +50,9 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-   mpSolver = new EulerMaruyama(optsNum, optsPhys, mpMcKeanVlasov->mGradV1External);
+   // mpSolver = new EulerMaruyama(optsNum, optsPhys, mpMcKeanVlasov->mGradV1External);
+   mpSolver = new EulerMaruyama(optsNum, optsPhys);
+   SetCoefficients();
 
    time_t tstart, tend; 
    std::cout<<"Sampling dynamics..."<<std::endl;
@@ -65,16 +67,20 @@ void Langevin::DoStochastics()
       for (int i = 0; i<mpSolver->GetNumSteps(); i++)
       {
          mpParticles[i][j] = mpSolver->mpSolution[i][j];
+         // std::cout<<"mpParticles["<<i<<"]"<<"["<<j<<"] = "<< mpParticles[i][j]<<std::endl;
       }
    }
    
+   std::cout<<"*********"<<std::endl;
    std::cout<<"Writing data to file "<<mOutputData<<"..."<<std::endl;
    WriteSolutionFile();
-   std::cout<<"...done\n."<<std::endl;
+   std::cout<<"...done"<<std::endl;
+   std::cout<<"*********"<<std::endl;
 }
 
 void Langevin::SetCoefficients()
 {
+   mpSolver->SetGradV1(mpMcKeanVlasov->mGradV1External);
    // for (int i=1; i<mNumNodes-1; i++)
    // {
    //    // xm, x and xp are  x(i-1), x(i) and x(i+1) 
@@ -104,49 +110,7 @@ void Langevin::SetConstants()
 
 void Langevin::ApplyBoundaryConditions()
 {
-//    bool left_bc_applied = false;
-//    bool right_bc_applied = false;
 
-//    if (mpBconds->mLhsBcIsDirichlet)
-//    {
-//       (*mpLhsMat)(1,1) = 1.0;
-//       (*mpRhsVec)(1) = mpBconds->mLhsBcValue;
-//       left_bc_applied = true;
-//    }
-
-//    if (mpBconds->mRhsBcIsDirichlet)
-//    {
-//       (*mpLhsMat)(mNumNodes,mNumNodes) = 1.0;
-//       (*mpRhsVec)(mNumNodes) = mpBconds->mRhsBcValue;
-//       right_bc_applied = true;
-//    }
-
-//    if (mpBconds->mLhsBcIsNeumann)
-//    {
-//       assert(left_bc_applied == false);
-//       double h = mpGrid->mNodes[1].coordinate - 
-//                  mpGrid->mNodes[0].coordinate;
-//       (*mpLhsMat)(1,1) = -1.0/h;
-//       (*mpLhsMat)(1,2) = 1.0/h;
-//       (*mpRhsVec)(1) = mpBconds->mLhsBcValue;
-//       left_bc_applied = true;
-//    }
-
-//    if (mpBconds->mRhsBcIsNeumann)
-//    {
-//       assert(right_bc_applied == false);
-//       double h = mpGrid->mNodes[mNumNodes-1].coordinate - 
-//                  mpGrid->mNodes[mNumNodes-2].coordinate;
-//       (*mpLhsMat)(mNumNodes,mNumNodes-1) = -1.0/h;
-//       (*mpLhsMat)(mNumNodes,mNumNodes) = 1.0/h;
-//       (*mpRhsVec)(mNumNodes) = mpBconds->mRhsBcValue;
-//       right_bc_applied = true;
-//    }
-
-//    // Check that boundary conditions have been applied
-//    // on both boundaries
-//    assert(left_bc_applied);
-//    assert(right_bc_applied);
 }
 
 void Langevin::WriteSolutionFile()

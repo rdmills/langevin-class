@@ -28,7 +28,6 @@ double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
 int main(int argc, char* argv[])
 {
-    
     int numParticles = 1000;
     int numSteps = 2000;
 
@@ -41,22 +40,21 @@ int main(int argc, char* argv[])
                     &GradV2Gauss, 
                     1.0,
                     0.1};                          
-    opts_num optsNum = {numParticles, numSteps, 20.0, -0.1};    
+    
+    opts_num optsNum = {numParticles, 
+                        numSteps, 
+                        20.0,
+                        -0.1};    
     
     McKeanVlasov mkc_v(optsPhys, GradV1Quart, GradV2Gauss);
     
     BoundaryConditions bc_periodic;
     bc_periodic.SetPeriodicBc();
     
-    // Solver* p_solver = new EulerMaruyama(optsNum, optsPhys, GradV1Quart);
-    // Solver* p_solver = new EulerMaruyama(optsNum, GradV1Quad, &bc_periodic);
-    
     Langevin pl(&optsNum, &mkc_v, &bc_periodic);
     
     pl.SetFilename("quart_data.dat", "quart_num.dat", "quart_phys.dat");
     pl.DoStochastics();
-
-    // delete p_solver;
 
     return 0;
 }
