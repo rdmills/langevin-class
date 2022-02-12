@@ -9,6 +9,7 @@
 #define MCKEANVLASOVHEADERDEF
 
 #include "opts_phys.hpp"
+// #include <iostream>
   
 class McKeanVlasov
 {
@@ -23,24 +24,25 @@ private:
     // double mkappa2;
     
     // Coefficients on RHS of SDE
-    double (*mV1External)(double y, double t);
+    // double (*mV1External)(double y, double t);
     double (*mGradV1External)(double y, double t);
-    // double (*mV2TwoBody)(std::vector<double> yParticles);
-    // double (*mGradV2TwoBody)(std::vector<double> yParticles);
-
-    // double (*mV2Conv)(double y);
-    // double (*mGradV2Conv)(double y);
+    // double (*mV2TwoBody)(double r);
+    double (*mGradV2TwoBody)(double r);
     
-    // Function on RHS of SDE
     double (*mpRhsFunc)(double y, double t);
-
-    // Interval for domain
-    double mYmin;
-    double mYmax;
+    int mNumParticles;
+    double myMinyMax [2];   
 
 public:
-    McKeanVlasov(opts_phys opts, double (*righthandSide)(double, double));
+    opts_phys optsPhys; 
+    McKeanVlasov(opts_phys opts, 
+                 double (*pGradV1)(double, double), 
+                 double (*pGradV2)(double));
     double EvaluateRHS(double y, double t);
-    opts_phys optsPhys;
+    void SetYminYmax(double interval [2]);
+    double* GetYminYmax(); 
+    void SetNumParticles(int numParticles);
+    int GetNumParticles(); 
+    
 };
 #endif

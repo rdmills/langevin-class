@@ -37,27 +37,26 @@ private:
    Solver* mpSolver;
 
    // Vector for solution to particle trajectories
-   // std::vector<double>* mpSolVec;
-   double* mpSolVec;
-   double* mpTimeVec;
-
-   // Right-hand side vector
-   // std::vector<double>* mpRhsVec;
+   // std::vector<double>* mpParticles;
+   double** mpParticles;
+   double* mpTime;
 
    // Allow user to specify the output file or
    // use a default name
-   std::string mFilename;
+   std::string mOutputData;
+   std::string mNumList;
+   std::string mPhysList;
 
-   // // Methods for setting up linear system and solving it
-   // void PopulateVector();
+   // // Methods for setting up langevin system and solving it
+   void SetCoefficients();
+   void SetConstants();
    void ApplyBoundaryConditions();
 
 public:
    // Sole constructor
-   Langevin(McKeanVlasov* pSde, 
-            BoundaryConditions* pBcs, 
-            Solver* pSolver,
-            int numParticles);
+   Langevin(opts_num* opts1,
+            McKeanVlasov* pSde, 
+            BoundaryConditions* pBcs);
 
    // As memory is dynamically allocated the destructor
    // is overridden
@@ -66,10 +65,15 @@ public:
    opts_num optsNum;
    opts_phys optsPhys;
 
-   void SetFilename(const std::string& name)
+   void SetFilename(const std::string& dataName, 
+                    const std::string& numName,
+                    const std::string& physName)
    {
-      mFilename = name;
+      mOutputData = dataName;
+      mNumList    = numName;
+      mPhysList   = physName;
    }
+   
    void DoStochastics();
    void WriteSolutionFile();
 };

@@ -7,13 +7,14 @@
 struct opts_phys
     {
         double interval[2];  
-        int numParticles;
-        double (*pV1)(double, double);
-        double (*pGradV1) (double, double); 
+        int num_particles;
+        // double (*pV1)(double, double);
+        // double (*pGradV1) (double, double); 
         double kappa1;
-        // double (*pV2)(std::vector<double>);
-        // double (*pGradV2)(std::vector<double>);
-        // double kappa2;
+        // double (*pV2)(double);
+        // double (*pGradV2)(double);
+        double kappa2;
+        double beta;
     };    
 
 #endif
