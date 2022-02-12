@@ -12,22 +12,15 @@
 #include <iostream>
 #include <vector>
 
-// EulerMaruyama::EulerMaruyama(opts_num opts1, 
-//                              double (*righthandside)(double, double),
-//                              BoundaryConditions* pBcs)
-EulerMaruyama::EulerMaruyama(opts_num opts1, 
-                             opts_phys opts2)
-                            //  double (*righthandside)(double, double))
+EulerMaruyama::EulerMaruyama(opts_num opts1)
 {
     optsNum = opts1;
-    mOptsPhys = opts2;
     // mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
 
-    SetBetaInv();
     double dt = optsNum.t_max/optsNum.num_steps;
     SetStepSize(dt);
     SetNumParticles(optsNum.num_particles);
@@ -42,26 +35,6 @@ EulerMaruyama::EulerMaruyama(opts_num opts1,
     double sigma = sqrt(dt);
     std::normal_distribution<double> distribution (0.0, sigma);
     mDistribution = distribution;
-}
-
-void EulerMaruyama::SetBetaInv()
-{
-    mBetaInv = 1/mOptsPhys.beta;
-}
-
-double EulerMaruyama::GetBetaInv()
-{
-    return mBetaInv;
-}
-
-void EulerMaruyama::SetKappa1()
-{
-    
-}
-
-double EulerMaruyama::GetKappa1()
-{
-    return mBetaInv;
 }
 
 int EulerMaruyama::DiracDelta(int i, int j)
@@ -97,7 +70,7 @@ int EulerMaruyama::DiracDelta(int i, int j)
 double EulerMaruyama::RightHandSide(double y, double t)
 {
     // return -(*mRhs)(y,t);
-    return -(*mGradV1)(y,t);
+    return -Getkappa1()*(*mGradV1)(y,t);
 }
 
 double EulerMaruyama::GetWiener()

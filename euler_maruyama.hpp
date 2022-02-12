@@ -14,17 +14,7 @@
 class EulerMaruyama : public Solver
 {       
     public: 
-        // EulerMaruyama(opts_num opts, 
-        //               double (*mRightHandSide)(double, double), 
-        //               BoundaryConditions* pBcs);        
-        EulerMaruyama(opts_num opts1, 
-                      opts_phys opts2);
-                    //   double (*mRightHandSide)(double, double));        
-        
-        void SetBetaInv();
-        double GetBetaInv();
-        void SetKappa1();
-        double GetKappa1();
+        EulerMaruyama(opts_num opts1);
 
         int DiracDelta(int i, int j);
         
@@ -40,16 +30,6 @@ class EulerMaruyama : public Solver
             }
         };
     private:
-        opts_phys mOptsPhys;
-        double mBetaInv;
-        double mKappa1;
-        double mKappa2;
-
-        // double (*mV1)(double y, double t); 
-        // double (*mGradV1)(double y, double t);
-        // double (*mV2)(double y, double yPrime); 
-        // double (*mGradV2)(double y, double yPrime);
-
         double (*mRhs)(double y, double t);
         std::default_random_engine mGenerator;
         std::normal_distribution<double> mDistribution;

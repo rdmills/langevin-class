@@ -61,7 +61,42 @@ int Solver::GetNumParticles()
     return mNumParticles;
 }
 
+void Solver::SetBetaInv(double betaInv)
+{
+    mBetaInv = betaInv;
+}
+
+double Solver::GetBetaInv()
+{
+    return mBetaInv;
+}
+
+void Solver::SetKappa1(double kappa1)
+{
+    mkappa1 = kappa1;
+}
+
+double Solver::Getkappa1()
+{
+    return mkappa1;
+}
+
+void Solver::SetKappa2(double kappa2)
+{
+    mkappa2 = kappa2;
+}
+
+double Solver::Getkappa2()
+{
+    return mkappa2;
+}
+
 void Solver::SetGradV1(double (*pGradV1)(double, double))
 {
     mGradV1 = pGradV1;
+}
+
+void Solver::SetGradV2(double (*pGradV2)(double))
+{
+    mGradV2 = pGradV2;
 }

@@ -10,7 +10,6 @@
 #include "opts_num.hpp"
 #include "opts_phys.hpp"
 
-
 const double PI = 3.14159265359;
 const double XI = 1.0;
 
@@ -31,16 +30,23 @@ int main(int argc, char* argv[])
     int numParticles = 1000;
     int numSteps = 2000;
 
+    // opts_phys optsPhys = {{-0.5,0.5}, 
+    //                 numParticles,
+    //                 &V1Quart,
+    //                 &GradV1Quart,
+    //                 1.0, 
+    //                 &V2Gauss, 
+    //                 &GradV2Gauss, 
+    //                 1.0,
+    //                 0.1};                          
+
     opts_phys optsPhys = {{-0.5,0.5}, 
                     numParticles,
-                    &V1Quart,
-                    &GradV1Quart,
                     1.0, 
-                    &V2Gauss, 
-                    &GradV2Gauss, 
                     1.0,
                     0.1};                          
-    
+
+
     opts_num optsNum = {numParticles, 
                         numSteps, 
                         20.0,

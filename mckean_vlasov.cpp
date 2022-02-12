@@ -8,11 +8,11 @@
 #include "mckean_vlasov.hpp"
 
 McKeanVlasov::McKeanVlasov(opts_phys opts, 
-                           double (*pV1)(double, double),
-                           double (*pV2)(double))
+                           double (*pGradV1)(double, double),
+                           double (*pGradV2)(double))
 {
-    mGradV1External = pV1;
-    mGradV2TwoBody = pV2;
+    mGradV1External = pGradV1;
+    mGradV2TwoBody = pGradV2;
     optsPhys = opts;
     myMinyMax[0] = opts.interval[0];
     myMinyMax[1] = opts.interval[1];

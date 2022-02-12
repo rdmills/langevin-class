@@ -50,9 +50,9 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-   // mpSolver = new EulerMaruyama(optsNum, optsPhys, mpMcKeanVlasov->mGradV1External);
-   mpSolver = new EulerMaruyama(optsNum, optsPhys);
+   mpSolver = new EulerMaruyama(optsNum);
    SetCoefficients();
+   SetConstants();
 
    time_t tstart, tend; 
    std::cout<<"Sampling dynamics..."<<std::endl;
@@ -81,31 +81,14 @@ void Langevin::DoStochastics()
 void Langevin::SetCoefficients()
 {
    mpSolver->SetGradV1(mpMcKeanVlasov->mGradV1External);
-   // for (int i=1; i<mNumNodes-1; i++)
-   // {
-   //    // xm, x and xp are  x(i-1), x(i) and x(i+1) 
-   //    double xm = mpGrid->mNodes[i-1].coordinate;
-   //    double x = mpGrid->mNodes[i].coordinate;
-   //    double xp = mpGrid->mNodes[i+1].coordinate;
-   //    double alpha = 2.0/(xp-xm)/(x-xm);
-   //    double beta = -2.0/(xp-x)/(x-xm);
-   //    double gamma = 2.0/(xp-xm)/(xp-x);
-   //    (*mpLhsMat)(i+1,i) = (mpOde->mCoeffOfUxx)*alpha - 
-   //                    (mpOde->mCoeffOfUx)/(xp-xm);
-   //    (*mpLhsMat)(i+1,i+1) = (mpOde->mCoeffOfUxx)*beta + 
-   //                      mpOde->mCoeffOfU;
-   //    (*mpLhsMat)(i+1,i+2) = (mpOde->mCoeffOfUxx)*gamma + 
-   //                      (mpOde->mCoeffOfUx)/(xp-xm);
-   // }
+   mpSolver->SetGradV2(mpMcKeanVlasov->mGradV2TwoBody);
 }
 
 void Langevin::SetConstants()
 {
-   // for (int i=1; i<mNumNodes-1; i++)
-   // {
-   //    double x = mpGrid->mNodes[i].coordinate;
-   //    (*mpRhsVec)(i+1) = mpOde->mpRhsFunc(x);
-   // }
+   mpSolver->SetBetaInv(1/optsPhys.beta);
+   mpSolver->SetKappa1(optsPhys.kappa1);
+   mpSolver->SetKappa2(optsPhys.kappa2);
 }
 
 void Langevin::ApplyBoundaryConditions()
