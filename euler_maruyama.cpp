@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts1)
+EulerMaruyama::EulerMaruyama(opts_num opts1, int numParticles)
 {
     optsNum = opts1;
     // mGradV1 = righthandside;
@@ -23,7 +23,7 @@ EulerMaruyama::EulerMaruyama(opts_num opts1)
 
     double dt = optsNum.t_max/optsNum.num_steps;
     SetStepSize(dt);
-    SetNumParticles(optsNum.num_particles);
+    SetNumParticles(numParticles);
     
     mpTime = new double [GetNumSteps()];
     mpSolution = new double* [GetNumSteps()];

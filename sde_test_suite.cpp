@@ -28,17 +28,7 @@ double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 int main(int argc, char* argv[])
 {
     int numParticles = 1000;
-    int numSteps = 2000;
-
-    // opts_phys optsPhys = {{-0.5,0.5}, 
-    //                 numParticles,
-    //                 &V1Quart,
-    //                 &GradV1Quart,
-    //                 1.0, 
-    //                 &V2Gauss, 
-    //                 &GradV2Gauss, 
-    //                 1.0,
-    //                 0.1};                          
+    int numSteps = 2000;                         
 
     opts_phys optsPhys = {{-0.5,0.5}, 
                     numParticles,
@@ -46,11 +36,9 @@ int main(int argc, char* argv[])
                     1.0,
                     0.1};                          
 
-
-    opts_num optsNum = {numParticles, 
-                        numSteps, 
+    opts_num optsNum = {numSteps, 
                         20.0,
-                        -0.1};    
+                        -0.1};     
     
     McKeanVlasov mkc_v(optsPhys, GradV1Quart, GradV2Gauss);
     

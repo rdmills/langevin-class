@@ -14,7 +14,7 @@
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts1);
+        EulerMaruyama(opts_num opts1, int numParticles);
 
         int DiracDelta(int i, int j);
         

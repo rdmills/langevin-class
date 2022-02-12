@@ -17,6 +17,8 @@ McKeanVlasov::McKeanVlasov(opts_phys opts,
     myMinyMax[0] = opts.interval[0];
     myMinyMax[1] = opts.interval[1];
     mNumParticles = opts.numParticles;
+//    std::cout<<"mNumParticles = "<<mNumParticles<<std::endl;
+    
 }
 
 double McKeanVlasov::EvaluateRHS(double y, double t)    

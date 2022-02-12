@@ -50,7 +50,7 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-   mpSolver = new EulerMaruyama(optsNum);
+   mpSolver = new EulerMaruyama(optsNum, mpMcKeanVlasov->GetNumParticles());
    SetCoefficients();
    SetConstants();
 
