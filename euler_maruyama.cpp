@@ -12,9 +12,10 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts1, int numParticles)
+EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles)
 {
     optsNum = opts1;
+    mpBconds = pBcs;
     // mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
@@ -94,21 +95,57 @@ void EulerMaruyama::SolveEquation()
         mpSolution[0][j] = GetInitialData()[j];
     }
 
-    for (int j=0; j<GetNumParticles(); j++)
+    for (int i=1; i<GetNumSteps(); i++)
     {
-        for (int i=1; i<GetNumSteps(); i++)
+        for (int j=0; j<GetNumParticles(); j++)    
         {
-            mpSolution[i][j] = mpSolution[i-1][j] + dt*RightHandSide(mpSolution[i-1][j],mpTime[i-1]);
-        }
-    }
 
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        for (int i=1; i<GetNumSteps(); i++)
-        {
-            mpSolution[i][j] = mpSolution[i][j] + sqrt(2.0*GetBetaInv())*GetWiener();
+            mpSolution[i][j] = mpSolution[i-1][j] 
+                             + dt*RightHandSide(mpSolution[i-1][j],mpTime[i-1])
+                             + sqrt(2.0*GetBetaInv())*GetWiener();
+            mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j]);
             // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;
         }
     }
+    
+}
 
+double EulerMaruyama::ApplyBoundaryConditions(double particle)
+{
+    if (mpBconds->mBcIsPeriodic)
+    {
+        if(particle<yMinyMax[0])
+        {
+            return yMinyMax[1] - (yMinyMax[0]-particle);
+        }
+        else if(particle>yMinyMax[1])
+        {
+            return yMinyMax[0] + (particle-yMinyMax[1]);
+        }
+        else 
+        {
+            return particle;
+        }
+    }
+
+    if (mpBconds->mBcIsNoFlux)
+    {
+        if(particle<yMinyMax[0])
+        {
+            return yMinyMax[0] + (yMinyMax[0]-particle);
+        }
+        else if(particle>yMinyMax[1])
+        {
+            return yMinyMax[1] - (particle-yMinyMax[1]);
+        }
+        else 
+        {
+            return particle;
+        }
+    }
+
+    else
+    {
+        return particle;
+    }
 }

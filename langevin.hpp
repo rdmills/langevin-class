@@ -51,7 +51,6 @@ private:
    // // Methods for setting up langevin system and solving it
    void SetCoefficients();
    void SetConstants();
-   void ApplyBoundaryConditions();
 
 public:
    // // Sole constructor

@@ -14,13 +14,14 @@
 class EulerMaruyama : public Solver
 {       
     public: 
-        EulerMaruyama(opts_num opts1, int numParticles);
+        EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles);
 
         int DiracDelta(int i, int j);
         
         virtual double RightHandSide(double y, double t); 
         virtual double GetWiener();
         virtual void SolveEquation();
+        virtual double ApplyBoundaryConditions(double particle);
         virtual ~EulerMaruyama() 
         { 
             delete [] mpTime;

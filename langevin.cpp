@@ -53,7 +53,28 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-   mpSolver = new EulerMaruyama(optsNum, mpMcKeanVlasov->GetNumParticles());
+   
+   if (mBConds == "periodic")
+   {
+      BoundaryConditions bc_periodic;
+      bc_periodic.SetPeriodicBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc_periodic, mpMcKeanVlasov->GetNumParticles());
+   }
+   if (mBConds == "no_flux")
+   {
+      BoundaryConditions bc_noFlux;
+      bc_noFlux.SetNoFluxBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc_noFlux, mpMcKeanVlasov->GetNumParticles());      
+   }
+   else
+   {
+      BoundaryConditions bc_none;
+      bc_none.SetNoneBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc_none, mpMcKeanVlasov->GetNumParticles());      
+   }
+   // assert(mpSolver);
+   std::cout<<"Made new solver with BC = "<<mBConds<< "."<<std::endl;
+
    SetCoefficients();
    SetConstants();
 
@@ -65,9 +86,9 @@ void Langevin::DoStochastics()
    std::cout<<"...done."<<std::endl;
    std::cout<<"Computation time : "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
    
-   for (int j=0; j<mpSolver->GetNumParticles(); j++)
+   for (int i = 0; i<mpSolver->GetNumSteps(); i++)
    {
-      for (int i = 0; i<mpSolver->GetNumSteps(); i++)
+      for (int j=0; j<mpSolver->GetNumParticles(); j++)   
       {
          mpParticles[i][j] = mpSolver->mpSolution[i][j];
          // std::cout<<"mpParticles["<<i<<"]"<<"["<<j<<"] = "<< mpParticles[i][j]<<std::endl;
@@ -92,11 +113,7 @@ void Langevin::SetConstants()
    mpSolver->SetBetaInv(1/optsPhys.beta);
    mpSolver->SetKappa1(optsPhys.kappa1);
    mpSolver->SetKappa2(optsPhys.kappa2);
-}
-
-void Langevin::ApplyBoundaryConditions()
-{
-
+   mpSolver->SetYMinYMax(optsPhys.interval);
 }
 
 void Langevin::WriteSolutionFile()

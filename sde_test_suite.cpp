@@ -13,6 +13,8 @@
 const double PI = 3.14159265359;
 const double XI = 1.0;
 
+double Zero(double y, double t){return 0.0;}
+
 double V1Quad(double y, double t){return 0.5*(y*y-4);}
 
 double GradV1Quad(double y, double t){return y-4;}
@@ -31,7 +33,8 @@ int main(int argc, char* argv[])
     double tMax = 20.0;  
     int numSteps = 2000;
 
-    double yMin = -0.5, yMax = 0.5;    
+    double yMin = -2, yMax = 2;    
+    double yPhysMin = -4, yPhysMax = 4;    
 
     double* initialData;
     initialData = new double [numParticles];
@@ -42,7 +45,7 @@ int main(int argc, char* argv[])
         initialData[i] = initialData[i-1] + (yMax-yMin)/numParticles;
     }
 
-    opts_phys optsPhys = {.interval = {yMin,yMax}, 
+    opts_phys optsPhys = {.interval = {yPhysMin,yPhysMax}, 
                           .num_particles = numParticles,
                           .kappa1 = 2.0, 
                           .kappa2 = 1.0,
@@ -53,12 +56,15 @@ int main(int argc, char* argv[])
                         .initial_data = initialData};     
     
     McKeanVlasov mkc_v(optsPhys, GradV1Quart, GradV2Gauss);
+    // McKeanVlasov mkc_v(optsPhys, Zero, GradV2Gauss);
     
-    BoundaryConditions bc_periodic;
-    bc_periodic.SetPeriodicBc();
+    // BoundaryConditions bc_periodic;
+    // bc_periodic.SetPeriodicBc();
     
     // Langevin pl(&optsNum, &mkc_v, &bc_periodic);
-    Langevin pl(&optsNum, &mkc_v, "periodic");
+    // Langevin pl(&optsNum, &mkc_v, "periodic");
+    // Langevin pl(&optsNum, &mkc_v, "no_flux");
+    Langevin pl(&optsNum, &mkc_v, "none");
     
     pl.SetFilename("quart_data.dat", "quart_num.dat", "quart_phys.dat");
     pl.DoStochastics();

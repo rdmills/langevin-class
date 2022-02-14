@@ -91,6 +91,12 @@ double Solver::Getkappa2()
     return mkappa2;
 }
 
+void Solver::SetYMinYMax(double interval [2])
+{
+    yMinyMax[0] = interval[0];
+    yMinyMax[1] = interval[1];
+}
+
 void Solver::SetGradV1(double (*pGradV1)(double, double))
 {
     mGradV1 = pGradV1;
