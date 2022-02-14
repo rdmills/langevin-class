@@ -77,18 +77,19 @@ class PostProcessor:
                              lw=1,
                              edgecolor=self.opts_plot["edge_colour"], 
                              facecolor=self.opts_plot["face_colour"], 
-                             alpha=self.opts_plot["alpha"])
+                             alpha=self.opts_plot["alpha"],
+                             density=True)
 
         def prepare_animation(bar_container):
             
             def animate(frame_number):
-                n, _ = np.histogram(self.data[:,frame_number], HIST_BINS)
+                n, _ = np.histogram(self.data[:,frame_number], HIST_BINS, density=True)
                 for count, rect in zip(n, bar_container.patches):
                     rect.set_height(count)
                 return bar_container.patches
             return animate
 
-        ax.set_ylim(top=100) 
+        ax.set_ylim(top=3.0) 
         
         print("Plotting dynamics...")
         ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)

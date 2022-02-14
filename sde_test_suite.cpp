@@ -11,7 +11,7 @@
 #include "opts_phys.hpp"
 
 const double PI = 3.14159265359;
-const double XI = 0.1;
+const double XI = 2.0;
 
 double Zero1(double y, double t){return 0.0;}
 
@@ -34,7 +34,7 @@ double GradCos(double r){return sin(r);}
 int main(int argc, char* argv[])
 {
     int numParticles = 1000;
-    double tMax = 20.0;  
+    double tMax = 2.0;  
     int numSteps = 2000;
 
     double yMin = -4, yMax = 4;    
@@ -52,8 +52,8 @@ int main(int argc, char* argv[])
     opts_phys optsPhys = {.interval = {yMin,yMax}, 
                           .num_particles = numParticles,
                           .kappa1 = 1.0, 
-                          .kappa2 = 2.0,
-                          .beta = 20.0};                          
+                          .kappa2 = 1.0,
+                          .beta = 10.0};                          
 
     opts_num optsNum = {.num_steps = numSteps, 
                         .t_max = tMax,
@@ -64,8 +64,8 @@ int main(int argc, char* argv[])
     McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss);
     // McKeanVlasov mkc_v(optsPhys, Zero1, GradCos);
     
-    Langevin pl(&optsNum, &mkc_v, "periodic");
-    // Langevin pl(&optsNum, &mkc_v, "no_flux");
+    // Langevin pl(&optsNum, &mkc_v, "periodic");
+    Langevin pl(&optsNum, &mkc_v, "no_flux");
     // Langevin pl(&optsNum, &mkc_v, "none");
     
     pl.SetFilename("quart_data.dat", "quart_num.dat", "quart_phys.dat");
