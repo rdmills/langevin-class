@@ -16,7 +16,6 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
 {
     optsNum = opts1;
     mpBconds = pBcs;
-    // mGradV1 = righthandside;
 
     SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
@@ -39,41 +38,11 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     mDistribution = distribution;
 }
 
-int EulerMaruyama::DiracDelta(int i, int j)
-{
-    if (i==j)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-// double EulerMaruyama::TwoBody(double* pParticles)
+// double EulerMaruyama::RightHandSide(double y, double t)
 // {
-//     double v2 = 0.0;
-    
-//     for (int i=0; i<GetNumParticles(); i++)
-//     {
-//         for (int j=0; j<GetNumParticles(); j++)
-//             {
-//                 if (i!=j)
-//                 {
-//                     double r = abs(pParticles[i]-pParticles[j]);
-//                     v2 += 
-//                 }
-//             }
-
-//     }
+//     // return -(*mRhs)(y,t);
+//     return -Getkappa1()*(*mGradV1)(y,t);
 // }
-
-double EulerMaruyama::RightHandSide(double y, double t)
-{
-    // return -(*mRhs)(y,t);
-    return -Getkappa1()*(*mGradV1)(y,t);
-}
 
 double EulerMaruyama::GetWiener()
 {
@@ -164,11 +133,6 @@ double* EulerMaruyama::test(double* state, double t)
     }
     delete[] v2;
 
-    // for (int j=0; j<GetNumParticles(); j++)
-    // {
-    //     std::cout<< "force["<<j<<"] = "<<force[j]<<std::endl;
-    // }
-
     return force;
 }
 
@@ -212,7 +176,6 @@ void EulerMaruyama::SolveEquation()
 
 double EulerMaruyama::ApplyBoundaryConditions(double particle)
 {
-    // std::cout<<"mpBconds->mBcIsPeriodic : "<<mpBconds->mBcIsPeriodic<<std::endl;
     if (mpBconds->mBcIsPeriodic)
     {
         if(particle<yMinyMax[0])

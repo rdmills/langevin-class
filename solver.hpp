@@ -67,7 +67,8 @@ class Solver
 
         void SetYMinYMax(double interval [2]);
 
-        virtual double RightHandSide(double y, double t) = 0; 
+        // virtual double RightHandSide(double y, double t) = 0; 
+        virtual double* test(double* state, double t) = 0;
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;
         virtual double ApplyBoundaryConditions(double particle) = 0;

@@ -52,8 +52,8 @@ int main(int argc, char* argv[])
     opts_phys optsPhys = {.interval = {yMin,yMax}, 
                           .num_particles = numParticles,
                           .kappa1 = 1.0, 
-                          .kappa2 = 1.0,
-                          .beta = 0.1};                          
+                          .kappa2 = 2.0,
+                          .beta = 20.0};                          
 
     opts_num optsNum = {.num_steps = numSteps, 
                         .t_max = tMax,
