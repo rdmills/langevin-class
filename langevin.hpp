@@ -30,8 +30,9 @@ private:
    // Pointer to instance of an SDE
    McKeanVlasov* mpMcKeanVlasov;
 
-   // Pointer to an instance of boundary conditions
-   BoundaryConditions* mpBconds;
+   // // Pointer to an instance of boundary conditions
+   // BoundaryConditions* mpBconds;
+   std::string mBConds;
 
    // Pointer to instance of a solver
    Solver* mpSolver;
@@ -53,10 +54,15 @@ private:
    void ApplyBoundaryConditions();
 
 public:
+   // // Sole constructor
+   // Langevin(opts_num* opts1,
+   //          McKeanVlasov* pSde, 
+   //          BoundaryConditions* pBcs);
+
    // Sole constructor
    Langevin(opts_num* opts1,
             McKeanVlasov* pSde, 
-            BoundaryConditions* pBcs);
+            std::string BC);
 
    // As memory is dynamically allocated the destructor
    // is overridden

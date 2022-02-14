@@ -12,13 +12,16 @@
 #include <cmath>
 #include <ctime>
 
+// Langevin::Langevin(opts_num* pOpts,
+//                    McKeanVlasov* pSde, 
+//                    BoundaryConditions* pBcs)
 Langevin::Langevin(opts_num* pOpts,
                    McKeanVlasov* pSde, 
-                   BoundaryConditions* pBcs)
+                   std::string BC)
 {
    optsNum        = *pOpts;
    mpMcKeanVlasov = pSde;
-   mpBconds       = pBcs;
+   mBConds       = BC;
    mNumParticles  = mpMcKeanVlasov->GetNumParticles();
 
    mpTime      = new double [optsNum.num_steps];

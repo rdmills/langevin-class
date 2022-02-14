@@ -57,7 +57,8 @@ int main(int argc, char* argv[])
     BoundaryConditions bc_periodic;
     bc_periodic.SetPeriodicBc();
     
-    Langevin pl(&optsNum, &mkc_v, &bc_periodic);
+    // Langevin pl(&optsNum, &mkc_v, &bc_periodic);
+    Langevin pl(&optsNum, &mkc_v, "periodic");
     
     pl.SetFilename("quart_data.dat", "quart_num.dat", "quart_phys.dat");
     pl.DoStochastics();
