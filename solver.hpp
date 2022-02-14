@@ -27,18 +27,20 @@ class Solver
         double mkappa2;
 
     protected:
+        double** mpSolution;
+        double* mpSolutionStateNow;
+        double* mpTime;
+        
         double (*mGradV1)(double y, double t);
         double (*mGradV2)(double r);
+        
         // Pointer to an instance of boundary conditions
         BoundaryConditions* mpBconds;    
-
         double yMinyMax [2];   
 
     public:
         friend class Langevin;
         opts_num optsNum;
-        double** mpSolution;
-        double* mpTime;
                 
         void SetNumSteps(int N);
         int GetNumSteps();

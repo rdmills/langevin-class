@@ -44,6 +44,26 @@
         "numeric": "cpp",
         "string": "cpp",
         "system_error": "cpp",
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "__bit_reference": "cpp",
+        "__config": "cpp",
+        "__debug": "cpp",
+        "__functional_base": "cpp",
+        "__hash_table": "cpp",
+        "__locale": "cpp",
+        "__mutex_base": "cpp",
+        "__nullptr": "cpp",
+        "__split_buffer": "cpp",
+        "__string": "cpp",
+        "__threading_support": "cpp",
+        "__tuple": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "string_view": "cpp",
+        "iomanip": "cpp",
+        "ios": "cpp",
+        "locale": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp"
     }
 }

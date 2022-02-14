@@ -11,9 +11,11 @@
 #include "opts_phys.hpp"
 
 const double PI = 3.14159265359;
-const double XI = 1.0;
+const double XI = 0.1;
 
-double Zero(double y, double t){return 0.0;}
+double Zero1(double y, double t){return 0.0;}
+
+double Zero2(double y){return 0.0;}
 
 double V1Quad(double y, double t){return 0.5*(y*y-4);}
 
@@ -27,27 +29,29 @@ double V2Gauss(double r){return exp(-0.5*r*r/(XI*XI));}
 
 double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
+double GradCos(double r){return sin(r);}
+
 int main(int argc, char* argv[])
 {
     int numParticles = 1000;
     double tMax = 20.0;  
     int numSteps = 2000;
 
-    double yMin = -2, yMax = 2;    
-    double yPhysMin = -4, yPhysMax = 4;    
+    double yMin = -4, yMax = 4;    
+    double yInitMin = -2, yInitMax = 2;    
 
     double* initialData;
     initialData = new double [numParticles];
-    initialData[0] = yMin;
+    initialData[0] = yInitMin;
     
     for (int i=1; i<numParticles; i++)
     {
-        initialData[i] = initialData[i-1] + (yMax-yMin)/numParticles;
+        initialData[i] = initialData[i-1] + (yInitMax-yInitMin)/numParticles;
     }
 
-    opts_phys optsPhys = {.interval = {yPhysMin,yPhysMax}, 
+    opts_phys optsPhys = {.interval = {yMin,yMax}, 
                           .num_particles = numParticles,
-                          .kappa1 = 2.0, 
+                          .kappa1 = 1.0, 
                           .kappa2 = 1.0,
                           .beta = 0.1};                          
 
@@ -55,16 +59,14 @@ int main(int argc, char* argv[])
                         .t_max = tMax,
                         .initial_data = initialData};     
     
-    McKeanVlasov mkc_v(optsPhys, GradV1Quart, GradV2Gauss);
-    // McKeanVlasov mkc_v(optsPhys, Zero, GradV2Gauss);
+    // McKeanVlasov mkc_v(optsPhys, Zero1, Zero2);
+    // McKeanVlasov mkc_v(optsPhys, GradV1Quart, Zero2);
+    McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss);
+    // McKeanVlasov mkc_v(optsPhys, Zero1, GradCos);
     
-    // BoundaryConditions bc_periodic;
-    // bc_periodic.SetPeriodicBc();
-    
-    // Langevin pl(&optsNum, &mkc_v, &bc_periodic);
-    // Langevin pl(&optsNum, &mkc_v, "periodic");
+    Langevin pl(&optsNum, &mkc_v, "periodic");
     // Langevin pl(&optsNum, &mkc_v, "no_flux");
-    Langevin pl(&optsNum, &mkc_v, "none");
+    // Langevin pl(&optsNum, &mkc_v, "none");
     
     pl.SetFilename("quart_data.dat", "quart_num.dat", "quart_phys.dat");
     pl.DoStochastics();

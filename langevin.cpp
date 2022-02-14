@@ -66,13 +66,14 @@ void Langevin::DoStochastics()
       bc_noFlux.SetNoFluxBc();
       mpSolver = new EulerMaruyama(optsNum, &bc_noFlux, mpMcKeanVlasov->GetNumParticles());      
    }
-   else
+   else if(mBConds == "none")
    {
+      std::cout<<"here"<<std::endl;
       BoundaryConditions bc_none;
       bc_none.SetNoneBc();
       mpSolver = new EulerMaruyama(optsNum, &bc_none, mpMcKeanVlasov->GetNumParticles());      
    }
-   // assert(mpSolver);
+   assert(mpSolver);
    std::cout<<"Made new solver with BC = "<<mBConds<< "."<<std::endl;
 
    SetCoefficients();
