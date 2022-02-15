@@ -57,7 +57,7 @@ class PostProcessor:
     def equilibrium_dist(self):
         h = 0.2    
         a = 5.0
-        HIST_BINS = np.linspace(-a-h, a+h, opts_plot["num_bins"])     
+        HIST_BINS = np.linspace(-a-h, a+h, self.opts_plot["num_bins"])     
         hist_eq = self.data[:,-1]
         _ = plt.hist(hist_eq, 
                      HIST_BINS,
@@ -72,7 +72,7 @@ class PostProcessor:
 
         h = 0.2    
         a = 5.0
-        HIST_BINS = np.linspace(-a-h, a+h, opts_plot["num_bins"])     
+        HIST_BINS = np.linspace(-a-h, a+h, self.opts_plot["num_bins"])     
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], 
@@ -187,16 +187,17 @@ class Player(FuncAnimation):
 
     def update(self,i):
         self.slider.set_val(i)
-
 if __name__ == "__main__":
     
     opts_plot = {"num_bins" : 50,
-                 "alpha" : 0.5,
-                 "bin_rule" : "auto",
-                 "edge_colour" : "white", 
-                 "face_colour" : "magenta"}
+                    "alpha" : 0.5,
+                    "bin_rule" : "auto",
+                    "edge_colour" : "white", 
+                    "face_colour" : "magenta"}
 
     mckean_vlasov = PostProcessor('gauss', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
+
+
 

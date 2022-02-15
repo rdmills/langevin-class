@@ -18,19 +18,13 @@ const double ALPHA = 0.5;
 
 double Zero1(double y, double t){return 0.0;}
 
-double V1Quad(double y, double t){return 0.5*(y*y-4);}
-
 double GradV1Quad(double y, double t){return y-4;}
-
-double V1Quart(double y, double t){return 1.0*(0.1*y*y*y*y-3.0*y*y);}
 
 double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-6.0*y);}
 
 // Two body kernels
 
 double Zero2(double y){return 0.0;}
-
-double V2Gauss(double r){return exp(-0.5*r*r/(XI*XI));}
 
 double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
