@@ -12,6 +12,21 @@
 #include <iostream>
 #include <vector>
 
+const int BARWIDTH = 70;
+
+void UpdateProgress(double progress)
+{
+    int pos = BARWIDTH * progress;
+    for (int i = 0; i < BARWIDTH; ++i) 
+    {
+        if (i < pos) std::cout << "\u2588";
+        else std::cout << " ";
+    }   
+
+    std::cout << "] " << int(progress * 100.0) << " %\r";
+    std::cout.flush();
+}
+
 EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles)
 {
     optsNum = opts1;
@@ -69,7 +84,6 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
                 *p_v2 += 0.0;
             }
         }
-        // std::cout<<"*p_v2 = "<<*p_v2<<std::endl;
         force[j] += *p_v2;
         delete p_v2;
     }
@@ -80,6 +94,7 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
 void EulerMaruyama::SolveEquation()
 {
     double dt = GetStepSize();
+    double tMax = GetTmax();
 
     mpTime[0] = 0.0; 
 
@@ -94,15 +109,20 @@ void EulerMaruyama::SolveEquation()
         mpSolutionStateNow[j] = mpSolution[0][j];
     }
 
+    double progress = 0.0;
+    std::cout << "[";
+
     for (int i=1; i<GetNumSteps(); i++)
-    {
+    {    
+        UpdateProgress(progress);
+
         double* force = RightHandSide(mpSolutionStateNow,mpTime[i-1]);
         
         for (int j=0; j<GetNumParticles(); j++)    
         {
             mpSolution[i][j] = mpSolution[i-1][j]
-                             + dt*force[j]
-                             + sqrt(2.0*GetBetaInv())*GetWiener();
+                            + dt*force[j]
+                            + sqrt(2.0*GetBetaInv())*GetWiener();
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j]);
         }
         
@@ -113,6 +133,8 @@ void EulerMaruyama::SolveEquation()
             mpSolutionStateNow[j] = mpSolution[i][j];
         }
     
+        progress = i*dt/tMax;
+
     }
     
 }

@@ -82,7 +82,7 @@ void Langevin::DoStochastics()
    tstart = time(0);
    mpSolver->SolveEquation();
    tend = time(0); 
-   std::cout<<"...done."<<std::endl;
+   std::cout<<"\n...done."<<std::endl;
    std::cout<<"Computation time : "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
    
    for (int i = 0; i<mpSolver->GetNumSteps(); i++)
