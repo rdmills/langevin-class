@@ -59,7 +59,8 @@ class PostProcessor:
         _ = plt.hist(hist_eq, 
                      bins=self.opts_plot["bin_rule"],
                      edgecolor=self.opts_plot["edge_colour"],
-                     facecolor=self.opts_plot["face_colour"])
+                     facecolor=self.opts_plot["face_colour"],
+                     density = True)
         
         print("Plotting equilibrium density...")
         plt.show()

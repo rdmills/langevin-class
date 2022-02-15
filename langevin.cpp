@@ -53,25 +53,23 @@ Langevin::~Langevin()
 void Langevin::DoStochastics()
 {
    // ApplyBoundaryConditions();
-   
+   BoundaryConditions bc;
+
    if (mBConds == "periodic")
    {
-      BoundaryConditions bc_periodic;
-      bc_periodic.SetPeriodicBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc_periodic, mpMcKeanVlasov->GetNumParticles());
+      bc.SetPeriodicBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
    }
-   if (mBConds == "no_flux")
+   else if (mBConds == "no_flux")
    {
-      BoundaryConditions bc_noFlux;
-      bc_noFlux.SetNoFluxBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc_noFlux, mpMcKeanVlasov->GetNumParticles());      
+      bc.SetNoFluxBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
+
    }
    else if(mBConds == "none")
    {
-      std::cout<<"here"<<std::endl;
-      BoundaryConditions bc_none;
-      bc_none.SetNoneBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc_none, mpMcKeanVlasov->GetNumParticles());      
+      bc.SetNoneBc();
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
    }
    assert(mpSolver);
    std::cout<<"Made new solver with BC = "<<mBConds<< "."<<std::endl;
@@ -96,11 +94,11 @@ void Langevin::DoStochastics()
       }
    }
    
-   std::cout<<"*********"<<std::endl;
+   std::cout<<"******************"<<std::endl;
    std::cout<<"Writing data to file "<<mOutputData<<"..."<<std::endl;
    WriteSolutionFile();
    std::cout<<"...done"<<std::endl;
-   std::cout<<"*********"<<std::endl;
+   std::cout<<"******************"<<std::endl;
 }
 
 void Langevin::SetCoefficients()

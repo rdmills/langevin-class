@@ -106,3 +106,46 @@ void Solver::SetGradV2(double (*pGradV2)(double))
 {
     mGradV2 = pGradV2;
 }
+
+double Solver::ApplyBoundaryConditions(double particle)
+{
+    // std::cout<<mpBconds->mBcIsPeriodic<<std::endl;
+    if (mpBconds->mBcIsPeriodic)
+    {
+        if(particle<yMinyMax[0])
+        {
+            return yMinyMax[1] - (yMinyMax[0]-particle);
+        }
+        else if(particle>yMinyMax[1])
+        {
+            return yMinyMax[0] + (particle-yMinyMax[1]);
+        }
+        else 
+        {
+            return particle;
+        }
+    }
+    
+    if (mpBconds->mBcIsNoFlux)
+    {
+        if(particle<yMinyMax[0])
+        {
+            return yMinyMax[0] + (yMinyMax[0]-particle);
+            // return yMinyMax[0];
+        }
+        else if(particle>yMinyMax[1])
+        {
+            return yMinyMax[1] - (particle-yMinyMax[1]);
+            // return yMinyMax[1];
+        }
+        else 
+        {
+            return particle;
+        }
+    }
+
+    else
+    {
+        return particle;
+    }
+}

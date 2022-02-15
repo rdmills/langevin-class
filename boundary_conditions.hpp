@@ -15,23 +15,14 @@ public:
    // access boundary conditions.
    friend class Solver;
 protected:
-   // bool mBcIsPeriodic;
-   // bool mBcIsNoFlux;
-   // bool mBcIsNone;
-   bool mLhsBcIsNeumann;
-   bool mRhsBcIsNeumann;
-   double mLhsBcValue;
-   double mRhsBcValue;
-public:
    bool mBcIsPeriodic;
    bool mBcIsNoFlux;
    bool mBcIsNone;
+public:
    BoundaryConditions();
    void SetPeriodicBc();
    void SetNoFluxBc();
    void SetNoneBc();
-   void SetLhsNeumannBc(double lhsDerivValue);
-   void SetRhsNeumannBc(double rhsDerivValue);
 };
 
 #endif

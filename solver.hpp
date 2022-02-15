@@ -66,12 +66,12 @@ class Solver
         double Getkappa2();
 
         void SetYMinYMax(double interval [2]);
+        double ApplyBoundaryConditions(double particle);
 
-        // virtual double RightHandSide(double y, double t) = 0; 
-        virtual double* test(double* state, double t) = 0;
+        virtual double* RightHandSide(double* state, double t) = 0;
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;
-        virtual double ApplyBoundaryConditions(double particle) = 0;
+        
         virtual ~Solver() {};
 };
 

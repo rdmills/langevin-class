@@ -13,8 +13,6 @@ BoundaryConditions::BoundaryConditions()
    mBcIsPeriodic = false;
    mBcIsNoFlux = false;
    mBcIsNone = false;
-   mLhsBcIsNeumann = false;
-   mRhsBcIsNeumann = false;
 }
 
 void BoundaryConditions::SetNoneBc()
@@ -36,22 +34,4 @@ void BoundaryConditions::SetNoFluxBc()
    assert(!mBcIsPeriodic);
    assert(!mBcIsNone);
    mBcIsNoFlux = true;
-}
-
-void BoundaryConditions::SetLhsNeumannBc(double lhsDerivValue)
-{
-   assert(!mBcIsPeriodic);
-   assert(!mBcIsNoFlux);
-   assert(!mBcIsNone);
-   mLhsBcIsNeumann = true;
-   mLhsBcValue = lhsDerivValue;
-}
-
-void BoundaryConditions::SetRhsNeumannBc(double rhsDerivValue)
-{
-   assert(!mBcIsPeriodic);
-   assert(!mBcIsNoFlux);
-   assert(!mBcIsNone);
-   mRhsBcIsNeumann = true;
-   mRhsBcValue = rhsDerivValue;
 }

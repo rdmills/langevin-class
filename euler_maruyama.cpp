@@ -38,49 +38,12 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     mDistribution = distribution;
 }
 
-// double EulerMaruyama::RightHandSide(double y, double t)
-// {
-//     // return -(*mRhs)(y,t);
-//     return -Getkappa1()*(*mGradV1)(y,t);
-// }
-
 double EulerMaruyama::GetWiener()
 {
     return mDistribution(mGenerator);
 }
 
-// void EulerMaruyama::SolveEquation()
-// {
-//     double dt = GetStepSize();
-
-//     mpTime[0] = 0.0; 
-
-//     for (int i=1; i<GetNumSteps(); i++)
-//     {
-//         mpTime[i] = mpTime[i-1] + dt;
-//     }
-    
-//     for (int j=0; j<GetNumParticles(); j++)
-//     {
-//         mpSolution[0][j] = GetInitialData()[j];
-//     }
-
-//     for (int i=1; i<GetNumSteps(); i++)
-//     {
-//         for (int j=0; j<GetNumParticles(); j++)    
-//         {
-
-//             mpSolution[i][j] = mpSolution[i-1][j] 
-//                              + dt*RightHandSide(mpSolution[i-1][j],mpTime[i-1])
-//                              + sqrt(2.0*GetBetaInv())*GetWiener();
-//             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j]);
-//             // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;
-//         }
-//     }
-    
-// }
-
-double* EulerMaruyama::test(double* state, double t)
+double* EulerMaruyama::RightHandSide(double* state, double t)
 {
     double* force;
     force = new double [GetNumParticles()];
@@ -89,6 +52,8 @@ double* EulerMaruyama::test(double* state, double t)
         force[j] = -Getkappa1()*(*mGradV1)(state[j],t);
         // std::cout<< "force["<<j<<"] = "<<force[j]<<std::endl;
     }
+
+    // OPTIMISE THIS
 
     double** v2;
     v2 = new double* [GetNumParticles()];
@@ -155,61 +120,23 @@ void EulerMaruyama::SolveEquation()
 
     for (int i=1; i<GetNumSteps(); i++)
     {
-        double* f = test(mpSolutionStateNow,mpTime[i-1]);
+        double* force = RightHandSide(mpSolutionStateNow,mpTime[i-1]);
+        
         for (int j=0; j<GetNumParticles(); j++)    
         {
             mpSolution[i][j] = mpSolution[i-1][j]
-                             + dt*f[j]
+                             + dt*force[j]
                              + sqrt(2.0*GetBetaInv())*GetWiener();
-            
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j]);
-            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;
         }
-        delete[] f;
+        
+        delete[] force;
+        
         for (int j=0; j<GetNumParticles(); j++)
         {
             mpSolutionStateNow[j] = mpSolution[i][j];
         }
+    
     }
     
-}
-
-double EulerMaruyama::ApplyBoundaryConditions(double particle)
-{
-    if (mpBconds->mBcIsPeriodic)
-    {
-        if(particle<yMinyMax[0])
-        {
-            return yMinyMax[1] - (yMinyMax[0]-particle);
-        }
-        else if(particle>yMinyMax[1])
-        {
-            return yMinyMax[0] + (particle-yMinyMax[1]);
-        }
-        else 
-        {
-            return particle;
-        }
-    }
-
-    if (mpBconds->mBcIsNoFlux)
-    {
-        if(particle<yMinyMax[0])
-        {
-            return yMinyMax[0] + (yMinyMax[0]-particle);
-        }
-        else if(particle>yMinyMax[1])
-        {
-            return yMinyMax[1] - (particle-yMinyMax[1]);
-        }
-        else 
-        {
-            return particle;
-        }
-    }
-
-    else
-    {
-        return particle;
-    }
 }
