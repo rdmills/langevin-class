@@ -1,52 +1,47 @@
 /*
     mckean_vlasov.cpp
-    Entry point for running langevin dynamics on a finite interval.
+    Langevin problem definition including definitons of potential(s).
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
 
-#include <iostream>
-#include "langevin.hpp"
-#include "line1d.hpp"
+#include "mckean_vlasov.hpp"
 
-int main(int argc, char* argv[])
+McKeanVlasov::McKeanVlasov(opts_phys opts, 
+                           double (*pGradV1)(double, double),
+                           double (*pGradV2)(double))
 {
-    // Choose numerical and physical options.
-    struct opts_num optsNum   = {12,"Euler–Maruyama", 10, 1.0};
-    struct opts_phys optsPhys = {{-0.5,0.5}};
+    mGradV1External = pGradV1;
+    mGradV2TwoBody = pGradV2;
+    optsPhys = opts;
+    myMinyMax[0] = opts.interval[0];
+    myMinyMax[1] = opts.interval[1];
+    mNumParticles = opts.num_particles;
+    
+}
 
-    // Make a 1d line.
-    Line1D aLine(optsNum,optsPhys);
+double McKeanVlasov::EvaluateRHS(double y, double t)    
+{
+    return -(*mGradV1External)(y,t);
+}
 
-    std::cout<<*(aLine.GetyMinyMax()+1)<<std::endl;
-    std::cout<<aLine.GetIntegrator()<<std::endl;
+void McKeanVlasov::SetNumParticles(int numParticles)
+{
+    mNumParticles = numParticles;   
+}
 
+int McKeanVlasov::GetNumParticles()
+{
+    return mNumParticles;
+}
 
-    // Langevin pl(optsNum);
+void McKeanVlasov::SetYminYmax(double interval[2])
+{
+    myMinyMax[0] = interval[0];
+    myMinyMax[1] = interval[1];
+}
 
-    // pl.InitialUniformParticles();
-
-    // for (int i = 0; i < pl.particles.size(); i++)
-    // {
-    //     for (int j = 0; j < pl.particles[i].size(); j++)
-    //     {
-    //         pl.particles[i][j] = 1.0;
-    //     }   
-    // }
-
-    // for (int i = 0; i < pl.particles.size(); i++)
-    //     {
-    //         for (int j = 0; j < pl.particles[i].size(); j++)
-    //         {
-    //             std::cout << pl.particles[i][j] << " ";
-    //         }   
-    //         std::cout << std::endl;
-    //     }
-
-
-    // std::cout << pl.dW(0.1);
-    // std::cout << pl.dW(0.1);
-
-
-    return 0;
+double* McKeanVlasov::GetYminYmax()
+{
+    return myMinyMax;
 }

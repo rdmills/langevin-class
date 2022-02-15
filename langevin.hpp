@@ -1,55 +1,86 @@
 /*
-    langevin.hpp
-    Langevin abstract class for langevin dynamics on a finite interval.
+    Langevin.hpp
+    Langevin dynamics class.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
 
-#ifndef LANGEVINHEADERDEF
-#define LANGEVINHEADERDEF
+#ifndef BVPSDEHEADERDEF
+#define BVPSDEHEADERDEF
+
+#include <math.h>
 #include <string>
 #include <vector>
-#include <random>
-#include <math.h>
+#include "mckean_vlasov.hpp"
+#include "solver.hpp"
+#include "euler_maruyama.hpp"
+#include "boundary_conditions.hpp"
 
-// Numerical options for time integrator.
-// Example:
-//      struct opts_num optsNum = {12,"Euler–Maruyama", 10, 1.0};
-struct opts_num
-    {
-        int num_steps;
-        std::string integrator;
-        int num_particles;
-        float t_max;
-    };
-
-// Abstract Langevin base class.
 class Langevin
 {
-    public:
-    // properties
-        int numParticles;
-        std::vector<float> initParticles;
-        std::vector< std::vector<float> > particles; 
-        
-        float tMax;
-        float numSteps;
-        float dt;
+private:
+   // Only allow instance to be created from a SDE, boundary
+   // conditions, and number of particles(the
+   // copy constructor is private)
+   Langevin(const Langevin& otherLangevin){}
 
-        opts_num optsNum;
-    
-    // construction
-        Langevin(opts_num opts1);
-    
-    // methods  
-        void SetIntegrator(std::string integrator);
-        std::string GetIntegrator() const;
-        virtual void InitialiseParticles() = 0; // dynamic binding
+   // Number of particles in in domain
+   int mNumParticles;
 
-    protected:
-    // properties
-        std::string mIntegratorType;
-    
+   // Pointer to instance of an SDE
+   McKeanVlasov* mpMcKeanVlasov;
+
+   // Initial data function pointer
+   double* (*mpInitialData)(double* yInit, int numParticles);
+
+   // // Pointer to an instance of boundary conditions
+   // BoundaryConditions* mpBconds;
+   std::string mBConds;
+
+   // Pointer to instance of a solver
+   Solver* mpSolver;
+
+   // Vector for solution to particle trajectories
+   // std::vector<double>* mpParticles;
+   double** mpParticles;
+   double* mpTime;
+
+   // Allow user to specify the output file or
+   // use a default name
+   std::string mOutputData;
+   std::string mNumList;
+   std::string mPhysList;
+
+   // // Methods for setting up langevin system and solving it
+   void SetCoefficients();
+   void SetConstants();
+   void SetInitialData();
+
+public:
+   // Sole constructor
+   Langevin(opts_num* opts1,
+            McKeanVlasov* pSde, 
+            double* (*pInitialData)(double*, int),
+            std::string BC);
+
+   // As memory is dynamically allocated the destructor
+   // is overridden
+   ~Langevin();
+
+   opts_num optsNum;
+   opts_phys optsPhys;
+
+   void SetFilename(const std::string& dataName, 
+                    const std::string& numName,
+                    const std::string& physName)
+   {
+      mOutputData = dataName;
+      mNumList    = numName;
+      mPhysList   = physName;
+   }
+   
+   void DoStochastics();
+   void WriteSolutionFile();
 };
 
-#endif 
+#endif
