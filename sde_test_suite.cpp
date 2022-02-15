@@ -1,6 +1,6 @@
 /*
     sde_test_suite.cpp
-    Entry point for running langevin dynamics on a finite interval.
+    Entry point for running langevin dynamics in 1D.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
 */
@@ -33,8 +33,6 @@ double Zero2(double y){return 0.0;}
 double V2Gauss(double r){return exp(-0.5*r*r/(XI*XI));}
 
 double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
-
-double GradCos(double r){return sin(r);}
 
 // initial data
 
@@ -85,7 +83,6 @@ int main(int argc, char* argv[])
     McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss);
     // McKeanVlasov mkc_v(optsPhys, Zero1, Zero2);
     // McKeanVlasov mkc_v(optsPhys, GradV1Quart, Zero2);
-    // McKeanVlasov mkc_v(optsPhys, Zero1, GradCos);
     
     Langevin pl(&optsNum, &mkc_v, Hat, "no_flux");    
     // Langevin pl(&optsNum, &mkc_v, Uniform, "no_flux");    

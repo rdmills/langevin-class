@@ -14,7 +14,7 @@
 
 const int BARWIDTH = 70;
 
-void UpdateProgress(double progress)
+void UpdateProgressBar(double progress)
 {
     int pos = BARWIDTH * progress;
     for (int i = 0; i < BARWIDTH; ++i) 
@@ -31,7 +31,6 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     optsNum = opts1;
     mpBconds = pBcs;
 
-    // SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
 
@@ -112,15 +111,15 @@ void EulerMaruyama::SolveEquation()
     
     for (int i=1; i<GetNumSteps(); i++)
     {    
-        UpdateProgress(progress);
+        UpdateProgressBar(progress);
 
         double* force = RightHandSide(mpSolutionStateNow,mpTime[i-1]);
         
         for (int j=0; j<GetNumParticles(); j++)    
         {
             mpSolution[i][j] = mpSolution[i-1][j]
-                            + dt*force[j]
-                            + sqrt(2.0*GetBetaInv())*GetWiener();
+                             + dt*force[j]
+                             + sqrt(2.0*GetBetaInv())*GetWiener();
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
         }
         
@@ -130,9 +129,8 @@ void EulerMaruyama::SolveEquation()
         {
             mpSolutionStateNow[j] = mpSolution[i][j];
         }
-    
-        progress = i*dt/tMax;
 
+        progress = i*dt/tMax;
     }
     
 }

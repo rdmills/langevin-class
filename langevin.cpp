@@ -65,17 +65,18 @@ void Langevin::DoStochastics()
       mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
 
    }
-   else if(mBConds == "none")
+   else if (mBConds == "none")
    {
       bc.SetNoneBc();
       mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
    }
 
-   if(!mpSolver)
+   if (!mpSolver)
    {
       std::cout<<"Solver with BC = "<< mBConds<<" unavailable."<<std::endl;
    }
    assert(mpSolver);
+   
    std::cout<<"Made new Langevin solver with BC = "<<mBConds<< "."<<std::endl;
 
    SetCoefficients();

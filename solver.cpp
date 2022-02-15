@@ -111,11 +111,11 @@ double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)
 {
     if (mpBconds->mBcIsPeriodic)
     {
-        if(particle_new<yMinyMax[0])
+        if (particle_new<yMinyMax[0])
         {
             return yMinyMax[1] - (yMinyMax[0]-particle_new);
         }
-        else if(particle_new>yMinyMax[1])
+        else if (particle_new>yMinyMax[1])
         {
             return yMinyMax[0] + (particle_new-yMinyMax[1]);
         }
@@ -130,11 +130,11 @@ double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)
     
     if (mpBconds->mBcIsNoFlux)
     {
-        if(particle_new<yMinyMax[0])
+        if (particle_new<yMinyMax[0])
         {
             return yMinyMax[0] - v*dt;
         }
-        else if(particle_new>yMinyMax[1])
+        else if (particle_new>yMinyMax[1])
         {
             return yMinyMax[1] - v*dt; 
         }

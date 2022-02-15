@@ -61,7 +61,6 @@ class PostProcessor:
         hist_eq = self.data[:,-1]
         _ = plt.hist(hist_eq, 
                      HIST_BINS,
-                    #  bins=self.opts_plot["bin_rule"],
                      edgecolor=self.opts_plot["edge_colour"],
                      facecolor=self.opts_plot["face_colour"],
                      density = True)
@@ -73,7 +72,6 @@ class PostProcessor:
 
         h = 0.2    
         a = 5.0
-        # HIST_BINS = np.linspace(-self.initial_data-h, self.initial_data+h, 100)     
         HIST_BINS = np.linspace(-a-h, a+h, opts_plot["num_bins"])     
 
         fig, ax = plt.subplots()
