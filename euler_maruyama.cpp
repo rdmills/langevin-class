@@ -22,7 +22,6 @@ void UpdateProgress(double progress)
         if (i < pos) std::cout << "\u2588";
         else std::cout << " ";
     }   
-
     std::cout << "] " << int(progress * 100.0) << " %\r";
     std::cout.flush();
 }
@@ -32,7 +31,7 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     optsNum = opts1;
     mpBconds = pBcs;
 
-    SetInitialData(optsNum.initial_data);
+    // SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
 
@@ -65,7 +64,6 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
     for (int j=0; j<GetNumParticles(); j++)
     {
         force[j] = -Getkappa1()*(*mGradV1)(state[j],t);
-        // std::cout<< "force["<<j<<"] = "<<force[j]<<std::endl;
     }
     
     for (int j=0; j<GetNumParticles(); j++)
@@ -111,7 +109,7 @@ void EulerMaruyama::SolveEquation()
 
     double progress = 0.0;
     std::cout << "[";
-
+    
     for (int i=1; i<GetNumSteps(); i++)
     {    
         UpdateProgress(progress);
@@ -123,7 +121,7 @@ void EulerMaruyama::SolveEquation()
             mpSolution[i][j] = mpSolution[i-1][j]
                             + dt*force[j]
                             + sqrt(2.0*GetBetaInv())*GetWiener();
-            mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j]);
+            mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
         }
         
         delete[] force;

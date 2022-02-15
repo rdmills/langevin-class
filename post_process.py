@@ -55,9 +55,13 @@ class PostProcessor:
         self.num_particles = phys_list[2]                                 
 
     def equilibrium_dist(self):
+        h = 0.2    
+        a = 5.0
+        HIST_BINS = np.linspace(-a-h, a+h, opts_plot["num_bins"])     
         hist_eq = self.data[:,-1]
         _ = plt.hist(hist_eq, 
-                     bins=self.opts_plot["bin_rule"],
+                     HIST_BINS,
+                    #  bins=self.opts_plot["bin_rule"],
                      edgecolor=self.opts_plot["edge_colour"],
                      facecolor=self.opts_plot["face_colour"],
                      density = True)
@@ -70,7 +74,7 @@ class PostProcessor:
         h = 0.2    
         a = 5.0
         # HIST_BINS = np.linspace(-self.initial_data-h, self.initial_data+h, 100)     
-        HIST_BINS = np.linspace(-a-h, a+h, 100)     
+        HIST_BINS = np.linspace(-a-h, a+h, opts_plot["num_bins"])     
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], 
@@ -188,13 +192,13 @@ class Player(FuncAnimation):
 
 if __name__ == "__main__":
     
-    opts_plot = {"num_bins" : 100,
+    opts_plot = {"num_bins" : 50,
                  "alpha" : 0.5,
                  "bin_rule" : "auto",
                  "edge_colour" : "white", 
                  "face_colour" : "magenta"}
 
-    mckean_vlasov = PostProcessor('quart', opts_plot)
+    mckean_vlasov = PostProcessor('gauss', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
 

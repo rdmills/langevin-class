@@ -11,17 +11,17 @@
 #include "langevin.hpp"
 #include <cmath>
 #include <ctime>
+#include <algorithm>
 
-// Langevin::Langevin(opts_num* pOpts,
-//                    McKeanVlasov* pSde, 
-//                    BoundaryConditions* pBcs)
 Langevin::Langevin(opts_num* pOpts,
                    McKeanVlasov* pSde, 
+                   double* (*pInitialData)(double*, int),
                    std::string BC)
 {
+   mpInitialData  = pInitialData;
    optsNum        = *pOpts;
    mpMcKeanVlasov = pSde;
-   mBConds       = BC;
+   mBConds        = BC;
    mNumParticles  = mpMcKeanVlasov->GetNumParticles();
 
    mpTime      = new double [optsNum.num_steps];
@@ -52,7 +52,6 @@ Langevin::~Langevin()
 
 void Langevin::DoStochastics()
 {
-   // ApplyBoundaryConditions();
    BoundaryConditions bc;
 
    if (mBConds == "periodic")
@@ -71,11 +70,17 @@ void Langevin::DoStochastics()
       bc.SetNoneBc();
       mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
    }
+
+   if(!mpSolver)
+   {
+      std::cout<<"Solver with BC = "<< mBConds<<" unavailable."<<std::endl;
+   }
    assert(mpSolver);
-   std::cout<<"Made new solver with BC = "<<mBConds<< "."<<std::endl;
+   std::cout<<"Made new Langevin solver with BC = "<<mBConds<< "."<<std::endl;
 
    SetCoefficients();
    SetConstants();
+   SetInitialData();
 
    time_t tstart, tend; 
    std::cout<<"Sampling dynamics..."<<std::endl;
@@ -109,10 +114,29 @@ void Langevin::SetCoefficients()
 
 void Langevin::SetConstants()
 {
-   mpSolver->SetBetaInv(1/optsPhys.beta);
+   mpSolver->SetBetaInv(1/float(optsPhys.beta));
    mpSolver->SetKappa1(optsPhys.kappa1);
    mpSolver->SetKappa2(optsPhys.kappa2);
    mpSolver->SetYMinYMax(optsPhys.interval);
+}
+
+void Langevin::SetInitialData()
+{
+   double* initial_data = mpInitialData(optsPhys.interval, mNumParticles);
+   
+   double* min = std::min_element( initial_data, initial_data + mNumParticles );
+   double* max = std::max_element( initial_data, initial_data + mNumParticles );
+   
+   if (!(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]))
+   {
+      std::cout<<"Particles initialised outside of finite domain."<<std::endl;
+      std::cout<<"Check initial data function."<<std::endl;
+   }
+   
+   assert(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]);
+   
+   mpSolver->SetInitialData(initial_data);
+   delete[] initial_data;
 }
 
 void Langevin::WriteSolutionFile()

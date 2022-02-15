@@ -31,9 +31,9 @@ double Solver::GetTmax()
     return mTmax;
 }
 
-void Solver::SetInitialData(double* y0)
+void Solver::SetInitialData(double* initialData)
 {
-    mInitialData = y0;
+    mInitialData = initialData;
 }
 
 double* Solver::GetInitialData()
@@ -107,45 +107,46 @@ void Solver::SetGradV2(double (*pGradV2)(double))
     mGradV2 = pGradV2;
 }
 
-double Solver::ApplyBoundaryConditions(double particle)
+double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)
 {
-    // std::cout<<mpBconds->mBcIsPeriodic<<std::endl;
     if (mpBconds->mBcIsPeriodic)
     {
-        if(particle<yMinyMax[0])
+        if(particle_new<yMinyMax[0])
         {
-            return yMinyMax[1] - (yMinyMax[0]-particle);
+            return yMinyMax[1] - (yMinyMax[0]-particle_new);
         }
-        else if(particle>yMinyMax[1])
+        else if(particle_new>yMinyMax[1])
         {
-            return yMinyMax[0] + (particle-yMinyMax[1]);
-        }
-        else 
-        {
-            return particle;
-        }
-    }
-    
-    if (mpBconds->mBcIsNoFlux)
-    {
-        if(particle<yMinyMax[0])
-        {
-            return yMinyMax[0] + (yMinyMax[0]-particle);
-            // return yMinyMax[0];
-        }
-        else if(particle>yMinyMax[1])
-        {
-            return yMinyMax[1] - (particle-yMinyMax[1]);
-            // return yMinyMax[1];
+            return yMinyMax[0] + (particle_new-yMinyMax[1]);
         }
         else 
         {
-            return particle;
+            return particle_new;
         }
     }
 
+    double dt = GetStepSize();
+    double v  = (particle_new-particle_old)/dt;
+    
+    if (mpBconds->mBcIsNoFlux)
+    {
+        if(particle_new<yMinyMax[0])
+        {
+            return yMinyMax[0] - v*dt;
+        }
+        else if(particle_new>yMinyMax[1])
+        {
+            return yMinyMax[1] - v*dt; 
+        }
+        else 
+        {
+            return particle_new;
+        }
+    }
     else
     {
-        return particle;
+        return particle_new;
     }
 }
+
+

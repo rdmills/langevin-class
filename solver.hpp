@@ -34,7 +34,6 @@ class Solver
         double (*mGradV1)(double y, double t);
         double (*mGradV2)(double r);
         
-        // Pointer to an instance of boundary conditions
         BoundaryConditions* mpBconds;    
         double yMinyMax [2];   
 
@@ -46,12 +45,13 @@ class Solver
         int GetNumSteps();
         void SetTmax(double T);
         double GetTmax();
-        void SetInitialData(double* y0);
-        double* GetInitialData();
         void SetStepSize(double dt);
         double GetStepSize();
         void SetNumParticles(int N);
         int GetNumParticles();
+        
+        void SetInitialData(double* initialData);
+        double* GetInitialData();
 
         void SetGradV1(double (*pGradV1)(double, double));
         void SetGradV2(double (*pGradV2)(double));
@@ -66,8 +66,10 @@ class Solver
         double Getkappa2();
 
         void SetYMinYMax(double interval [2]);
-        double ApplyBoundaryConditions(double particle);
-
+        
+        double ApplyBoundaryConditions(double particle_new, double particle_old);
+        void MakeInitialData();
+        
         virtual double* RightHandSide(double* state, double t) = 0;
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;
