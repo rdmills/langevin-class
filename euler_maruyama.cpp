@@ -12,12 +12,25 @@
 #include <iostream>
 #include <vector>
 
-EulerMaruyama::EulerMaruyama(opts_num opts1, int numParticles)
+const int BARWIDTH = 70;
+
+void UpdateProgressBar(double progress)
+{
+    int pos = BARWIDTH * progress;
+    for (int i = 0; i < BARWIDTH; ++i) 
+    {
+        if (i < pos) std::cout << "\u2588";
+        else std::cout << " ";
+    }   
+    std::cout << "] " << int(progress * 100.0) << " %\r";
+    std::cout.flush();
+}
+
+EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles)
 {
     optsNum = opts1;
-    // mGradV1 = righthandside;
+    mpBconds = pBcs;
 
-    SetInitialData(optsNum.initial_data);
     SetNumSteps(optsNum.num_steps);
     SetTmax(optsNum.t_max);
 
@@ -26,6 +39,7 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, int numParticles)
     SetNumParticles(numParticles);
     
     mpTime = new double [GetNumSteps()];
+    mpSolutionStateNow = new double [GetNumSteps()];
     mpSolution = new double* [GetNumSteps()];
     for(int i = 0; i< GetNumSteps(); i++)
     {
@@ -37,50 +51,47 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, int numParticles)
     mDistribution = distribution;
 }
 
-int EulerMaruyama::DiracDelta(int i, int j)
-{
-    if (i==j)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-// double EulerMaruyama::TwoBody(double* pParticles)
-// {
-//     double v2 = 0.0;
-    
-//     for (int i=0; i<GetNumParticles(); i++)
-//     {
-//         for (int j=0; j<GetNumParticles(); j++)
-//             {
-//                 if (i!=j)
-//                 {
-//                     double r = abs(pParticles[i]-pParticles[j]);
-//                     v2 += 
-//                 }
-//             }
-
-//     }
-// }
-
-double EulerMaruyama::RightHandSide(double y, double t)
-{
-    // return -(*mRhs)(y,t);
-    return -Getkappa1()*(*mGradV1)(y,t);
-}
-
 double EulerMaruyama::GetWiener()
 {
     return mDistribution(mGenerator);
 }
 
+double* EulerMaruyama::RightHandSide(double* state, double t)
+{
+    double* force;
+    force = new double [GetNumParticles()];
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        force[j] = -Getkappa1()*(*mGradV1)(state[j],t);
+    }
+    
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        double* p_v2;
+        p_v2 = new double;
+        *p_v2 = 0.0;
+        for (int k=0; k<GetNumParticles(); k++)
+        {
+            if (k!=j)
+            {
+                *p_v2 += (-Getkappa2())*(*mGradV2)(state[j]-state[k]);
+            }
+            else
+            {
+                *p_v2 += 0.0;
+            }
+        }
+        force[j] += *p_v2;
+        delete p_v2;
+    }
+
+    return force;
+}
+
 void EulerMaruyama::SolveEquation()
 {
     double dt = GetStepSize();
+    double tMax = GetTmax();
 
     mpTime[0] = 0.0; 
 
@@ -92,23 +103,34 @@ void EulerMaruyama::SolveEquation()
     for (int j=0; j<GetNumParticles(); j++)
     {
         mpSolution[0][j] = GetInitialData()[j];
+        mpSolutionStateNow[j] = mpSolution[0][j];
     }
 
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        for (int i=1; i<GetNumSteps(); i++)
+    double progress = 0.0;
+    std::cout << "[";
+    
+    for (int i=1; i<GetNumSteps(); i++)
+    {    
+        UpdateProgressBar(progress);
+
+        double* force = RightHandSide(mpSolutionStateNow,mpTime[i-1]);
+        
+        for (int j=0; j<GetNumParticles(); j++)    
         {
-            mpSolution[i][j] = mpSolution[i-1][j] + dt*RightHandSide(mpSolution[i-1][j],mpTime[i-1]);
+            mpSolution[i][j] = mpSolution[i-1][j]
+                             + dt*force[j]
+                             + sqrt(2.0*GetBetaInv())*GetWiener();
+            mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
         }
-    }
-
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        for (int i=1; i<GetNumSteps(); i++)
+        
+        delete[] force;
+        
+        for (int j=0; j<GetNumParticles(); j++)
         {
-            mpSolution[i][j] = mpSolution[i][j] + sqrt(2.0*GetBetaInv())*GetWiener();
-            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;
+            mpSolutionStateNow[j] = mpSolution[i][j];
         }
-    }
 
+        progress = i*dt/tMax;
+    }
+    
 }

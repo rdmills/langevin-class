@@ -13,18 +13,16 @@ class BoundaryConditions
 public:
    // The sde value class is able to
    // access boundary conditions.
-   friend class Langevin;
-private:
+   friend class Solver;
+protected:
    bool mBcIsPeriodic;
-   bool mLhsBcIsNeumann;
-   bool mRhsBcIsNeumann;
-   double mLhsBcValue;
-   double mRhsBcValue;
+   bool mBcIsNoFlux;
+   bool mBcIsNone;
 public:
    BoundaryConditions();
    void SetPeriodicBc();
-   void SetLhsNeumannBc(double lhsDerivValue);
-   void SetRhsNeumannBc(double rhsDerivValue);
+   void SetNoFluxBc();
+   void SetNoneBc();
 };
 
 #endif

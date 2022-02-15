@@ -30,8 +30,12 @@ private:
    // Pointer to instance of an SDE
    McKeanVlasov* mpMcKeanVlasov;
 
-   // Pointer to an instance of boundary conditions
-   BoundaryConditions* mpBconds;
+   // Initial data function pointer
+   double* (*mpInitialData)(double* yInit, int numParticles);
+
+   // // Pointer to an instance of boundary conditions
+   // BoundaryConditions* mpBconds;
+   std::string mBConds;
 
    // Pointer to instance of a solver
    Solver* mpSolver;
@@ -50,13 +54,14 @@ private:
    // // Methods for setting up langevin system and solving it
    void SetCoefficients();
    void SetConstants();
-   void ApplyBoundaryConditions();
+   void SetInitialData();
 
 public:
    // Sole constructor
    Langevin(opts_num* opts1,
             McKeanVlasov* pSde, 
-            BoundaryConditions* pBcs);
+            double* (*pInitialData)(double*, int),
+            std::string BC);
 
    // As memory is dynamically allocated the destructor
    // is overridden

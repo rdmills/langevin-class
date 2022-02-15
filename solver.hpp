@@ -26,32 +26,34 @@ class Solver
         double mkappa1;
         double mkappa2;
 
-        // Pointer to an instance of boundary conditions
-        BoundaryConditions* mpBconds;
+    protected:
+        double** mpSolution;
+        double* mpSolutionStateNow;
+        double* mpTime;
+        
+        double (*mGradV1)(double y, double t);
+        double (*mGradV2)(double r);
+        
+        BoundaryConditions* mpBconds;    
+        double yMinyMax [2];   
 
     public:
         friend class Langevin;
         opts_num optsNum;
-        double** mpSolution;
-        double* mpTime;
                 
         void SetNumSteps(int N);
         int GetNumSteps();
         void SetTmax(double T);
         double GetTmax();
-        void SetInitialData(double* y0);
-        double* GetInitialData();
         void SetStepSize(double dt);
         double GetStepSize();
         void SetNumParticles(int N);
         int GetNumParticles();
+        
+        void SetInitialData(double* initialData);
+        double* GetInitialData();
 
-        // double (*mV1)(double y, double t); 
-        double (*mGradV1)(double y, double t);
         void SetGradV1(double (*pGradV1)(double, double));
-
-        // double (*mV2)(double y, double t); 
-        double (*mGradV2)(double r);
         void SetGradV2(double (*pGradV2)(double));
 
         void SetBetaInv(double betaInv);
@@ -63,9 +65,15 @@ class Solver
         void SetKappa2(double kappa1);
         double Getkappa2();
 
-        virtual double RightHandSide(double y, double t) = 0; 
+        void SetYMinYMax(double interval [2]);
+        
+        double ApplyBoundaryConditions(double particle_new, double particle_old);
+        void MakeInitialData();
+        
+        virtual double* RightHandSide(double* state, double t) = 0;
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;
+        
         virtual ~Solver() {};
 };
 
