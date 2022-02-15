@@ -13,7 +13,7 @@ class PostProcessor:
         self.opts_plot = opts_plot
         self.data_file_name = data_file_name
         self.data        = None
-        self.Time        = None
+        self.time        = None
         self.state_data  = None
         self.read_data()
 
@@ -25,7 +25,8 @@ class PostProcessor:
         self.num_particles = None
         self.get_phys_num_opts()
 
-        self.num_frames = self.num_steps
+        self.num_frames = int(self.num_steps)
+        self.ax_y_lim = 1.0
 
     def read_data(self):    
         print("Reading " + self.data_file_name + " data...")
@@ -35,14 +36,13 @@ class PostProcessor:
         self.data = data[:-1,:]
         self.time = data[-1,:]
         self.state_data = self.data.T
-        print("...done.")
+        print("...done.\n")
 
     def get_phys_num_opts(self):    
         num_list = np.genfromtxt(self.data_file_name + '_num.dat',
                                  dtype=float,
                                  delimiter=' ')
-        
-        print("num_list = {}".format(num_list))     
+        print("numerical opts = [t_max num_steps step_size] = {}".format(num_list))     
         self.T_max     = num_list[0]                                    
         self.num_steps = num_list[1]                                    
         self.step_size = num_list[2]                                                                   
@@ -50,29 +50,41 @@ class PostProcessor:
         phys_list = np.genfromtxt(self.data_file_name + '_phys.dat',
                                  dtype=float,
                                  delimiter=' ')
-        print("phys_list = {} \n".format(phys_list))
+        print("physical opts  = [y_min y_max #particles]    = {} \n".format(phys_list))
         self.y_min_y_max   = phys_list[0:2]                                 
         self.num_particles = phys_list[2]                                 
 
     def equilibrium_dist(self):
         h = 0.2    
-        a = 5.0
-        HIST_BINS = np.linspace(-a-h, a+h, self.opts_plot["num_bins"])     
+        HIST_BINS = np.linspace(self.y_min_y_max[0]-h,
+                                self.y_min_y_max[1]+h, self.opts_plot["num_bins"])     
+        
+        n, _ = np.histogram(self.data[:,-1], HIST_BINS, density=True)
+        y_lim = max(n)
+        
         hist_eq = self.data[:,-1]
-        _ = plt.hist(hist_eq, 
+        fig, ax = plt.subplots()
+        _ = ax.hist(hist_eq, 
                      HIST_BINS,
                      edgecolor=self.opts_plot["edge_colour"],
                      facecolor=self.opts_plot["face_colour"],
                      density = True)
-        
+        ax.set_ylim(top=y_lim) 
+
         print("Plotting equilibrium density...")
         plt.show()
 
     def dynamic_dist(self):    
 
-        h = 0.2    
-        a = 5.0
-        HIST_BINS = np.linspace(-a-h, a+h, self.opts_plot["num_bins"])     
+        h = 0.2 
+        HIST_BINS = np.linspace(self.y_min_y_max[0]-h,
+                                self.y_min_y_max[1]+h, self.opts_plot["num_bins"])     
+
+        for i in range(self.num_frames-1):    
+            n, _ = np.histogram(self.data[:,i], HIST_BINS, density=True)
+            if max(n)>self.ax_y_lim:
+                self.ax_y_lim = max(n)
+        self.ax_y_lim = 1.05*self.ax_y_lim
 
         fig, ax = plt.subplots()
         _, _, bars = ax.hist(self.data[:,0], 
@@ -92,10 +104,10 @@ class PostProcessor:
                 return bar_container.patches
             return animate
 
-        ax.set_ylim(top=3.0) 
+        ax.set_ylim(top=self.ax_y_lim) 
         
         print("Plotting dynamics...")
-        ani = Player(fig, prepare_animation(bars), maxi=self.num_frames)
+        ani = Player(fig, prepare_animation(bars), maxi=self.num_frames-1)
 
         plt.show()
 
@@ -187,6 +199,7 @@ class Player(FuncAnimation):
 
     def update(self,i):
         self.slider.set_val(i)
+
 if __name__ == "__main__":
     
     opts_plot = {"num_bins" : 50,

@@ -11,4 +11,3 @@ opts_plot = {"num_bins" : 50,
 mckean_vlasov = PostProcessor('gauss', opts_plot)
 mckean_vlasov.dynamic_dist()
 # mckean_vlasov.equilibrium_dist()
-
