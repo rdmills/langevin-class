@@ -52,51 +52,27 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
         force[j] = -Getkappa1()*(*mGradV1)(state[j],t);
         // std::cout<< "force["<<j<<"] = "<<force[j]<<std::endl;
     }
-
-    // OPTIMISE THIS
-
-    double** v2;
-    v2 = new double* [GetNumParticles()];
-    for (int k = 0; k< GetNumParticles(); k++)
-    {
-        v2[k] = new double [GetNumParticles()];
-    }
-
+    
     for (int j=0; j<GetNumParticles(); j++)
     {
+        double* p_v2;
+        p_v2 = new double;
+        *p_v2 = 0.0;
         for (int k=0; k<GetNumParticles(); k++)
         {
             if (k!=j)
             {
-                // v2[j][k] = 1/float(GetNumParticles())
-                //          *(-Getkappa2())*(*mGradV2)(state[j]-state[k]);
-                v2[j][k] = (-Getkappa2())*(*mGradV2)(state[j]-state[k]);
+                *p_v2 += (-Getkappa2())*(*mGradV2)(state[j]-state[k]);
             }
             else
             {
-                v2[j][k] = 0.0;
+                *p_v2 += 0.0;
             }
         }
+        // std::cout<<"*p_v2 = "<<*p_v2<<std::endl;
+        force[j] += *p_v2;
+        delete p_v2;
     }
-
-    double sum;
-    
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        sum = 0.0;
-        for (int k=0; k<GetNumParticles(); k++)
-        {
-            sum = sum + v2[j][k];
-        }
-        force[j] = force[j] + sum;
-        // std::cout<< "force["<<j<<"] = "<<force[j]<<std::endl;
-    }
-
-    for (int k = 0; k< GetNumParticles(); k++)
-    {
-        delete[] v2[k];
-    }
-    delete[] v2;
 
     return force;
 }
