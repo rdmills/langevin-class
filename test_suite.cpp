@@ -20,7 +20,7 @@ double Zero1(double y, double t){return 0.0;}
 
 double GradV1Quad(double y, double t){return y-4;}
 
-double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-1.1*y);}
+double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-1.11*y);}
 
 // Two body kernels
 
