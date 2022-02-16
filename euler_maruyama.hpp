@@ -10,7 +10,6 @@
 
 #include "solver.hpp"
 
-// Child class EulerMaryuama for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
 {       
     public: 

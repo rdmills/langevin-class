@@ -13,7 +13,6 @@
 #include "boundary_conditions.hpp"
 #include "sde.hpp"
 
-// Abstract Langevin base class.
 class Solver
 {
     private:

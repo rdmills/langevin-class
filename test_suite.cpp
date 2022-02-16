@@ -1,5 +1,5 @@
 /*
-    sde_test_suite.cpp
+    test_suite.cpp
     Entry point for running langevin dynamics in 1D.
     @author Rory Mills-Williams
     @version 1.0 20/01/2022
