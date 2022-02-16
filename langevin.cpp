@@ -14,24 +14,24 @@
 #include <algorithm>
 
 Langevin::Langevin(opts_num* pOpts,
-                   McKeanVlasov* pSde, 
+                   SDE* pSde, 
                    double* (*pInitialData)(double*, int),
                    std::string BC)
 {
    mpInitialData  = pInitialData;
    optsNum        = *pOpts;
-   mpMcKeanVlasov = pSde;
+   mpSDE = pSde;
    mBConds        = BC;
-   mNumParticles  = mpMcKeanVlasov->GetNumParticles();
-
+   mNumParticles  = mpSDE->GetNumParticles();
+   
    mpTime      = new double [optsNum.num_steps];
    mpParticles = new double* [optsNum.num_steps];
    
    for (int i=0; i<optsNum.num_steps; i++)
    {
-      mpParticles[i]  = new double [mpMcKeanVlasov->GetNumParticles()];
+      mpParticles[i]  = new double [mpSDE->GetNumParticles()];
    }
-   optsPhys  = mpMcKeanVlasov->optsPhys;
+   optsPhys  = mpSDE->optsPhys;
 }
 
 Langevin::~Langevin()
@@ -57,18 +57,18 @@ void Langevin::DoStochastics()
    if (mBConds == "periodic")
    {
       bc.SetPeriodicBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpSDE->GetNumParticles());
    }
    else if (mBConds == "no_flux")
    {
       bc.SetNoFluxBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpSDE->GetNumParticles());
 
    }
    else if (mBConds == "none")
    {
       bc.SetNoneBc();
-      mpSolver = new EulerMaruyama(optsNum, &bc, mpMcKeanVlasov->GetNumParticles());
+      mpSolver = new EulerMaruyama(optsNum, &bc, mpSDE->GetNumParticles());
    }
 
    if (!mpSolver)
@@ -79,7 +79,7 @@ void Langevin::DoStochastics()
    
    std::cout<<"Made new Langevin solver with BC = "<<mBConds<< "."<<std::endl;
 
-   SetCoefficients();
+   SetSDE();
    SetConstants();
    SetInitialData();
 
@@ -107,18 +107,15 @@ void Langevin::DoStochastics()
    std::cout<<"******************"<<std::endl;
 }
 
-void Langevin::SetCoefficients()
+void Langevin::SetSDE()
 {
-   mpSolver->SetGradV1(mpMcKeanVlasov->mGradV1External);
-   mpSolver->SetGradV2(mpMcKeanVlasov->mGradV2TwoBody);
+   mpSolver->SetSDE(mpSDE);
 }
 
 void Langevin::SetConstants()
 {
-   mpSolver->SetBetaInv(1/float(mpMcKeanVlasov->mbeta));
-   mpSolver->SetKappa1(mpMcKeanVlasov->mkappa1);
-   mpSolver->SetKappa2(mpMcKeanVlasov->mkappa2);
-   mpSolver->SetYMinYMax(mpMcKeanVlasov->myMinyMax);
+   mpSolver->SetBetaInv(1/float(mpSDE->mbeta));
+   mpSolver->SetYMinYMax(mpSDE->myMinyMax);
 }
 
 void Langevin::SetInitialData()
@@ -182,9 +179,9 @@ void Langevin::WriteSolutionFile()
    std::ofstream phys_file(mPhysList.c_str());
    assert(phys_file.is_open());
 
-   phys_file << mpMcKeanVlasov->GetYminYmax()[0]<< " ";
-   phys_file << mpMcKeanVlasov->GetYminYmax()[1]<< " ";
-   phys_file << mpMcKeanVlasov->GetNumParticles()<< " ";
+   phys_file << mpSDE->GetYminYmax()[0]<< " ";
+   phys_file << mpSDE->GetYminYmax()[1]<< " ";
+   phys_file << mpSDE->GetNumParticles()<< " ";
    
    phys_file.flush();
    phys_file.close();

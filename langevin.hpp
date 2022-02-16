@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "mckean_vlasov.hpp"
+#include "sde.hpp"
 #include "solver.hpp"
 #include "euler_maruyama.hpp"
 #include "boundary_conditions.hpp"
@@ -28,7 +29,7 @@ private:
    int mNumParticles;
 
    // Pointer to instance of an SDE
-   McKeanVlasov* mpMcKeanVlasov;
+   SDE* mpSDE;
 
    // Initial data function pointer
    double* (*mpInitialData)(double* yInit, int numParticles);
@@ -40,8 +41,7 @@ private:
    // Pointer to instance of a solver
    Solver* mpSolver;
 
-   // Vector for solution to particle trajectories
-   // std::vector<double>* mpParticles;
+   // Pointer for solution to particle trajectories and time
    double** mpParticles;
    double* mpTime;
 
@@ -52,14 +52,14 @@ private:
    std::string mPhysList;
 
    // // Methods for setting up langevin system and solving it
-   void SetCoefficients();
+   void SetSDE();
    void SetConstants();
    void SetInitialData();
 
 public:
    // Sole constructor
    Langevin(opts_num* opts1,
-            McKeanVlasov* pSde, 
+            SDE* pSde, 
             double* (*pInitialData)(double*, int),
             std::string BC);
 

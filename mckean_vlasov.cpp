@@ -9,43 +9,71 @@
 
 McKeanVlasov::McKeanVlasov(opts_phys opts, 
                            double (*pGradV1)(double, double),
-                           double (*pGradV2)(double))
+                           double (*pGradV2)(double),
+                           double* pkappa1,
+                           double* pkappa2)
 {
     mGradV1External = pGradV1;
     mGradV2TwoBody = pGradV2;
     optsPhys = opts;
     mbeta = opts.beta;
-    mkappa1 = opts.kappa1;
-    mkappa2 = opts.kappa2;
+    mkappa1 = *pkappa1;
+    mkappa2 = *pkappa2;
 
     myMinyMax[0] = opts.interval[0];
     myMinyMax[1] = opts.interval[1];
-    mNumParticles = opts.num_particles;
     
+    mNumParticles = opts.num_particles;
 }
 
-// double McKeanVlasov::EvaluateRHS(double y, double t)    
-// {
-//     return -(*mGradV1External)(y,t);
-// }
-
-void McKeanVlasov::SetNumParticles(int numParticles)
+double* McKeanVlasov::Force(double* particles, double t)
 {
-    mNumParticles = numParticles;   
+    double* force = new double [mNumParticles];
+
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        force[j] = -Getkappa1()*(*mGradV1External)(particles[j],t);
+    }
+
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        double* p_v2;
+        p_v2 = new double;
+        *p_v2 = 0.0;
+        for (int k=0; k<GetNumParticles(); k++)
+        {
+            if (k!=j)
+            {
+                *p_v2 += (-Getkappa2())*(*mGradV2TwoBody)(particles[j]-particles[k]);
+            }
+            else
+            {
+                *p_v2 += 0.0;
+            }
+        }
+        force[j] += *p_v2;
+        delete p_v2;
+    }
+    return force;  
 }
 
-int McKeanVlasov::GetNumParticles()
+void McKeanVlasov::SetKappa1(double kappa1)
 {
-    return mNumParticles;
+    mkappa1 = kappa1;
 }
 
-void McKeanVlasov::SetYminYmax(double interval[2])
+double McKeanVlasov::Getkappa1()
 {
-    myMinyMax[0] = interval[0];
-    myMinyMax[1] = interval[1];
+    return mkappa1;
 }
 
-double* McKeanVlasov::GetYminYmax()
+void McKeanVlasov::SetKappa2(double kappa2)
 {
-    return myMinyMax;
+    mkappa2 = kappa2;
 }
+
+double McKeanVlasov::Getkappa2()
+{
+    return mkappa2;
+}
+

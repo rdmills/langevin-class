@@ -11,6 +11,7 @@
 #include "opts_phys.hpp"
 #include <random>
 #include "boundary_conditions.hpp"
+#include "sde.hpp"
 
 // Abstract Langevin base class.
 class Solver
@@ -23,17 +24,15 @@ class Solver
         double mNumParticles;
 
         double mBetaInv;
-        double mkappa1;
-        double mkappa2;
-
+    
     protected:
         double** mpSolution;
         double* mpSolutionStateNow;
         double* mpTime;
         
-        double (*mGradV1)(double y, double t);
-        double (*mGradV2)(double r);
+        double* (*mForce)(double* particle, double t);
         
+        SDE* mpSDE;
         BoundaryConditions* mpBconds;    
         double yMinyMax [2];   
 
@@ -53,17 +52,10 @@ class Solver
         void SetInitialData(double* initialData);
         double* GetInitialData();
 
-        void SetGradV1(double (*pGradV1)(double, double));
-        void SetGradV2(double (*pGradV2)(double));
+        void SetSDE(SDE* pSDE);
 
         void SetBetaInv(double betaInv);
         double GetBetaInv();
-
-        void SetKappa1(double kappa1);
-        double Getkappa1();
-        
-        void SetKappa2(double kappa1);
-        double Getkappa2();
 
         void SetYMinYMax(double interval [2]);
         

@@ -71,40 +71,15 @@ double Solver::GetBetaInv()
     return mBetaInv;
 }
 
-void Solver::SetKappa1(double kappa1)
+void Solver::SetSDE(SDE* pSDE)
 {
-    mkappa1 = kappa1;
-}
-
-double Solver::Getkappa1()
-{
-    return mkappa1;
-}
-
-void Solver::SetKappa2(double kappa2)
-{
-    mkappa2 = kappa2;
-}
-
-double Solver::Getkappa2()
-{
-    return mkappa2;
+    mpSDE = pSDE;
 }
 
 void Solver::SetYMinYMax(double interval [2])
 {
     yMinyMax[0] = interval[0];
     yMinyMax[1] = interval[1];
-}
-
-void Solver::SetGradV1(double (*pGradV1)(double, double))
-{
-    mGradV1 = pGradV1;
-}
-
-void Solver::SetGradV2(double (*pGradV2)(double))
-{
-    mGradV2 = pGradV2;
 }
 
 double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)
