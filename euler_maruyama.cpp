@@ -58,34 +58,7 @@ double EulerMaruyama::GetWiener()
 
 double* EulerMaruyama::RightHandSide(double* state, double t)
 {
-    double* force;
-    force = new double [GetNumParticles()];
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        force[j] = -Getkappa1()*(*mGradV1)(state[j],t);
-    }
-    
-    for (int j=0; j<GetNumParticles(); j++)
-    {
-        double* p_v2;
-        p_v2 = new double;
-        *p_v2 = 0.0;
-        for (int k=0; k<GetNumParticles(); k++)
-        {
-            if (k!=j)
-            {
-                *p_v2 += (-Getkappa2())*(*mGradV2)(state[j]-state[k]);
-            }
-            else
-            {
-                *p_v2 += 0.0;
-            }
-        }
-        force[j] += *p_v2;
-        delete p_v2;
-    }
-
-    return force;
+    return mpSDE->Force(state,t);
 }
 
 void EulerMaruyama::SolveEquation()
@@ -121,6 +94,7 @@ void EulerMaruyama::SolveEquation()
                              + dt*force[j]
                              + sqrt(2.0*GetBetaInv())*GetWiener();
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
+            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;                             
         }
         
         delete[] force;
