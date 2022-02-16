@@ -1,0 +1,4 @@
+TODO:
+make unit tests for OU process, one body, mckean vlasov equations etc
+update header comments/ function signatures
+
