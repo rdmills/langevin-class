@@ -7,6 +7,15 @@
 
 #include "sde.hpp"
 
+SDE::SDE(opts_phys opts)
+{
+    optsPhys = opts;
+    mbeta = opts.beta;
+    myMinyMax[0] = opts.interval[0];
+    myMinyMax[1] = opts.interval[1];
+    mNumParticles = opts.num_particles;  
+}
+
 void SDE::SetNumParticles(int numParticles)
 {
     mNumParticles = numParticles;   

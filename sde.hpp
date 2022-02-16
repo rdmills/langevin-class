@@ -34,6 +34,7 @@ public:
     void SET(double* (*pForce)(double*, double));
     virtual double* Force(double* particles, double t) = 0;
     
+    SDE(opts_phys opts);
     virtual ~SDE() {};
 };
 #endif

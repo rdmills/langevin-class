@@ -11,19 +11,12 @@ McKeanVlasov::McKeanVlasov(opts_phys opts,
                            double (*pGradV1)(double, double),
                            double (*pGradV2)(double),
                            double* pkappa1,
-                           double* pkappa2)
+                           double* pkappa2) : SDE(opts)
 {
     mGradV1External = pGradV1;
-    mGradV2TwoBody = pGradV2;
-    optsPhys = opts;
-    mbeta = opts.beta;
+    mGradV2TwoBody = pGradV2;    
     mkappa1 = *pkappa1;
     mkappa2 = *pkappa2;
-
-    myMinyMax[0] = opts.interval[0];
-    myMinyMax[1] = opts.interval[1];
-    
-    mNumParticles = opts.num_particles;
 }
 
 double* McKeanVlasov::Force(double* particles, double t)

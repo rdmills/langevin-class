@@ -8,18 +8,11 @@
 #include "ou.hpp"
 
 OU::OU(opts_phys opts, 
-       double* pfriction,
-       double* pdrift)
+       double* pfriction, 
+       double* pdrift) : SDE(opts)
 {
-    optsPhys = opts;
-    
     mFriction = *pfriction;
     mDrift = *pdrift;
-    
-    mbeta = opts.beta;
-    myMinyMax[0] = opts.interval[0];
-    myMinyMax[1] = opts.interval[1];
-    mNumParticles = opts.num_particles;  
 }
 
 void OU::SetFriction(double friction)
