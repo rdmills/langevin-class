@@ -20,7 +20,7 @@ double Zero1(double y, double t){return 0.0;}
 
 double GradV1Quad(double y, double t){return y-4;}
 
-double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-6.0*y);}
+double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-1.1*y);}
 
 // Two body kernels
 
@@ -71,7 +71,6 @@ int main(int argc, char* argv[])
     double theta = 1.0;
     double mu = -1.0;
 
-
     opts_phys optsPhys = {.interval = {yMin, yMax}, 
                           .num_particles = numParticles,
                           .beta = 10.0};                          
@@ -79,18 +78,14 @@ int main(int argc, char* argv[])
     opts_num optsNum = {.num_steps = numSteps, 
                         .t_max = tMax};   
 
+    // SDE* p_test = new OU(optsPhys, &theta, &mu);
     // SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    SDE* p_test = new OU(optsPhys, &theta, &mu);
-    
-    // McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    // McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    // McKeanVlasov mkc_v(optsPhys, Zero1, Zero2, &kappa1, &kappa2);
-    // McKeanVlasov mkc_v(optsPhys, GradV1Quart, Zero2, &kappa1, &kappa2);
+    SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
     
     Langevin pl(&optsNum, p_test, Hat, "no_flux");    
-    // Langevin pl(&optsNum, p_test, Uniform, "no_flux");    
-    // Langevin pl(&optsNum, p_test, Uniform, "periodic");
-    // Langevin pl(&optsNum, p_test, Uniform, "none");
+    // Langevin pl(&optsNum, p_test, Hat, "no_flux");    
+    // Langevin pl(&optsNum, p_test, Hat, "periodic");
+    // Langevin pl(&optsNum, p_test, Hat, "none");
     
     pl.SetFilename("gauss_data.dat", "gauss_num.dat", "gauss_phys.dat");
     pl.DoStochastics();
