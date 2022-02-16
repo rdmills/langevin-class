@@ -4,8 +4,7 @@ Optimised Langevin dynamics class capable of simulating the meanfield dynamics o
 
 Capable of simulating McKean SDEs:
 
-```
-#include <iostream>
+```C++
 #include "langevin.hpp"
 #include "opts_num.hpp"
 #include "opts_phys.hpp"
@@ -18,7 +17,7 @@ double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 double* Hat(double* yInit, int numParticles)
         {
             double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
+            initialData = new double [numParticles]; 
             double hatMin = ALPHA*yInit[0];
             double hatMax = ALPHA*yInit[1];
             initialData[0] = hatMin;
@@ -61,8 +60,7 @@ int main(int argc, char* argv[])
 
 And simple(r) Langevin systems, e.g., Ornstein-Uhlenbeck processes:
 
-```
-#include <iostream>
+```C++
 #include "langevin.hpp"
 #include "opts_num.hpp"
 #include "opts_phys.hpp"
@@ -72,7 +70,7 @@ const double ALPHA = 0.5;
 double* Hat(double* yInit, int numParticles)
         {
             double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
+            initialData = new double [numParticles]; 
             double hatMin = ALPHA*yInit[0];
             double hatMax = ALPHA*yInit[1];
             initialData[0] = hatMin;
