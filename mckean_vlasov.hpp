@@ -9,40 +9,43 @@
 #define MCKEANVLASOVHEADERDEF
 
 #include "opts_phys.hpp"
-// #include <iostream>
+#include "sde.hpp"
+#include <iostream>
   
-class McKeanVlasov
+class McKeanVlasov : public SDE
 {
     // The boundary value class is able to
     // access the coefficients etc. of this equation
-    friend class Langevin;
+    // friend class Langevin;
 
 private:
-    // physical constants: K_BT, kappa_1, kappa_2
-    double mbeta_inv;
+    // physical constants: kappa_1, kappa_2
     double mkappa1;
-    // double mkappa2;
+    double mkappa2;
     
     // Coefficients on RHS of SDE
-    // double (*mV1External)(double y, double t);
     double (*mGradV1External)(double y, double t);
-    // double (*mV2TwoBody)(double r);
     double (*mGradV2TwoBody)(double r);
-    
-    double (*mpRhsFunc)(double y, double t);
-    int mNumParticles;
-    double myMinyMax [2];   
 
 public:
-    opts_phys optsPhys; 
-    McKeanVlasov(opts_phys opts, 
-                 double (*pGradV1)(double, double), 
-                 double (*pGradV2)(double));
-    double EvaluateRHS(double y, double t);
-    void SetYminYmax(double interval [2]);
-    double* GetYminYmax(); 
-    void SetNumParticles(int numParticles);
-    int GetNumParticles(); 
     
+    McKeanVlasov(opts_phys opts, 
+                double (*pGradV1)(double, double), 
+                double (*pGradV2)(double),
+                double* pkappa1,
+                double* pkappa2);
+
+    virtual ~McKeanVlasov(){};
+
+    void SetGradV1(double (*pGradV1)(double, double));
+    void SetGradV2(double (*pGradV2)(double));
+
+    void SetKappa1(double kappa1);
+    double Getkappa1();
+    
+    void SetKappa2(double kappa1);
+    double Getkappa2();
+
+    virtual double* Force(double* particles, double t);
 };
 #endif

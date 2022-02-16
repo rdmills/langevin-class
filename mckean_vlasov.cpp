@@ -9,39 +9,64 @@
 
 McKeanVlasov::McKeanVlasov(opts_phys opts, 
                            double (*pGradV1)(double, double),
-                           double (*pGradV2)(double))
+                           double (*pGradV2)(double),
+                           double* pkappa1,
+                           double* pkappa2) : SDE(opts)
 {
     mGradV1External = pGradV1;
-    mGradV2TwoBody = pGradV2;
-    optsPhys = opts;
-    myMinyMax[0] = opts.interval[0];
-    myMinyMax[1] = opts.interval[1];
-    mNumParticles = opts.num_particles;
-    
+    mGradV2TwoBody = pGradV2;    
+    mkappa1 = *pkappa1;
+    mkappa2 = *pkappa2;
 }
 
-double McKeanVlasov::EvaluateRHS(double y, double t)    
+double* McKeanVlasov::Force(double* particles, double t)
 {
-    return -(*mGradV1External)(y,t);
+    double* force = new double [mNumParticles];
+
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        force[j] = -Getkappa1()*(*mGradV1External)(particles[j],t);
+    }
+
+    for (int j=0; j<GetNumParticles(); j++)
+    {
+        double* p_v2;
+        p_v2 = new double;
+        *p_v2 = 0.0;
+        for (int k=0; k<GetNumParticles(); k++)
+        {
+            if (k!=j)
+            {
+                *p_v2 += (-Getkappa2())*(*mGradV2TwoBody)(particles[j]-particles[k]);
+            }
+            else
+            {
+                *p_v2 += 0.0;
+            }
+        }
+        force[j] += *p_v2;
+        delete p_v2;
+    }
+    return force;  
 }
 
-void McKeanVlasov::SetNumParticles(int numParticles)
+void McKeanVlasov::SetKappa1(double kappa1)
 {
-    mNumParticles = numParticles;   
+    mkappa1 = kappa1;
 }
 
-int McKeanVlasov::GetNumParticles()
+double McKeanVlasov::Getkappa1()
 {
-    return mNumParticles;
+    return mkappa1;
 }
 
-void McKeanVlasov::SetYminYmax(double interval[2])
+void McKeanVlasov::SetKappa2(double kappa2)
 {
-    myMinyMax[0] = interval[0];
-    myMinyMax[1] = interval[1];
+    mkappa2 = kappa2;
 }
 
-double* McKeanVlasov::GetYminYmax()
+double McKeanVlasov::Getkappa2()
 {
-    return myMinyMax;
+    return mkappa2;
 }
+

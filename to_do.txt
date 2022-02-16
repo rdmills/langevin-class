@@ -1,2 +1,4 @@
 TODO:
-update post processor to use yMin yMax for plotting/y_lim top
+make unit tests for OU process, one body, mckean vlasov equations etc
+update header comments/ function signatures
+

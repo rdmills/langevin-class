@@ -8,8 +8,6 @@ struct opts_phys
     {
         double interval[2];  
         int num_particles;
-        double kappa1;
-        double kappa2;
         double beta;
     };    
 
