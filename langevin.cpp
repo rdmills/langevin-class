@@ -115,10 +115,10 @@ void Langevin::SetCoefficients()
 
 void Langevin::SetConstants()
 {
-   mpSolver->SetBetaInv(1/float(optsPhys.beta));
-   mpSolver->SetKappa1(optsPhys.kappa1);
-   mpSolver->SetKappa2(optsPhys.kappa2);
-   mpSolver->SetYMinYMax(optsPhys.interval);
+   mpSolver->SetBetaInv(1/float(mpMcKeanVlasov->mbeta));
+   mpSolver->SetKappa1(mpMcKeanVlasov->mkappa1);
+   mpSolver->SetKappa2(mpMcKeanVlasov->mkappa2);
+   mpSolver->SetYMinYMax(mpMcKeanVlasov->myMinyMax);
 }
 
 void Langevin::SetInitialData()
@@ -130,8 +130,9 @@ void Langevin::SetInitialData()
    
    if (!(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]))
    {
-      std::cout<<"Particles initialised outside of finite domain."<<std::endl;
-      std::cout<<"Check initial data function."<<std::endl;
+      std::cout<<"Particles initialised outside of finite domain:"<<std::endl;
+      std::cout<<"y_init_min = "<<*min<<std::endl;
+      std::cout<<"y_init_max = "<<*max<<std::endl;
    }
    
    assert(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]);

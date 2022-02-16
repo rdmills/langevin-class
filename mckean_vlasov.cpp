@@ -14,16 +14,20 @@ McKeanVlasov::McKeanVlasov(opts_phys opts,
     mGradV1External = pGradV1;
     mGradV2TwoBody = pGradV2;
     optsPhys = opts;
+    mbeta = opts.beta;
+    mkappa1 = opts.kappa1;
+    mkappa2 = opts.kappa2;
+
     myMinyMax[0] = opts.interval[0];
     myMinyMax[1] = opts.interval[1];
     mNumParticles = opts.num_particles;
     
 }
 
-double McKeanVlasov::EvaluateRHS(double y, double t)    
-{
-    return -(*mGradV1External)(y,t);
-}
+// double McKeanVlasov::EvaluateRHS(double y, double t)    
+// {
+//     return -(*mGradV1External)(y,t);
+// }
 
 void McKeanVlasov::SetNumParticles(int numParticles)
 {

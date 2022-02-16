@@ -13,8 +13,8 @@ solver.o : solver.cpp solver.hpp opts_num.hpp
 euler_maruyama.o : euler_maruyama.cpp solver.hpp euler_maruyama.hpp 
 	g++ -c -O euler_maruyama.cpp
 
-sde_test_suite.o : sde_test_suite.cpp langevin.hpp mckean_vlasov.hpp boundary_conditions.hpp solver.hpp euler_maruyama.hpp opts_num.hpp
-	g++ -c -O sde_test_suite.cpp 
+test_suite.o : test_suite.cpp langevin.hpp mckean_vlasov.hpp boundary_conditions.hpp solver.hpp euler_maruyama.hpp opts_num.hpp
+	g++ -c -O test_suite.cpp 
 
-sde_test_suite : langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o
-	g++ -g -o sde_test_suite langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o sde_test_suite.o
+test_suite : langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o test_suite.o
+	g++ -g -o test_suite langevin.o mckean_vlasov.o boundary_conditions.o solver.o euler_maruyama.o test_suite.o
