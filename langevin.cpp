@@ -125,14 +125,14 @@ void Langevin::SetInitialData()
    double* min = std::min_element( initial_data, initial_data + mNumParticles );
    double* max = std::max_element( initial_data, initial_data + mNumParticles );
    
-   if (!(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]))
+   if (!(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]))
    {
       std::cout<<"Particles initialised outside of finite domain:"<<std::endl;
       std::cout<<"y_init_min = "<<*min<<std::endl;
       std::cout<<"y_init_max = "<<*max<<std::endl;
    }
    
-   assert(optsPhys.interval[0]<*min && *max < optsPhys.interval[1]);
+   assert(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]);
    
    mpSolver->SetInitialData(initial_data);
    delete[] initial_data;

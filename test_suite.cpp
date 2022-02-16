@@ -11,7 +11,7 @@
 #include "opts_phys.hpp"
 
 const double PI = 3.14159265359;
-const double XI = 2.0;
+const double XI = 0.5;
 const double ALPHA = 0.5; 
 
 // One body
@@ -63,10 +63,14 @@ int main(int argc, char* argv[])
     int numParticles = 1000;
     double tMax = 2.0;  
     int numSteps = 2000;
-    double yMin = -4, yMax = 4;    
+    double yMin = -2, yMax = 2;    
 
     double kappa1 = 1.0;
-    double kappa2 = 1.0;
+    double kappa2 = 0.5;
+
+    double theta = 1.0;
+    double mu = -1.0;
+
 
     opts_phys optsPhys = {.interval = {yMin, yMax}, 
                           .num_particles = numParticles,
@@ -75,7 +79,8 @@ int main(int argc, char* argv[])
     opts_num optsNum = {.num_steps = numSteps, 
                         .t_max = tMax};   
 
-    SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
+    // SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
+    SDE* p_test = new OU(optsPhys, &theta, &mu);
     
     // McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
     // McKeanVlasov mkc_v(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);

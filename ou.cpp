@@ -22,13 +22,28 @@ OU::OU(opts_phys opts,
     mNumParticles = opts.num_particles;  
 }
 
+void OU::SetFriction(double friction)
+{
+    mFriction = friction;
+}
+
+double OU::GetFriction()
+{
+    return mFriction;
+}
+
+double OU::GetDrift()
+{
+    return mDrift;
+}
+
 double* OU::Force(double* particles, double t)
 {
    double* force = new double [mNumParticles];
 
    for (int j=0; j<mNumParticles; j++)
    {
-       force[j] = -mFriction*(mDrift-particles[j]);
+       force[j] = mFriction*(mDrift-particles[j]);
    }
 
    return force;

@@ -16,7 +16,7 @@ class McKeanVlasov : public SDE
 {
     // The boundary value class is able to
     // access the coefficients etc. of this equation
-    friend class Langevin;
+    // friend class Langevin;
 
 private:
     // physical constants: kappa_1, kappa_2

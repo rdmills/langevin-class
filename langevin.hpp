@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "mckean_vlasov.hpp"
+#include "ou.hpp"
 #include "sde.hpp"
 #include "solver.hpp"
 #include "euler_maruyama.hpp"
