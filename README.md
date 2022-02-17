@@ -64,7 +64,11 @@ int main(int argc, char* argv[])
 ![mk_gauss](https://user-images.githubusercontent.com/28300876/154377050-fcd849d1-d485-44f0-899a-6710b514b5b3.gif)
 
 
-And simple(r) Langevin systems, e.g., Ornstein-Uhlenbeck processes:
+And general Langevin systems, e.g., diffusion in a multi-well potential: 
+
+![langevin](https://user-images.githubusercontent.com/28300876/154381585-09cdaac4-5122-463c-8a12-d9b0fc2fc026.svg)
+
+And Ornstein-Uhlenbeck processes:
 
 ![ou](https://user-images.githubusercontent.com/28300876/154378187-4ea06cd5-482a-4596-8a21-fba6841baabc.svg)
 
@@ -109,19 +113,24 @@ int main(int argc, char* argv[])
                         .t_max = tMax};   
 
     SDE* p_test = new OU(optsPhys, &theta, &mu);
-    
     Langevin pl(&optsNum, p_test, Hat, "no_flux");    
-    
     pl.SetFilename("ou_data.dat", "ou_num.dat", "ou_phys.dat");
     pl.DoStochastics();
-
     delete p_test;
+    
+    SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
+    Langevin pl(&optsNum, p_test, Hat, "no_flux");    
+    pl.SetFilename("lsde_data.dat", "lsde_num.dat", "lsde_phys.dat");
+    pl.DoStochastics();
+    delete p_test;
+    
     return 0;
 }
 ```
 
 ![ou](https://user-images.githubusercontent.com/28300876/154378720-5797bdd4-3605-42e9-b778-dd926990ec4c.gif)
 
+![lsde](https://user-images.githubusercontent.com/28300876/154381326-cb9feaee-652e-4e83-a1ee-ae37b53f9b6c.gif)
 
 # Notes
 
