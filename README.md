@@ -139,4 +139,4 @@ int main(int argc, char* argv[])
 
 - Supports periodic and no-flux boundary conditions.
 
-- Abstracted numerical solver.
+- Supports an abstracted solver for different numerical schemes, e.g. Euler-Maruyama, Order 1.5 Strong Taylor Scheme etc. (see, e.g., Kloeden, P.E., Platen, E. and Schurz, H., 2012. Numerical solution of SDE through computer experiments. Springer Science & Business Media.)
