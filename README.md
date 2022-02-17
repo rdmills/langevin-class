@@ -4,6 +4,9 @@ Optimised Langevin dynamics class capable of simulating the meanfield dynamics o
 
 Capable of simulating McKean SDEs:
 
+![CodeCogsEqn](https://user-images.githubusercontent.com/28300876/154377984-c0008ce5-9b50-4450-b82b-271cdda54f87.svg)
+
+
 ```C++
 #include "langevin.hpp"
 #include "opts_num.hpp"
@@ -24,7 +27,8 @@ double* Hat(double* yInit, int numParticles)
             
             for (int i=1; i<numParticles; i++)
             {
-                initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;
+                initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;![CodeCogsEqn](https://user-images.githubusercontent.com/28300876/154377967-afa2d347-82ab-4cf2-af9c-7e256473ae6c.svg)
+
             }
             return initialData;
         }   
@@ -57,8 +61,13 @@ int main(int argc, char* argv[])
     return 0;
 }
 ```
+![mk_gauss](https://user-images.githubusercontent.com/28300876/154377050-fcd849d1-d485-44f0-899a-6710b514b5b3.gif)
+
 
 And simple(r) Langevin systems, e.g., Ornstein-Uhlenbeck processes:
+
+![ou](https://user-images.githubusercontent.com/28300876/154378187-4ea06cd5-482a-4596-8a21-fba6841baabc.svg)
+
 
 ```C++
 #include "langevin.hpp"
@@ -110,6 +119,9 @@ int main(int argc, char* argv[])
     return 0;
 }
 ```
+
+![ou](https://user-images.githubusercontent.com/28300876/154378720-5797bdd4-3605-42e9-b778-dd926990ec4c.gif)
+
 
 # Notes
 
