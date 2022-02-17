@@ -137,4 +137,6 @@ int main(int argc, char* argv[])
 
 # Notes
 
-Supports periodic and no-flux boundary conditions.
+- Supports periodic and no-flux boundary conditions.
+
+- Abstracted numerical solver.
