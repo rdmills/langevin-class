@@ -20,7 +20,7 @@ double Zero1(double y, double t){return 0.0;}
 
 double GradV1Quad(double y, double t){return y-4;}
 
-double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y-1.11*y);}
+double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y/(XI*XI*XI)-1.0*y/XI);}
 
 // Two body kernels
 
@@ -65,10 +65,10 @@ int main(int argc, char* argv[])
     int numSteps = 2000;
     double yMin = -2, yMax = 2;    
 
-    double kappa1 = 1.0;
+    double kappa1 = 4.0;
     double kappa2 = 0.5;
 
-    double theta = 1.0;
+    double theta = 5.0;
     double mu = -1.0;
 
     opts_phys optsPhys = {.interval = {yMin, yMax}, 
@@ -87,7 +87,9 @@ int main(int argc, char* argv[])
     // Langevin pl(&optsNum, p_test, Hat, "periodic");
     // Langevin pl(&optsNum, p_test, Hat, "none");
     
-    pl.SetFilename("gauss_data.dat", "gauss_num.dat", "gauss_phys.dat");
+    // pl.SetFilename("ou_data.dat", "ou_num.dat", "ou_phys.dat");
+    // pl.SetFilename("mk_gauss_data.dat", "mk_gauss_num.dat", "mk_gauss_phys.dat");
+    pl.SetFilename("lsde_data.dat", "lsde_num.dat", "lsde_phys.dat");
     pl.DoStochastics();
 
     delete p_test;
