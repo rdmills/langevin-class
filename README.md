@@ -116,13 +116,13 @@ int main(int argc, char* argv[])
                         .t_max = tMax};   
 
     SDE* p_test = new OU(optsPhys, &theta, &mu);
-    Langevin pl(&optsNum, p_test, Hat, "no_flux");    
+    Langevin pl1(&optsNum, p_test, Hat, "no_flux");    
     pl.SetFilename("ou_data.dat", "ou_num.dat", "ou_phys.dat");
     pl.DoStochastics();
     delete p_test;
     
     SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
-    Langevin pl(&optsNum, p_test, Hat, "no_flux");    
+    Langevin pl2(&optsNum, p_test, Hat, "no_flux");    
     pl.SetFilename("lsde_data.dat", "lsde_num.dat", "lsde_phys.dat");
     pl.DoStochastics();
     delete p_test;
