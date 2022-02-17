@@ -24,6 +24,7 @@ class EulerMaruyama : public Solver
         { 
             delete [] mpTime;
             delete [] mpSolutionStateNow;
+            delete [] mInitialData;
             for (int i = 0; i<GetNumSteps(); i++)
             {
                 delete [] mpSolution[i]; 

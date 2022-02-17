@@ -39,7 +39,8 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     SetNumParticles(numParticles);
     
     mpTime = new double [GetNumSteps()];
-    mpSolutionStateNow = new double [GetNumSteps()];
+    mInitialData = new double [GetNumParticles()];
+    mpSolutionStateNow = new double [GetNumParticles()];
     mpSolution = new double* [GetNumSteps()];
     for(int i = 0; i< GetNumSteps(); i++)
     {
@@ -62,7 +63,11 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
 }
 
 void EulerMaruyama::SolveEquation()
-{
+{   
+    // std::cout<< "GetStepSize() = "<<GetStepSize()<<std::endl;
+    // std::cout<< "GetTmax() = "<<GetTmax()<<std::endl;
+    // std::cout<< "GetNumSteps() = "<<GetNumSteps()<<std::endl;
+    
     double dt = GetStepSize();
     double tMax = GetTmax();
 
@@ -71,14 +76,17 @@ void EulerMaruyama::SolveEquation()
     for (int i=1; i<GetNumSteps(); i++)
     {
         mpTime[i] = mpTime[i-1] + dt;
+        // std::cout<<"mpTime[i] = "<< mpTime[i]<<std::endl;
     }
     
     for (int j=0; j<GetNumParticles(); j++)
     {
-        mpSolution[0][j] = GetInitialData()[j];
+        // mpSolution[0][j] = GetInitialData()[j];
+        mpSolution[0][j] = mInitialData[j];
         mpSolutionStateNow[j] = mpSolution[0][j];
+        // std::cout<<"mpSolutionStateNow[j] = "<< mpSolutionStateNow[j]<<std::endl;
     }
-
+    std::cout<<"here"<<std::endl;
     double progress = 0.0;
     std::cout << "[";
     

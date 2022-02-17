@@ -19,13 +19,13 @@ class Solver
     private:
         double mStepSize;
         double mTmax;
-        double mNumSteps;
-        double* mInitialData;
+        int mNumSteps;
         double mNumParticles;
 
         double mBetaInv;
     
     protected:
+        double* mInitialData;
         double** mpSolution;
         double* mpSolutionStateNow;
         double* mpTime;

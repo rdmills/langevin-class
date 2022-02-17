@@ -30,39 +30,52 @@ double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
 // initial data
 
-double* Hat(double* yInit, int numParticles)
+// double* Hat(double* yInit, int numParticles)
+//         {
+//             double* initialData;
+//             initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
+//             double hatMin = ALPHA*yInit[0];
+//             double hatMax = ALPHA*yInit[1];
+//             initialData[0] = hatMin;
+            
+//             for (int i=1; i<numParticles; i++)
+//             {
+//                 initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;
+//             }
+//             return initialData;
+//         }
+
+// double* Uniform(double* yInit, int numParticles)
+//         {
+//             double* initialData;
+//             initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
+//             initialData[0] = yInit[0];
+            
+//             for (int i=1; i<numParticles; i++)
+//             {
+//                 initialData[i] = initialData[i-1] + (yInit[1]-yInit[0])/numParticles;
+//             }
+//             return initialData;
+//         }  
+
+void Hat(double* pInitData , double* yInit, int& numParticles)
         {
-            double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
             double hatMin = ALPHA*yInit[0];
             double hatMax = ALPHA*yInit[1];
-            initialData[0] = hatMin;
             
             for (int i=1; i<numParticles; i++)
             {
-                initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;
+                pInitData[i] = pInitData[i-1] + (hatMax-hatMin)/numParticles;
             }
-            return initialData;
+            
         }
 
-double* Uniform(double* yInit, int numParticles)
-        {
-            double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
-            initialData[0] = yInit[0];
-            
-            for (int i=1; i<numParticles; i++)
-            {
-                initialData[i] = initialData[i-1] + (yInit[1]-yInit[0])/numParticles;
-            }
-            return initialData;
-        }        
 
 int main(int argc, char* argv[])
 {
     int numParticles = 1000;
     double tMax = 2.0;  
-    int numSteps = 2000;
+    int numSteps = 901;
     double yMin = -2, yMax = 2;    
 
     double kappa1 = 1.0;

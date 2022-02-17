@@ -15,16 +15,17 @@
 
 Langevin::Langevin(opts_num* pOpts,
                    SDE* pSde, 
-                   double* (*pInitialData)(double*, int),
+                   void (*pInitialFun)(double*, double*, int&),
                    std::string BC)
 {
-   mpInitialData  = pInitialData;
+   mpInitialFun  = pInitialFun;
    optsNum        = *pOpts;
    mpSDE = pSde;
    mBConds        = BC;
    mNumParticles  = mpSDE->GetNumParticles();
    
    mpTime      = new double [optsNum.num_steps];
+   mpInitData  = new double [mNumParticles];
    mpParticles = new double* [optsNum.num_steps];
    
    for (int i=0; i<optsNum.num_steps; i++)
@@ -120,10 +121,16 @@ void Langevin::SetConstants()
 
 void Langevin::SetInitialData()
 {
-   double* initial_data = mpInitialData(optsPhys.interval, mNumParticles);
-   
-   double* min = std::min_element( initial_data, initial_data + mNumParticles );
-   double* max = std::max_element( initial_data, initial_data + mNumParticles );
+   // double* initial_data = mpInitialData(optsPhys.interval, mNumParticles);
+   mpInitialFun(mpInitData, optsPhys.interval, mNumParticles);
+
+   for (int i=0; i<mNumParticles; i++)
+   {
+      std::cout<<"mpInitData["<<i<<"]"<<mpInitData[i]<<std::endl;
+   }
+
+   double* min = std::min_element( mpInitData, mpInitData + mNumParticles );
+   double* max = std::max_element( mpInitData, mpInitData + mNumParticles );
    
    if (!(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]))
    {
@@ -134,8 +141,8 @@ void Langevin::SetInitialData()
    
    assert(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]);
    
-   mpSolver->SetInitialData(initial_data);
-   delete[] initial_data;
+   mpSolver->SetInitialData(mpInitData);
+   delete[] mpInitData;
 }
 
 void Langevin::WriteSolutionFile()
