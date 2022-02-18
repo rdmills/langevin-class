@@ -34,7 +34,8 @@ private:
    SDE* mpSDE;
 
    // Initial data function pointer
-   double* (*mpInitialData)(double* yInit, int numParticles);
+   void (*mpInitialFun)(double* pInitData, double* yInit, int& numParticles);
+   double* mpInitData;
 
    // // Pointer to an instance of boundary conditions
    // BoundaryConditions* mpBconds;
@@ -62,7 +63,7 @@ public:
    // Sole constructor
    Langevin(opts_num* opts1,
             SDE* pSde, 
-            double* (*pInitialData)(double*, int),
+            void (*pInitialData)(double*,double*, int&),
             std::string BC);
 
    // As memory is dynamically allocated the destructor

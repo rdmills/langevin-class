@@ -15,34 +15,23 @@
 
 Langevin::Langevin(opts_num* pOpts,
                    SDE* pSde, 
-                   double* (*pInitialData)(double*, int),
+                   void (*pInitialFun)(double*, double*, int&),
                    std::string BC)
 {
-   mpInitialData  = pInitialData;
+   mpInitialFun  = pInitialFun;
    optsNum        = *pOpts;
    mpSDE = pSde;
    mBConds        = BC;
    mNumParticles  = mpSDE->GetNumParticles();
    
-   mpTime      = new double [optsNum.num_steps];
-   mpParticles = new double* [optsNum.num_steps];
-   
-   for (int i=0; i<optsNum.num_steps; i++)
-   {
-      mpParticles[i]  = new double [mpSDE->GetNumParticles()];
-   }
+   mpInitData  = new double [mNumParticles];
    optsPhys  = mpSDE->optsPhys;
 }
 
 Langevin::~Langevin()
 {
-   // Deletes memory allocated in constructor
-   delete [] mpTime;
-   for (int i=0; i<optsNum.num_steps; i++)
-   {
-      delete[]  mpParticles[i];
-   }
-   
+   delete [] mpInitData;
+
    // Only delete if DoStochastics() has been called
    if (mpSolver)
    {
@@ -82,7 +71,7 @@ void Langevin::DoStochastics()
    SetSDE();
    SetConstants();
    SetInitialData();
-
+   
    time_t tstart, tend; 
    std::cout<<"Sampling dynamics..."<<std::endl;
    tstart = time(0);
@@ -90,15 +79,6 @@ void Langevin::DoStochastics()
    tend = time(0); 
    std::cout<<"\n...done."<<std::endl;
    std::cout<<"Computation time : "<< difftime(tend, tstart) <<" second(s)."<< std::endl;
-   
-   for (int i = 0; i<mpSolver->GetNumSteps(); i++)
-   {
-      for (int j=0; j<mpSolver->GetNumParticles(); j++)   
-      {
-         mpParticles[i][j] = mpSolver->mpSolution[i][j];
-         // std::cout<<"mpParticles["<<i<<"]"<<"["<<j<<"] = "<< mpParticles[i][j]<<std::endl;
-      }
-   }
    
    std::cout<<"******************"<<std::endl;
    std::cout<<"Writing data to file "<<mOutputData<<"..."<<std::endl;
@@ -120,10 +100,10 @@ void Langevin::SetConstants()
 
 void Langevin::SetInitialData()
 {
-   double* initial_data = mpInitialData(optsPhys.interval, mNumParticles);
+   mpInitialFun(mpInitData, optsPhys.interval, mNumParticles);
    
-   double* min = std::min_element( initial_data, initial_data + mNumParticles );
-   double* max = std::max_element( initial_data, initial_data + mNumParticles );
+   double* min = std::min_element( mpInitData, mpInitData + mNumParticles );
+   double* max = std::max_element( mpInitData, mpInitData + mNumParticles );
    
    if (!(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]))
    {
@@ -133,9 +113,7 @@ void Langevin::SetInitialData()
    }
    
    assert(optsPhys.interval[0] < *min && *max < optsPhys.interval[1]);
-   
-   mpSolver->SetInitialData(initial_data);
-   delete[] initial_data;
+   mpSolver->SetInitialData(mpInitData);
 }
 
 void Langevin::WriteSolutionFile()
@@ -144,11 +122,11 @@ void Langevin::WriteSolutionFile()
    std::ofstream data_file(mOutputData.c_str());
    assert(data_file.is_open());
 
-   for (int j=0; j<mpSolver->GetNumParticles(); j++)
+   for (int j=0; j<mpSolver->GetNumParticles(); j++) 
    {
-      for (int i=0; i<mpSolver->GetNumSteps(); i++)
+    for (int i=0; i<mpSolver->GetNumSteps(); i++)    
       {
-        data_file << mpParticles[i][j] << " ";
+        data_file << mpSolver->mpSolution[i][j] << " ";
       }
       data_file <<"\n";
    }

@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 import mpl_toolkits.axes_grid1
 import matplotlib.widgets
 
@@ -111,6 +111,9 @@ class PostProcessor:
 
         plt.show()
 
+        # writer = PillowWriter(fps=25)  
+        # ani.save(self.data_file_name + ".gif", writer=writer)  
+
 class Player(FuncAnimation):
     
     def __init__(self, fig, func, frames=None, init_func=None, fargs=None,
@@ -206,9 +209,11 @@ if __name__ == "__main__":
                     "alpha" : 0.5,
                     "bin_rule" : "auto",
                     "edge_colour" : "white", 
-                    "face_colour" : "magenta"}
+                    "face_colour" : "green"}
 
-    mckean_vlasov = PostProcessor('gauss', opts_plot)
+    mckean_vlasov = PostProcessor('ou', opts_plot)
+    # mckean_vlasov = PostProcessor('mkv_gauss', opts_plot)
+    # mckean_vlasov = PostProcessor('lsde', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
 

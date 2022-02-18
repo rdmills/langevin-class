@@ -31,9 +31,15 @@ double Solver::GetTmax()
     return mTmax;
 }
 
-void Solver::SetInitialData(double* initialData)
+void Solver::SetInitialData(const double* initialData)
 {
-    mInitialData = initialData;
+    for (int j=0; j< mNumParticles; j++)
+    {
+        mInitialData[j] = initialData[j];
+        // std::cout<< "initialData passed = "<<initialData[j]<<std::endl;
+    }
+    // mInitialData = initialData;
+    
 }
 
 double* Solver::GetInitialData()

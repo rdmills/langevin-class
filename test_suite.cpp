@@ -28,47 +28,32 @@ double Zero2(double y){return 0.0;}
 
 double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
-// initial data
+// initial data 
 
-double* Hat(double* yInit, int numParticles)
+void Hat(double* pInitData , double* yInit, int& numParticles)
         {
-            double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
             double hatMin = ALPHA*yInit[0];
             double hatMax = ALPHA*yInit[1];
-            initialData[0] = hatMin;
+            pInitData[0] = hatMin;
             
             for (int i=1; i<numParticles; i++)
             {
-                initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;
+                pInitData[i] = pInitData[i-1] + (hatMax-hatMin)/numParticles;
             }
-            return initialData;
+            
         }
-
-double* Uniform(double* yInit, int numParticles)
-        {
-            double* initialData;
-            initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
-            initialData[0] = yInit[0];
-            
-            for (int i=1; i<numParticles; i++)
-            {
-                initialData[i] = initialData[i-1] + (yInit[1]-yInit[0])/numParticles;
-            }
-            return initialData;
-        }        
 
 int main(int argc, char* argv[])
 {
-    int numParticles = 1000;
+    int numParticles = 2000;
     double tMax = 2.0;  
-    int numSteps = 2000;
+    int numSteps = 1000;
     double yMin = -2, yMax = 2;    
 
-    double kappa1 = 1.0;
-    double kappa2 = 0.5;
+    double kappa1 = 10.0;
+    double kappa2 = 0.1;
 
-    double theta = 1.0;
+    double theta = 6.0;
     double mu = -1.0;
 
     opts_phys optsPhys = {.interval = {yMin, yMax}, 
@@ -78,16 +63,18 @@ int main(int argc, char* argv[])
     opts_num optsNum = {.num_steps = numSteps, 
                         .t_max = tMax};   
 
-    // SDE* p_test = new OU(optsPhys, &theta, &mu);
+    SDE* p_test = new OU(optsPhys, &theta, &mu);
     // SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
+    // SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
     
     Langevin pl(&optsNum, p_test, Hat, "no_flux");    
     // Langevin pl(&optsNum, p_test, Hat, "no_flux");    
     // Langevin pl(&optsNum, p_test, Hat, "periodic");
     // Langevin pl(&optsNum, p_test, Hat, "none");
     
-    pl.SetFilename("gauss_data.dat", "gauss_num.dat", "gauss_phys.dat");
+    pl.SetFilename("ou_data.dat", "ou_num.dat", "ou_phys.dat");
+    // pl.SetFilename("mkv_gauss_data.dat", "mkv_gauss_num.dat", "mkv_gauss_phys.dat");
+    // pl.SetFilename("lsde_data.dat", "lsde_num.dat", "lsde_phys.dat");
     pl.DoStochastics();
 
     delete p_test;
