@@ -107,6 +107,8 @@ int main(int argc, char* argv[])
 
     double theta = 1.0;
     double mu = -1.0;
+    double kappa1 = 10.0;
+
 
     opts_phys optsPhys = {.interval = {yMin, yMax}, 
                           .num_particles = numParticles,
@@ -133,7 +135,7 @@ int main(int argc, char* argv[])
 
 ![ou](https://user-images.githubusercontent.com/28300876/154378720-5797bdd4-3605-42e9-b778-dd926990ec4c.gif)
 
-![lsde](https://user-images.githubusercontent.com/28300876/154381326-cb9feaee-652e-4e83-a1ee-ae37b53f9b6c.gif)
+![lsde](https://user-images.githubusercontent.com/28300876/154767507-cedfbcad-b8d9-43c3-a6df-6d270aaf5e12.gif)
 
 # Notes
 
