@@ -79,7 +79,6 @@ in particular, Ornstein-Uhlenbeck processes:
 #include "opts_num.hpp"
 #include "opts_phys.hpp"
 
-const double XI = 0.5;
 const double ALPHA = 0.5; 
 
 double GradV1Quart(double y, double t){return 1.0*(0.4*y*y*y/(XI*XI*XI)-1.0*y/XI);}
