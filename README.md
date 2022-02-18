@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
 ![mkv_gauss](https://user-images.githubusercontent.com/28300876/154768181-9eb58013-c64e-4d4d-86d8-ab7d381d47ba.gif)
 
-as well as general Langevin systems, e.g., diffusion in a multi-well potential: 
+as well as general Langevin systems, e.g., particles subject to one body forces: 
 
 ![langevin](https://user-images.githubusercontent.com/28300876/154381585-09cdaac4-5122-463c-8a12-d9b0fc2fc026.svg)
 
