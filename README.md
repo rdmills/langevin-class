@@ -61,14 +61,14 @@ int main(int argc, char* argv[])
     return 0;
 }
 ```
-![mk_gauss](https://user-images.githubusercontent.com/28300876/154377050-fcd849d1-d485-44f0-899a-6710b514b5b3.gif)
 
+![mkv_gauss](https://user-images.githubusercontent.com/28300876/154768181-9eb58013-c64e-4d4d-86d8-ab7d381d47ba.gif)
 
-And general Langevin systems, e.g., diffusion in a multi-well potential: 
+as well as general Langevin systems, e.g., diffusion in a multi-well potential: 
 
 ![langevin](https://user-images.githubusercontent.com/28300876/154381585-09cdaac4-5122-463c-8a12-d9b0fc2fc026.svg)
 
-And Ornstein-Uhlenbeck processes:
+and Ornstein-Uhlenbeck processes:
 
 ![ou](https://user-images.githubusercontent.com/28300876/154378187-4ea06cd5-482a-4596-8a21-fba6841baabc.svg)
 
