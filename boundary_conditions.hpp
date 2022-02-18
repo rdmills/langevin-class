@@ -11,7 +11,7 @@
 class BoundaryConditions
 {
 public:
-   // The sde value class is able to
+   // The Solver value class is able to
    // access boundary conditions.
    friend class Solver;
 protected:

@@ -63,16 +63,7 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
 }
 
 void EulerMaruyama::SolveEquation()
-{   
-    // for (int j=0; j<GetNumParticles(); j++)
-    // {
-    //     std::cout<<"mInitialData[j] = "<< GetInitialData()[j]<<std::endl;
-    // }
-
-    // std::cout<< "GetStepSize() = "<<GetStepSize()<<std::endl;
-    // std::cout<< "GetTmax() = "<<GetTmax()<<std::endl;
-    // std::cout<< "GetNumSteps() = "<<GetNumSteps()<<std::endl;
-    
+{       
     double dt = GetStepSize();
     double tMax = GetTmax();
 
@@ -81,23 +72,13 @@ void EulerMaruyama::SolveEquation()
     for (int i=1; i<GetNumSteps(); i++)
     {
         mpTime[i] = mpTime[i-1] + dt;
-        // std::cout<<"mpTime[i] = "<< mpTime[i]<<std::endl;
     }
     
     for (int j=0; j<GetNumParticles(); j++)
     {
-        // mpSolution[0][j] = GetInitialData()[j];
         mpSolution[0][j] = mInitialData[j];
         mpSolutionStateNow[j] = mInitialData[j];
-        // std::cout<<"mpSolution[0][j] = "<< mpSolution[0][j]<<std::endl;
-        // std::cout<<"mpSolutionStateNow[j] = "<< mpSolutionStateNow[j]<<std::endl;
     }
-
-    // for (int j=0; j<GetNumParticles(); j++)
-    // {
-    //     // std::cout<<"mpSolution[0][j] = "<< mpSolution[0][j]<<std::endl;
-    //     std::cout<<"mpSolutionStateNow[j] = "<< mpSolutionStateNow[j]<<std::endl;
-    // }
     
     double progress = 0.0;
     std::cout << "[";
@@ -110,14 +91,10 @@ void EulerMaruyama::SolveEquation()
         
         for (int j=0; j<GetNumParticles(); j++)    
         {
-            // std::cout<<"mpSolutionStateNow[j] = "<< mpSolutionStateNow[j]<<std::endl;    
-            // mpSolution[i][j] = mpSolutionStateNow[j];
-            // mpSolution[i][j] = 0.5;
             mpSolution[i][j] = mpSolutionStateNow[j]
                              + dt*force[j]
                              + sqrt(2.0*GetBetaInv())*GetWiener();
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
-            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;                             
         }
         
         delete[] force;
@@ -128,11 +105,5 @@ void EulerMaruyama::SolveEquation()
         }
 
         progress = i*dt/tMax;
-    }
-
-    // for (int j=0; j<GetNumParticles(); j++)
-    // {
-    //     std::cout<<"mInitialData[j] = "<< GetInitialData()[j]<<std::endl;
-    // }
-    
+    }    
 }

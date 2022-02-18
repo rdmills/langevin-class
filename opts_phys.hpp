@@ -3,7 +3,7 @@
 
 // Optional physics for a 1d line.
 // Example:
-//      opts_phys optsPhys = {{-0.5,0.5}, 1000, 1.0, 2.0, 10.0}; 
+//      opts_phys optsPhys = {{-0.5,0.5}, 1000, 10.0}; 
 struct opts_phys
     {
         double interval[2];  

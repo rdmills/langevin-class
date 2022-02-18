@@ -28,35 +28,7 @@ double Zero2(double y){return 0.0;}
 
 double GradV2Gauss(double r){return -1/(XI*XI)*r*exp(-0.5*r*r/(XI*XI));}
 
-// initial data
-
-// double* Hat(double* yInit, int numParticles)
-//         {
-//             double* initialData;
-//             initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
-//             double hatMin = ALPHA*yInit[0];
-//             double hatMax = ALPHA*yInit[1];
-//             initialData[0] = hatMin;
-            
-//             for (int i=1; i<numParticles; i++)
-//             {
-//                 initialData[i] = initialData[i-1] + (hatMax-hatMin)/numParticles;
-//             }
-//             return initialData;
-//         }
-
-// double* Uniform(double* yInit, int numParticles)
-//         {
-//             double* initialData;
-//             initialData = new double [numParticles]; // gets deleted in Langevin::SetInitialData()
-//             initialData[0] = yInit[0];
-            
-//             for (int i=1; i<numParticles; i++)
-//             {
-//                 initialData[i] = initialData[i-1] + (yInit[1]-yInit[0])/numParticles;
-//             }
-//             return initialData;
-//         }  
+// initial data 
 
 void Hat(double* pInitData , double* yInit, int& numParticles)
         {
@@ -70,8 +42,7 @@ void Hat(double* pInitData , double* yInit, int& numParticles)
             }
             
         }
-
-
+        
 int main(int argc, char* argv[])
 {
     int numParticles = 2000;
@@ -93,8 +64,8 @@ int main(int argc, char* argv[])
                         .t_max = tMax};   
 
     // SDE* p_test = new OU(optsPhys, &theta, &mu);
-    SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    // SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
+    // SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
+    SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
     
     Langevin pl(&optsNum, p_test, Hat, "no_flux");    
     // Langevin pl(&optsNum, p_test, Hat, "no_flux");    

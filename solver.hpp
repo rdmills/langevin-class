@@ -34,6 +34,8 @@ class Solver
         BoundaryConditions* mpBconds;    
         
     public:
+        // The Langevin value class is able to
+        // access Solver.
         friend class Langevin;
         opts_num optsNum;
                 
@@ -57,8 +59,6 @@ class Solver
         void SetYMinYMax(double interval [2]);
         
         double ApplyBoundaryConditions(double particle_new, double particle_old);
-        
-        double** GetSolution() const;
 
         virtual double* RightHandSide(double* state, double t) = 0;
         virtual double GetWiener() = 0;

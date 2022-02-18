@@ -14,17 +14,12 @@
   
 class LangevinSDE : public SDE
 {
-    // The boundary value class is able to
-    // access the coefficients etc. of this equation
-    // friend class Langevin;
-
 private:
     // physical constants: kappa_1
     double mkappa1;
     
     // Coefficients on RHS of SDE
     double (*mGradV1External)(double y, double t);
-
 public:
     
     LangevinSDE(opts_phys opts, 
@@ -34,7 +29,6 @@ public:
     virtual ~LangevinSDE(){};
 
     void SetGradV1(double (*pGradV1)(double, double));
-
     void SetKappa1(double kappa1);
     double Getkappa1();
 

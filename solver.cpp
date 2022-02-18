@@ -88,11 +88,6 @@ void Solver::SetYMinYMax(double interval [2])
     yMinyMax[1] = interval[1];
 }
 
-double** Solver::GetSolution() const
-{
-    return mpSolution;
-}
-
 double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)
 {
     if (mpBconds->mBcIsPeriodic)

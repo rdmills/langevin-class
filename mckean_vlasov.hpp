@@ -14,9 +14,6 @@
   
 class McKeanVlasov : public SDE
 {
-    // The boundary value class is able to
-    // access the coefficients etc. of this equation
-    // friend class Langevin;
 
 private:
     // physical constants: kappa_1, kappa_2
@@ -27,8 +24,7 @@ private:
     double (*mGradV1External)(double y, double t);
     double (*mGradV2TwoBody)(double r);
 
-public:
-    
+public:  
     McKeanVlasov(opts_phys opts, 
                 double (*pGradV1)(double, double), 
                 double (*pGradV2)(double),

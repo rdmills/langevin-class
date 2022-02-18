@@ -19,11 +19,7 @@ private:
     // physical constants
     double mFriction;
     double mDrift;
-
-    // // Coefficients on RHS of SDE
-    // double (*Friction)(double y);
-    // double (*mDrift)(double y);
-
+    
 public:
     
     OU(opts_phys opts, 
