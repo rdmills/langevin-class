@@ -10,12 +10,11 @@
 
 #include "solver.hpp"
 
+// Child class EulerMaryuama for langevin dynamics on an interval.
 class EulerMaruyama : public Solver
 {       
     public: 
         EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles);
-
-        int DiracDelta(int i, int j);
         virtual double* RightHandSide(double* state, double t);
         virtual double GetWiener();
         virtual void SolveEquation();
@@ -23,10 +22,12 @@ class EulerMaruyama : public Solver
         { 
             delete [] mpTime;
             delete [] mpSolutionStateNow;
+            delete [] mInitialData;
             for (int i = 0; i<GetNumSteps(); i++)
             {
                 delete [] mpSolution[i]; 
             }
+            delete [] mpSolution;
         };
     private:
         double (*mRhs)(double y, double t);

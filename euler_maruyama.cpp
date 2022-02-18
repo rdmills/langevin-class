@@ -38,17 +38,18 @@ EulerMaruyama::EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numPa
     SetStepSize(dt);
     SetNumParticles(numParticles);
     
-    mpTime = new double [GetNumSteps()];
-    mpSolutionStateNow = new double [GetNumSteps()];
-    mpSolution = new double* [GetNumSteps()];
-    for(int i = 0; i< GetNumSteps(); i++)
-    {
-        mpSolution[i] = new double [GetNumSteps()];
-    }
-
     double sigma = sqrt(dt);
     std::normal_distribution<double> distribution (0.0, sigma);
     mDistribution = distribution;
+
+    mpTime = new double [GetNumSteps()];
+    mpSolutionStateNow = new double [GetNumParticles()];
+    mpSolution = new double* [GetNumSteps()];
+    for(int i = 0; i< GetNumSteps(); i++)
+    {
+        mpSolution[i] = new double [GetNumParticles()];
+    }
+    mInitialData = new double [GetNumParticles()];
 }
 
 double EulerMaruyama::GetWiener()
@@ -62,7 +63,7 @@ double* EulerMaruyama::RightHandSide(double* state, double t)
 }
 
 void EulerMaruyama::SolveEquation()
-{
+{       
     double dt = GetStepSize();
     double tMax = GetTmax();
 
@@ -75,10 +76,10 @@ void EulerMaruyama::SolveEquation()
     
     for (int j=0; j<GetNumParticles(); j++)
     {
-        mpSolution[0][j] = GetInitialData()[j];
-        mpSolutionStateNow[j] = mpSolution[0][j];
+        mpSolution[0][j] = mInitialData[j];
+        mpSolutionStateNow[j] = mInitialData[j];
     }
-
+    
     double progress = 0.0;
     std::cout << "[";
     
@@ -90,11 +91,10 @@ void EulerMaruyama::SolveEquation()
         
         for (int j=0; j<GetNumParticles(); j++)    
         {
-            mpSolution[i][j] = mpSolution[i-1][j]
+            mpSolution[i][j] = mpSolutionStateNow[j]
                              + dt*force[j]
                              + sqrt(2.0*GetBetaInv())*GetWiener();
             mpSolution[i][j] = ApplyBoundaryConditions(mpSolution[i][j], mpSolutionStateNow[j]);
-            // std::cout<<"mpSolution["<<i<<"]"<<"["<<j<<"] = "<< mpSolution[i][j]<<std::endl;                             
         }
         
         delete[] force;
@@ -105,6 +105,5 @@ void EulerMaruyama::SolveEquation()
         }
 
         progress = i*dt/tMax;
-    }
-    
+    }    
 }

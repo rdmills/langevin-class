@@ -18,24 +18,24 @@ class Solver
     private:
         double mStepSize;
         double mTmax;
-        double mNumSteps;
-        double* mInitialData;
+        int mNumSteps;
         double mNumParticles;
-
         double mBetaInv;
     
     protected:
+        double yMinyMax [2];   
+        double* mInitialData;
         double** mpSolution;
         double* mpSolutionStateNow;
         double* mpTime;
-        
         double* (*mForce)(double* particle, double t);
         
         SDE* mpSDE;
         BoundaryConditions* mpBconds;    
-        double yMinyMax [2];   
-
+        
     public:
+        // The Langevin value class is able to
+        // access Solver.
         friend class Langevin;
         opts_num optsNum;
                 
@@ -48,7 +48,7 @@ class Solver
         void SetNumParticles(int N);
         int GetNumParticles();
         
-        void SetInitialData(double* initialData);
+        void SetInitialData(const double* initialData);
         double* GetInitialData();
 
         void SetSDE(SDE* pSDE);
@@ -59,8 +59,7 @@ class Solver
         void SetYMinYMax(double interval [2]);
         
         double ApplyBoundaryConditions(double particle_new, double particle_old);
-        void MakeInitialData();
-        
+
         virtual double* RightHandSide(double* state, double t) = 0;
         virtual double GetWiener() = 0;
         virtual void SolveEquation() = 0;

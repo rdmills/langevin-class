@@ -14,6 +14,7 @@
   
 class McKeanVlasov : public SDE
 {
+
 private:
     // physical constants: kappa_1, kappa_2
     double mkappa1;
@@ -23,8 +24,7 @@ private:
     double (*mGradV1External)(double y, double t);
     double (*mGradV2TwoBody)(double r);
 
-public:
-    
+public:  
     McKeanVlasov(opts_phys opts, 
                 double (*pGradV1)(double, double), 
                 double (*pGradV2)(double),

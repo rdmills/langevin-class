@@ -20,8 +20,8 @@ protected:
     double myMinyMax [2];
     
 public:
-    // The boundary value class is able to
-    // access the coefficients etc. of this equation
+   // The Langevin value class is able to
+   // access SDE.
     friend class Langevin; 
 
     opts_phys optsPhys; 
@@ -31,7 +31,6 @@ public:
     int GetNumParticles(); 
     void SetYminYmax(double interval [2]);
     double* GetYminYmax();
-    void SET(double* (*pForce)(double*, double));
     virtual double* Force(double* particles, double t) = 0;
     
     SDE(opts_phys opts);

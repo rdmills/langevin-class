@@ -108,11 +108,11 @@ class PostProcessor:
         
         print("Plotting dynamics...")
         ani = Player(fig, prepare_animation(bars), maxi=self.num_frames-1)
-        
-        # writer = PillowWriter(fps=25)  
-        # ani.save(self.data_file_name +".gif", writer=writer)
 
         plt.show()
+
+        # writer = PillowWriter(fps=25)  
+        # ani.save(self.data_file_name + ".gif", writer=writer)  
 
 class Player(FuncAnimation):
     
@@ -126,7 +126,7 @@ class Player(FuncAnimation):
         self.fig = fig
         self.func = func
         self.setup(pos)
-        self.anim = FuncAnimation.__init__(self,self.fig, self.update, frames=self.play(), 
+        FuncAnimation.__init__(self,self.fig, self.update, frames=self.play(), 
                                            init_func=init_func, fargs=fargs,
                                            save_count=save_count, **kwargs )    
 
@@ -209,11 +209,11 @@ if __name__ == "__main__":
                     "alpha" : 0.5,
                     "bin_rule" : "auto",
                     "edge_colour" : "white", 
-                    "face_colour" : "blue"}
+                    "face_colour" : "green"}
 
-    # mckean_vlasov = PostProcessor('mk_gauss', opts_plot)
-    # mckean_vlasov = PostProcessor('ou', opts_plot)
-    mckean_vlasov = PostProcessor('lsde', opts_plot)
+    mckean_vlasov = PostProcessor('ou', opts_plot)
+    # mckean_vlasov = PostProcessor('mkv_gauss', opts_plot)
+    # mckean_vlasov = PostProcessor('lsde', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
 
