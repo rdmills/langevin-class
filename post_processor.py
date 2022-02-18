@@ -208,7 +208,7 @@ if __name__ == "__main__":
                     "edge_colour" : "white", 
                     "face_colour" : "magenta"}
 
-    mckean_vlasov = PostProcessor('gauss', opts_plot)
+    mckean_vlasov = PostProcessor('lsde', opts_plot)
     mckean_vlasov.dynamic_dist()
     # mckean_vlasov.equilibrium_dist()
 

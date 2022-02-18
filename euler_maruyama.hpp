@@ -15,8 +15,6 @@ class EulerMaruyama : public Solver
 {       
     public: 
         EulerMaruyama(opts_num opts1, BoundaryConditions* pBcs, int numParticles);
-
-        int DiracDelta(int i, int j);
         virtual double* RightHandSide(double* state, double t);
         virtual double GetWiener();
         virtual void SolveEquation();
@@ -29,6 +27,7 @@ class EulerMaruyama : public Solver
             {
                 delete [] mpSolution[i]; 
             }
+            delete [] mpSolution;
         };
     private:
         double (*mRhs)(double y, double t);

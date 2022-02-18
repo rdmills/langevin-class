@@ -31,9 +31,15 @@ double Solver::GetTmax()
     return mTmax;
 }
 
-void Solver::SetInitialData(double* initialData)
+void Solver::SetInitialData(const double* initialData)
 {
-    mInitialData = initialData;
+    for (int j=0; j< mNumParticles; j++)
+    {
+        mInitialData[j] = initialData[j];
+        // std::cout<< "initialData passed = "<<initialData[j]<<std::endl;
+    }
+    // mInitialData = initialData;
+    
 }
 
 double* Solver::GetInitialData()
@@ -80,6 +86,11 @@ void Solver::SetYMinYMax(double interval [2])
 {
     yMinyMax[0] = interval[0];
     yMinyMax[1] = interval[1];
+}
+
+double** Solver::GetSolution() const
+{
+    return mpSolution;
 }
 
 double Solver::ApplyBoundaryConditions(double particle_new, double particle_old)

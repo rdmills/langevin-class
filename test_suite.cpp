@@ -62,6 +62,7 @@ void Hat(double* pInitData , double* yInit, int& numParticles)
         {
             double hatMin = ALPHA*yInit[0];
             double hatMax = ALPHA*yInit[1];
+            pInitData[0] = hatMin;
             
             for (int i=1; i<numParticles; i++)
             {
@@ -73,9 +74,9 @@ void Hat(double* pInitData , double* yInit, int& numParticles)
 
 int main(int argc, char* argv[])
 {
-    int numParticles = 1000;
+    int numParticles = 2000;
     double tMax = 2.0;  
-    int numSteps = 901;
+    int numSteps = 1000;
     double yMin = -2, yMax = 2;    
 
     double kappa1 = 1.0;
@@ -92,15 +93,15 @@ int main(int argc, char* argv[])
                         .t_max = tMax};   
 
     // SDE* p_test = new OU(optsPhys, &theta, &mu);
-    // SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
-    SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
+    SDE* p_test = new McKeanVlasov(optsPhys, Zero1, GradV2Gauss, &kappa1, &kappa2);
+    // SDE* p_test = new LangevinSDE(optsPhys, GradV1Quart, &kappa1);
     
     Langevin pl(&optsNum, p_test, Hat, "no_flux");    
     // Langevin pl(&optsNum, p_test, Hat, "no_flux");    
     // Langevin pl(&optsNum, p_test, Hat, "periodic");
     // Langevin pl(&optsNum, p_test, Hat, "none");
     
-    pl.SetFilename("gauss_data.dat", "gauss_num.dat", "gauss_phys.dat");
+    pl.SetFilename("lsde_data.dat", "lsde_num.dat", "lsde_phys.dat");
     pl.DoStochastics();
 
     delete p_test;
